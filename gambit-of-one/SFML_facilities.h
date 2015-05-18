@@ -4,8 +4,8 @@ errors and hassles, I hope...
 
 */
 
-#ifndef SFML_FACIL_H
-#define SFML_FACIL_H
+#ifndef SFML_FACILITIES_H
+#define SFML_FACILITIES_H
 
 #include <SFML/System.hpp>
 #include <SFML/Network.hpp>
@@ -13,4 +13,4 @@ errors and hassles, I hope...
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
-#endif //SFML_FACIL_H
+#endif //SFML_FACILITIES_H
