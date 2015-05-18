@@ -1,5 +1,19 @@
 #include "Player.h"
-#include "Aircraft.h"
+
+struct CreatureMover
+{
+	CreatureMover(float vx, float vy)
+		: velocity(vx, vy)
+	{
+	}
+
+	void operator() (Creature& creature, sf::Time) const
+	{
+		creature.accelerate(velocity * creature.getMaxSpeed());
+	}
+
+	sf::Vector2f velocity;
+};
 
 Player::Player()
 {
@@ -7,36 +21,14 @@ Player::Player()
 	mKeyBinding[sf::Keyboard::Right] = MoveRight;
 	mKeyBinding[sf::Keyboard::Up] = MoveUp;
 	mKeyBinding[sf::Keyboard::Down] = MoveDown;
-	mKeyBinding[sf::Keyboard::Space] = Fire;
-	mKeyBinding[sf::Keyboard::M] = LaunchMissile;
+	mKeyBinding[sf::Keyboard::Space] = Attack;
+	mKeyBinding[sf::Keyboard::F] = FireArrow;
 
-	mActionBinding[MoveLeft].action =
-		[](SceneNode& node, sf::Time dt)
-	{
-		node.move(-30.f * dt.asSeconds(), 0.f);
-	};
-
-	mActionBinding[MoveRight].action =
-		[](SceneNode& node, sf::Time dt)
-	{
-		node.move(30.f * dt.asSeconds(), 0.f);
-	};
-
-	mActionBinding[MoveUp].action =
-		[](SceneNode& node, sf::Time dt)
-	{
-		node.move(0.f, -30.f * dt.asSeconds());
-	};
-
-	mActionBinding[MoveDown].action =
-		[](SceneNode& node, sf::Time dt)
-	{
-		node.move(0.f, -30.f * dt.asSeconds());
-	};
+	initializeActions();
 
 	for (auto& pair : mActionBinding)
 	{
-		pair.second.category = Category::PlayerAircraft;
+		pair.second.category = Category::Player;
 	}
 }
 
@@ -54,17 +46,14 @@ void Player::handleRealtimeInput(CommandQueue& commands)
 
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
-	if (event.type == sf::Event::KeyPressed
-		&& event.key.code == sf::Keyboard::P)
+	if (event.type == sf::Event::KeyPressed)
 	{
-		Command output;
-		output.category = Category::PlayerAircraft;
-		output.action = [](SceneNode& s, sf::Time)
+		auto found = mKeyBinding.find(event.key.code);
+		if (found != mKeyBinding.end()
+			&& !isRealtimeAction(found->second))
 		{
-			std::cout << s.getPosition().x << ","
-				<< s.getPosition().y << "\n";
-		};
-		commands.push(output);
+			commands.push(mActionBinding[found->second]);
+		}
 	}
 }
 
@@ -99,23 +88,36 @@ void Player::assignKey(Action action, sf::Keyboard::Key key)
 
 void Player::initializeActions()
 {
-	mActionBinding[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-1, 0));
-	mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+1, 0));
-	mActionBinding[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0, -1));
-	mActionBinding[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0, +1));
-	mActionBinding[Fire].action = derivedAction<Aircraft>(std::bind(&Aircraft::fire, _1));
-	mActionBinding[LaunchMissile].action = derivedAction<Aircraft>(std::bind(&Aircraft::launchMissile, _1));
+	mActionBinding[MoveLeft].action = derivedAction<Creature>(CreatureMover(-1, 0));
+	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
+	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
+	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
+	mActionBinding[Attack].action = derivedAction<Creature>(std::bind(&Creature::attack, _1));
+	mActionBinding[FireArrow].action = derivedAction<Creature>(std::bind(&Creature::fireArrow, _1));
 }
 
 bool Player::isRealtimeAction(Action action)
 {
 	switch (action)
-		case MoveLeft:
-		case MoveRight:
-		case MoveUp:
-		case MoveDown:
-		case Fire:
-			return true;
-		default:
-			return false;
+	{
+	case MoveLeft:
+	case MoveRight:
+	case MoveUp:
+	case MoveDown:
+	case Attack:
+		return true;
+	default:
+		return false;
+	}
 }
+
+void Player::setStatus(Status status)
+{
+	mStatus = status;
+}
+
+Player::Status Player::getStatus() const
+{
+	return mStatus;
+}
+
