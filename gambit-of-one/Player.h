@@ -3,6 +3,8 @@
 #include "SFML_facilities.h"
 #include "CommandQueue.h"
 #include "Command.inl"
+#include "Aircraft.h"
+#include "AircraftMover.h"
 #include <iostream>
 
 class Player
@@ -14,8 +16,8 @@ public:
 		MoveRight,
 		MoveUp,
 		MoveDown,
-		Attack,
-		Arrow,
+		Fire,
+		LaunchMissile,
 		ActionCount,
 	};
 
@@ -28,6 +30,7 @@ public:
 
 private:
 	static bool			isRealtimeAction(Action action);
+	void				initializeActions();
 
 private:
 	std::map<sf::Keyboard::Key, Action> mKeyBinding;

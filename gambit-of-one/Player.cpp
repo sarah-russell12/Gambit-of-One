@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Aircraft.h"
 
 Player::Player()
 {
@@ -6,6 +7,8 @@ Player::Player()
 	mKeyBinding[sf::Keyboard::Right] = MoveRight;
 	mKeyBinding[sf::Keyboard::Up] = MoveUp;
 	mKeyBinding[sf::Keyboard::Down] = MoveDown;
+	mKeyBinding[sf::Keyboard::Space] = Fire;
+	mKeyBinding[sf::Keyboard::M] = LaunchMissile;
 
 	mActionBinding[MoveLeft].action =
 		[](SceneNode& node, sf::Time dt)
@@ -33,7 +36,7 @@ Player::Player()
 
 	for (auto& pair : mActionBinding)
 	{
-		pair.second.category = Category::Player;
+		pair.second.category = Category::PlayerAircraft;
 	}
 }
 
@@ -55,7 +58,7 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 		&& event.key.code == sf::Keyboard::P)
 	{
 		Command output;
-		output.category = Category::Player;
+		output.category = Category::PlayerAircraft;
 		output.action = [](SceneNode& s, sf::Time)
 		{
 			std::cout << s.getPosition().x << ","
@@ -92,4 +95,27 @@ void Player::assignKey(Action action, sf::Keyboard::Key key)
 		}
 	}
 	mKeyBinding[key] = action;
+}
+
+void Player::initializeActions()
+{
+	mActionBinding[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-1, 0));
+	mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+1, 0));
+	mActionBinding[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0, -1));
+	mActionBinding[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0, +1));
+	mActionBinding[Fire].action = derivedAction<Aircraft>(std::bind(&Aircraft::fire, _1));
+	mActionBinding[LaunchMissile].action = derivedAction<Aircraft>(std::bind(&Aircraft::launchMissile, _1));
+}
+
+bool Player::isRealtimeAction(Action action)
+{
+	switch (action)
+		case MoveLeft:
+		case MoveRight:
+		case MoveUp:
+		case MoveDown:
+		case Fire:
+			return true;
+		default:
+			return false;
 }
