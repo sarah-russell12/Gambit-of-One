@@ -7,13 +7,12 @@
 #include <SFML/System/NonCopyable.hpp>
 #include "CommandQueue.h"
 #include "Command.h"
-#include "Command.inl"
 
 class World : public sf::NonCopyable
 {
 public:
 	World();
-	explicit			World(sf::RenderWindow& window);
+	explicit			World(sf::RenderWindow& window, FontHolder& fonts);
 	void				update(sf::Time dt);
 	void				draw();
 	CommandQueue		getCommandQueue();
@@ -24,7 +23,7 @@ private:
 	void				buildScene();
 	
 	void				spawnEnemies();
-	void				addEnemy(Aircraft::Type type, float relX, float relY);
+	void				addEnemy(Creature::Type type, float relX, float relY);
 	void				addEnemies();
 
 
@@ -66,7 +65,6 @@ private:
 	std::array<SceneNode*, LayerCount>	mSceneLayers;
 	
 	sf::Vector2f						mSpawnPosition;
-	float								mScrollSpeed;
 	Creature*							mPlayerAvatar;
 	CommandQueue						mCommandQueue;
 

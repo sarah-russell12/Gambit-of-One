@@ -1,7 +1,13 @@
 #include "World.h"
 
-World::World(sf::RenderWindow& window)
-	: mWindow(window), mSceneGraph(Category::None)
+World::World(sf::RenderWindow& window, FontHolder& fonts)
+	: mWindow(window)
+	, mSceneGraph()
+	, mFonts(fonts)
+	, mTextures()
+	, mSceneLayers()
+	, mEnemySpawnPoints()
+	, mActiveEnemies()
 {
 	mWorldView = sf::View(window.getDefaultView());
 	mWorldBounds = sf::FloatRect(
