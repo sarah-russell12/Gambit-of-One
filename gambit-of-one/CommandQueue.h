@@ -12,7 +12,7 @@
 
 #ifndef COMMAND_QUEUE_H
 #define	COMMAND_QUEUE_H	
-#include "Command.h"
+#include "Command.hpp"
 #include <queue>
 
 class CommandQueue

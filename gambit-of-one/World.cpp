@@ -68,7 +68,7 @@ void World::buildScene()
 		new Creature(Creature::Hero, mTextures, mFonts));
 	mPlayerAvatar = hero.get();
 	mPlayerAvatar->setPosition(mSpawnPosition);
-	mPlayerAvatar->setVelocity(40.f, mScrollSpeed);
+	mPlayerAvatar->setVelocity(0.f, 0.f);
 	mSceneLayers[Ground]->attachChild(std::move(hero));
 }
 

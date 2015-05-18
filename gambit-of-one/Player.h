@@ -2,8 +2,8 @@
 #define PLAYER_H
 #include "SFML_facilities.h"
 #include "CommandQueue.h"
-#include "Command.inl"
-#include "Creature.h"
+#include "Command.hpp"
+#include "Entities_Facilities.h"
 #include <iostream>
 
 class Player

@@ -1,9 +1,9 @@
 #include "Creature.hpp"
 #include "DataTables.hpp"
-#include "Utility.hpp"
-#include "Pickup.hpp"
-#include "CommandQueue.hpp"
-#include "ResourceHolder.hpp"
+#include "UtilityFunctions.hpp"
+#include "Pickup.h"
+#include "CommandQueue.h"
+#include "Enumerations.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -21,24 +21,23 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 	, mSprite(textures.get(Table[type].texture))
 	, mFireCommand()
 	, mFireCountdown(sf::Time::Zero)
-	, mIsFiring(false)
+	, mIsAttacking(false)
 	, mIsMarkedForRemoval(false)
-	, mFireRateLevel(1)
 	, mDropPickupCommand()
 	, mTravelledDistance(0.f)
 	, mDirectionIndex(0)
 	, mHealthDisplay(nullptr)
-	//, mMissileDisplay(nullptr)
+	, mArrowDisplay(nullptr)
 {
 	centerOrigin(mSprite);
 
-	mFireCommand.category = Category::SceneAirLayer;
+	mFireCommand.category = Category::Scene;
 	mFireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
-		createBullets(node, textures);
+		createArrows(node, textures);
 	};
 
-	mDropPickupCommand.category = Category::SceneAirLayer;
+	mDropPickupCommand.category = Category::Scene;
 	mDropPickupCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
 		createPickup(node, textures);
@@ -48,12 +47,15 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 	mHealthDisplay = healthDisplay.get();
 	attachChild(std::move(healthDisplay));
 
-	if (getCategory() == Category::PlayerAircraft)
+	std::unique_ptr<TextNode> arrowDisplay(new TextNode(fonts, ""));
+	mHealthDisplay = arrowDisplay.get();
+	attachChild(std::move(arrowDisplay));
+
+	if (getCategory() == Category::Player)
 	{
-		std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
-		missileDisplay->setPosition(0, 70);
-		mMissileDisplay = missileDisplay.get();
-		attachChild(std::move(missileDisplay));
+		std::unique_ptr<TextNode> arrowDisplay(new TextNode(fonts, ""));
+		arrowDisplay->setPosition(0, 70);
+		attachChild(std::move(arrowDisplay));
 	}
 
 	updateTexts();
@@ -89,89 +91,101 @@ void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
 unsigned int Creature::getCategory() const
 {
 	if (isAllied())
-		return Category::PlayerAircraft;
+		return Category::Player;
 	else
-		return Category::EnemyAircraft;
+		return Category::Enemy;
 }
 
-sf::FloatRect Aircraft::getBoundingRect() const
+sf::FloatRect Creature::getBoundingRect() const
 {
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-bool Aircraft::isMarkedForRemoval() const
+bool Creature::isMarkedForRemoval() const
 {
 	return mIsMarkedForRemoval;
 }
 
-bool Aircraft::isAllied() const
+bool Creature::isAllied() const
 {
-	return mType == Eagle;
+	return mType == Hero;
 }
 
-float Aircraft::getMaxSpeed() const
+float Creature::getMaxSpeed() const
 {
 	return Table[mType].speed;
 }
 
-void Aircraft::increaseFireRate()
+void Creature::collectArrows(unsigned int count)
 {
-	if (mFireRateLevel < 10)
-		++mFireRateLevel;
+	mArrowCount += count;
 }
 
-void Aircraft::collectMissiles(unsigned int count)
+void Creature::fireArrow()
 {
-	mMissileAmmo += count;
-}
-
-void Aircraft::fire()
-{
-	// Only ships with fire interval != 0 are able to fire
-	if (Table[mType].fireInterval != sf::Time::Zero)
+	if (mArrowCount > 0)
+	{
 		mIsFiring = true;
-}
-
-void Aircraft::launchMissile()
-{
-	if (mMissileAmmo > 0)
-	{
-		mIsLaunchingMissile = true;
-		--mMissileAmmo;
+		--mArrowCount;
 	}
 }
 
-void Aircraft::updateMovementPattern(sf::Time dt)
+void Creature::updateMovementPattern(sf::Time dt)
 {
-	// Enemy airplane: Movement pattern
-	const std::vector<Direction>& directions = Table[mType].directions;
-	if (!directions.empty())
+	// Different AI for different enemies
+	// Beast enemies, like rats, converge on the hero.
+	// Humanoid enemies have set pathing.
+	if (!mIsGuidedEnemy) 
 	{
-		// Moved long enough in current direction: Change direction
-		if (mTravelledDistance > directions[mDirectionIndex].distance)
+		// Enemy airplane: Movement pattern
+		const std::vector<Direction>& directions = Table[mType].directions;
+		if (!directions.empty())
 		{
-			mDirectionIndex = (mDirectionIndex + 1) % directions.size();
-			mTravelledDistance = 0.f;
+			// Moved long enough in current direction: Change direction
+			if (mTravelledDistance > directions[mDirectionIndex].distance)
+			{
+				mDirectionIndex = (mDirectionIndex + 1) % directions.size();
+				mTravelledDistance = 0.f;
+			}
+
+			// Compute velocity from direction
+			float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
+			float vx = getMaxSpeed() * std::cos(radians);
+			float vy = getMaxSpeed() * std::sin(radians);
+
+			setVelocity(vx, vy);
+
+			mTravelledDistance += getMaxSpeed() * dt.asSeconds();
 		}
+	} 
+	else
+	{
+		const float approachRate = 200.f;
 
-		// Compute velocity from direction
-		float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
-		float vx = getMaxSpeed() * std::cos(radians);
-		float vy = getMaxSpeed() * std::sin(radians);
+		sf::Vector2f newVelocity = unitVector(approachRate
+			* dt.asSeconds() * mTargetDirection + getVelocity());
 
-		setVelocity(vx, vy);
+		newVelocity *= getMaxSpeed();
+		float angle = std::atan2(newVelocity.y, newVelocity.x);
 
-		mTravelledDistance += getMaxSpeed() * dt.asSeconds();
+		setRotation(toDegree(angle) + 90.f);
+		setVelocity(newVelocity);
 	}
 }
 
-void Aircraft::checkPickupDrop(CommandQueue& commands)
+void Creature::guideTowards(sf::Vector2f position)
+{
+	assert(mIsGuidedEnemy);
+	mTargetDirection = unitVector(position - getWorldPosition());
+}
+
+void Creature::checkPickupDrop(CommandQueue& commands)
 {
 	if (!isAllied() && randomInt(3) == 0)
 		commands.push(mDropPickupCommand);
 }
 
-void Aircraft::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
+void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
 	// Enemies try to fire all the time
 	if (!isAllied())
@@ -182,7 +196,7 @@ void Aircraft::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
-		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
+		mFireCountdown += Table[mType].fireInterval;
 		mIsFiring = false;
 	}
 	else if (mFireCountdown > sf::Time::Zero)
@@ -191,39 +205,16 @@ void Aircraft::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 		mFireCountdown -= dt;
 		mIsFiring = false;
 	}
-
-	// Check for missile launch
-	if (mIsLaunchingMissile)
-	{
-		commands.push(mMissileCommand);
-		mIsLaunchingMissile = false;
-	}
 }
 
-void Aircraft::createBullets(SceneNode& node, const TextureHolder& textures) const
+void Creature::createArrows(SceneNode& node, const TextureHolder& textures) const
 {
-	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
-
-	switch (mSpreadLevel)
-	{
-	case 1:
-		createProjectile(node, type, 0.0f, 0.5f, textures);
-		break;
-
-	case 2:
-		createProjectile(node, type, -0.33f, 0.33f, textures);
-		createProjectile(node, type, +0.33f, 0.33f, textures);
-		break;
-
-	case 3:
-		createProjectile(node, type, -0.5f, 0.33f, textures);
-		createProjectile(node, type, 0.0f, 0.5f, textures);
-		createProjectile(node, type, +0.5f, 0.33f, textures);
-		break;
-	}
+	Projectile::Type type = isAllied() ? Projectile::AlliedArrow : Projectile::EnemyArrow;
+		
+	createProjectile(node, type, 0.0f, 0.5f, textures);
 }
 
-void Aircraft::createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const
+void Creature::createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const
 {
 	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 
@@ -236,7 +227,7 @@ void Aircraft::createProjectile(SceneNode& node, Projectile::Type type, float xO
 	node.attachChild(std::move(projectile));
 }
 
-void Aircraft::createPickup(SceneNode& node, const TextureHolder& textures) const
+void Creature::createPickup(SceneNode& node, const TextureHolder& textures) const
 {
 	auto type = static_cast<Pickup::Type>(randomInt(Pickup::TypeCount));
 
@@ -246,17 +237,17 @@ void Aircraft::createPickup(SceneNode& node, const TextureHolder& textures) cons
 	node.attachChild(std::move(pickup));
 }
 
-void Aircraft::updateTexts()
+void Creature::updateTexts()
 {
-	mHealthDisplay->setString(toString(getHitpoints()) + " HP");
+	mHealthDisplay->setString(std::to_string(getHitpoints()) + " HP");
 	mHealthDisplay->setPosition(0.f, 50.f);
 	mHealthDisplay->setRotation(-getRotation());
 
-	if (mMissileDisplay)
+	if (mArrowDisplay)
 	{
-		if (mMissileAmmo == 0)
-			mMissileDisplay->setString("");
+		if (mArrowCount == 0)
+			mArrowDisplay->setString("");
 		else
-			mMissileDisplay->setString("M: " + toString(mMissileAmmo));
+			mArrowDisplay->setString("M: " + toString(mArrowCount));
 	}
 }

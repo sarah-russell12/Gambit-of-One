@@ -3,7 +3,9 @@
 
 #include "SceneNode.h"
 #include "Entity.h"
-#include "Humanoid.h"
+#include "Creature.hpp"
+#include "Projectile.h"
+#include "Pickup.h"
 
 
 #endif //ENTITY_FACILITIES_H

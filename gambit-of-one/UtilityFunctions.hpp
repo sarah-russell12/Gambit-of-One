@@ -4,6 +4,7 @@
 #include "SFML_facilities.h"
 #include "Entities_Facilities.h"
 #include <assert.h>
+#include <sstream>
 
 void centerOrigin(sf::Text text)
 {
@@ -53,5 +54,21 @@ bool collision(const SceneNode& lhs, const SceneNode& rhs)
 	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
 }
 
+namespace
+{
+	std::default_random_engine createRandomEngine()
+	{
+		auto seed = static_cast<unsigned long>(std::time(nullptr));
+		return std::default_random_engine(seed);
+	}
+
+	auto RandomEngine = createRandomEngine();
+}
+
+int randomInt(int bound)
+{
+	std::uniform_int_distribution<> distr(0, bound - 1);
+	return distr(RandomEngine);
+}
 
 #endif //UTILITY_FUNCTIONS_HPP

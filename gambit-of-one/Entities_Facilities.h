@@ -3,11 +3,11 @@
 
 #include "SceneNode.h"
 #include "SpriteNode.h"
+#include "TextNode.h"
 #include "Entity.h"
-#include "Aircraft.h"
-#include "AircraftMover.h"
+#include "Creature.hpp"
 #include "Projectile.h"
-#include "Pickup.h"
+#include "Pickup.h
 
 
 #endif //ENTITIES_FACILITIES_H

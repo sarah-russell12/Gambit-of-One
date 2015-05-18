@@ -1,10 +1,9 @@
 #ifndef DATATABLES_HPP
 #define DATATABLES_HPP
 
-#include "ResourceIdentifiers.hpp"
-
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/Color.hpp>
+#include "SFML_facilities.h"
+#include "Enumerations.hpp"
+#include "Entities_Facilities.h"
 
 #include <vector>
 #include <functional>
@@ -28,6 +27,7 @@ struct CreatureData
 {
 	int								hitpoints;
 	float							speed;
+	int								damage;
 	Textures::ID					texture;
 	sf::Time						fireInterval;
 	std::vector<Direction>			directions;

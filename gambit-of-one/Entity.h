@@ -21,8 +21,6 @@ public:
 	void			repair(int points);
 	void			damage(int points);
 	void			destroy();
-
-private:
 	virtual void	updateCurrent(sf::Time dt, CommandQueue& commands);
 
 private:

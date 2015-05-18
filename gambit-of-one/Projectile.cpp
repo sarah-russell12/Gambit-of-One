@@ -1,5 +1,5 @@
 #include "Projectile.h"
-#include "Aircraft.h"
+#include "Entities_Facilities.h"
 #include "Centering.h"
 
 #include <cmath>
@@ -15,7 +15,7 @@ Projectile::Projectile(Type type, const TextureHolder& textures)
 
 bool Projectile::isGuided() const
 {
-	return mType == Missile;
+	return false;
 }
 
 void Projectile::guideTowards(sf::Vector2f position)

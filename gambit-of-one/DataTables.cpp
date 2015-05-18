@@ -1,7 +1,4 @@
 #include "DataTables.hpp"
-#include "Aircraft.hpp"
-#include "Projectile.hpp"
-#include "Pickup.hpp"
 
 
 // For std::bind() placeholders _1, _2, ...
@@ -15,7 +12,7 @@ std::vector<CreatureData> initializeCreatureData()
 	data[Creature::Rat].speed = 100;
 	data[Creature::Rat].damage = 5;
 	//aggrodistance-> distance from player at which an idle enemy becomes aggressive
-	data[Creature::Rat].aggrodistance = tba;
+	//data[Creature::Rat].aggrodistance = tba;
 	data[Creature::Rat].texture = Textures::Rat;
 
 
@@ -49,17 +46,14 @@ std::vector<ProjectileData> initializeProjectileData()
 {
 	std::vector<ProjectileData> data(Projectile::TypeCount);
 
-	data[Projectile::AlliedBullet].damage = 10;
-	data[Projectile::AlliedBullet].speed = 300.f;
-	data[Projectile::AlliedBullet].texture = Textures::Bullet;
+	data[Projectile::AlliedArrow].damage = 10;
+	data[Projectile::AlliedArrow].speed = 300.f;
+	data[Projectile::AlliedArrow].texture = Textures::Arrow;
 
-	data[Projectile::EnemyBullet].damage = 10;
-	data[Projectile::EnemyBullet].speed = 300.f;
-	data[Projectile::EnemyBullet].texture = Textures::Bullet;
+	data[Projectile::EnemyArrow].damage = 10;
+	data[Projectile::EnemyArrow].speed = 300.f;
+	data[Projectile::EnemyArrow].texture = Textures::Arrow;
 
-	data[Projectile::Missile].damage = 200;
-	data[Projectile::Missile].speed = 150.f;
-	data[Projectile::Missile].texture = Textures::Missile;
 
 	return data;
 }
@@ -69,16 +63,12 @@ std::vector<PickupData> initializePickupData()
 	std::vector<PickupData> data(Pickup::TypeCount);
 
 	data[Pickup::HealthRefill].texture = Textures::HealthRefill;
-	data[Pickup::HealthRefill].action = [](Aircraft& a) { a.repair(25); };
+	data[Pickup::HealthRefill].action = [](Creature& a) { a.repair(25); };
 
-	data[Pickup::MissileRefill].texture = Textures::MissileRefill;
-	data[Pickup::MissileRefill].action = std::bind(&Aircraft::collectMissiles, _1, 3);
+	data[Pickup::ArrowRefill].texture = Textures::Quiver;
+	data[Pickup::ArrowRefill].action = std::bind(&Creature::collectArrows, _1, 3);
 
-	data[Pickup::FireSpread].texture = Textures::FireSpread;
-	data[Pickup::FireSpread].action = std::bind(&Aircraft::increaseSpread, _1);
 
-	data[Pickup::FireRate].texture = Textures::FireRate;
-	data[Pickup::FireRate].action = std::bind(&Aircraft::increaseFireRate, _1);
 
 	return data;
 }

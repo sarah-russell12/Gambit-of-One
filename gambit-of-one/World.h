@@ -6,7 +6,7 @@
 #include <array>
 #include <SFML/System/NonCopyable.hpp>
 #include "CommandQueue.h"
-#include "Command.h"
+#include "Command.hpp"
 
 class World : public sf::NonCopyable
 {
