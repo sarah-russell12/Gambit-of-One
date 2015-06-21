@@ -3,7 +3,7 @@
 #include "SFML_facilities.h"
 #include <memory>
 //#include "StateStack.hpp"
-#include "StateIdentifiers.hpp"
+#include "Enumerations.hpp"
 #include "ResourceHolder.hpp"
 #include "Player.h"
 

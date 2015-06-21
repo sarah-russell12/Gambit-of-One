@@ -1,7 +1,9 @@
 #ifndef SPRITE_NODE_H
 #define SPRITE_NODE_H
 #include "SFML_facilities.h"
-#include "SceneNode.h"
+#include "Entities_Facilities.h"
+
+class SceneNode;
 
 class SpriteNode : public SceneNode
 {

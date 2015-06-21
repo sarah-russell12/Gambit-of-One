@@ -1,4 +1,4 @@
-#include "Application.h"
+#include "Headers/Application.h"
 
 Application::Application() :
 mWindow(sf::VideoMode(640, 480), "Gambit of One", sf::Style::Close),

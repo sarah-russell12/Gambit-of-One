@@ -1,5 +1,4 @@
-#include "Pickup.h"
-#include "Centering.h"
+#include "Headers/Pickup.h"
 
 Pickup::Pickup(Type type, const TextureHolder& textures)
 	: Entity(1)

@@ -6,6 +6,7 @@ World::World(sf::RenderWindow& window, FontHolder& fonts)
 	, mFonts(fonts)
 	, mTextures()
 	, mSceneLayers()
+	, mScrollSpeed(-50.f)
 	, mEnemySpawnPoints()
 	, mActiveEnemies()
 {

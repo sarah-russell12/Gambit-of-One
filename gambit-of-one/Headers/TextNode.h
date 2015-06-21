@@ -4,7 +4,7 @@
 #include "SFML_facilities.h"
 #include "SceneNode.h"
 #include "ResourceHolder.hpp"
-#include "Centering.h"
+#include "UtilityFunctions.hpp"
 
 #include <string>
 

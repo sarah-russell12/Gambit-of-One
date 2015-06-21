@@ -1,4 +1,4 @@
-#include "GameState.h"
+#include "Headers/GameState.h"
 
 GameState::GameState(StateStack& stack, Context context) :
 State(stack, context),
@@ -24,7 +24,7 @@ bool GameState::update(sf::Time dt)
 	}
 	else if (mWorld.hasPlayerDefeatedEnemies())
 	{
-		mPlayer.setStatus(Player::Win);
+		mPlayer.setStatus(Player::Success);
 		requestStackPush(States::GameOver);
 	}
 

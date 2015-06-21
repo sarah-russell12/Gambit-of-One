@@ -1,9 +1,28 @@
+/*
+DataTables.hpp
+
+Date Last Updated: June 20, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Updates:
+- June 20, 2015:
+	- Moved to "Headers" folder
+	- Opted to not use "facilities" header files anymore
+*/
+
 #ifndef DATATABLES_HPP
 #define DATATABLES_HPP
 
-#include "SFML_facilities.h"
+
+#include "Creature.h"
 #include "Enumerations.hpp"
-#include "Entities_Facilities.h"
+#include "Pickup.h"
+#include "Projectile.h"
+#include "SFML_facilities.h"
 
 #include <vector>
 #include <functional>

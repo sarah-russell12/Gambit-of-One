@@ -1,12 +1,16 @@
 #ifndef WORLD_H
 #define WORLD_H
+
 #include "SFML_facilities.h"
 #include "Entities_Facilities.h"
 #include "ResourceHolder.hpp"
-#include <array>
-#include <SFML/System/NonCopyable.hpp>
 #include "CommandQueue.h"
 #include "Command.hpp"
+
+#include <SFML/System/NonCopyable.hpp>
+
+#include <array>
+#include <queue>
 
 class World : public sf::NonCopyable
 {
@@ -66,6 +70,7 @@ private:
 	
 	sf::Vector2f						mSpawnPosition;
 	Creature*							mPlayerAvatar;
+	float								mScrollSpeed;
 	CommandQueue						mCommandQueue;
 
 	sf::FloatRect						mWorldBounds;

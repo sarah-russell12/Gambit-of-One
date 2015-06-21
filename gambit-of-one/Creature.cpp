@@ -1,12 +1,4 @@
-#include "Creature.hpp"
-#include "DataTables.hpp"
-#include "UtilityFunctions.hpp"
-#include "Pickup.h"
-#include "CommandQueue.h"
-#include "Enumerations.hpp"
-
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
+#include "Headers/Creature.hpp"
 
 #include <cmath>
 
@@ -18,6 +10,7 @@ namespace
 Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	: Entity(Table[type].hitpoints)
 	, mType(type)
+	, mDamage(Table[type].damage)
 	, mSprite(textures.get(Table[type].texture))
 	, mFireCommand()
 	, mFireCountdown(sf::Time::Zero)
@@ -96,6 +89,11 @@ unsigned int Creature::getCategory() const
 		return Category::Enemy;
 }
 
+int Creature::getDamage()
+{
+	return mDamage;
+}
+
 sf::FloatRect Creature::getBoundingRect() const
 {
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
@@ -109,6 +107,21 @@ bool Creature::isMarkedForRemoval() const
 bool Creature::isAllied() const
 {
 	return mType == Hero;
+}
+
+bool Creature::isRanged() const
+{
+	return (mType == Hero || mType == Archer);
+}
+
+bool Creature::isGuided() const
+{
+	return (mType == Rat);
+}
+
+bool Creature::isAttacking() 
+{
+	return mIsAttacking;
 }
 
 float Creature::getMaxSpeed() const
@@ -135,7 +148,7 @@ void Creature::updateMovementPattern(sf::Time dt)
 	// Different AI for different enemies
 	// Beast enemies, like rats, converge on the hero.
 	// Humanoid enemies have set pathing.
-	if (!mIsGuidedEnemy) 
+	if (!isGuided()) 
 	{
 		// Enemy airplane: Movement pattern
 		const std::vector<Direction>& directions = Table[mType].directions;
@@ -188,8 +201,8 @@ void Creature::checkPickupDrop(CommandQueue& commands)
 void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
 	// Enemies try to fire all the time
-	if (!isAllied())
-		fire();
+	if (!isAllied() && isRanged())
+		fireArrow();
 
 	// Check for automatic gunfire, allow only in intervals
 	if (mIsFiring && mFireCountdown <= sf::Time::Zero)
@@ -248,6 +261,6 @@ void Creature::updateTexts()
 		if (mArrowCount == 0)
 			mArrowDisplay->setString("");
 		else
-			mArrowDisplay->setString("M: " + toString(mArrowCount));
+			mArrowDisplay->setString("M: " + std::to_string(mArrowCount));
 	}
 }

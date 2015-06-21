@@ -72,104 +72,113 @@
     <ClCompile Include="DataTables.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Projectile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pickup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOverState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UtilityFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommandQueue.h">
+    <ClInclude Include="Headers\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="Headers\Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
+    <ClInclude Include="Headers\Command.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceHolder.hpp">
+    <ClInclude Include="Headers\CommandQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SceneNode.h">
+    <ClInclude Include="Headers\Component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SFML_facilities.h">
+    <ClInclude Include="Headers\Container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SpriteNode.h">
+    <ClInclude Include="Headers\Creature.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="World.h">
+    <ClInclude Include="Headers\DataTables.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Humanoid.h">
+    <ClInclude Include="Headers\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity_Facilities.h">
+    <ClInclude Include="Headers\Enumerations.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application.h">
+    <ClInclude Include="Headers\GameOverState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Button.h">
+    <ClInclude Include="Headers\GameState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Container.h">
+    <ClInclude Include="Headers\Label.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entities_Facilities.h">
+    <ClInclude Include="Headers\MenuState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h">
+    <ClInclude Include="Headers\PauseState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Gui_Facilities.h">
+    <ClInclude Include="Headers\Pickup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Label.h">
+    <ClInclude Include="Headers\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MenuState.h">
+    <ClInclude Include="Headers\Projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PauseState.h">
+    <ClInclude Include="Headers\ResourceHolder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsState.h">
+    <ClInclude Include="Headers\SceneNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="State.h">
+    <ClInclude Include="Headers\SettingsState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="States_Facilities.h">
+    <ClInclude Include="Headers\SFML_facilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StateStack.hpp">
+    <ClInclude Include="Headers\SpriteNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TitleState.h">
+    <ClInclude Include="Headers\State.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
+    <ClInclude Include="Headers\StateStack.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enumerations.hpp">
+    <ClInclude Include="Headers\TextNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UtilityFunctions.hpp">
+    <ClInclude Include="Headers\TitleState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Command.hpp">
+    <ClInclude Include="Headers\UtilityFunctions.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Creature.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DataTables.hpp">
+    <ClInclude Include="Headers\World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ResourceHolder.inl">
+    <None Include="Headers\ResourceHolder.inl">
       <Filter>Header Files</Filter>
     </None>
-    <None Include="StateStack.inl">
+    <None Include="Headers\StateStack.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

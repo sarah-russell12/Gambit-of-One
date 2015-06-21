@@ -1,4 +1,4 @@
-#include "Entity.h"
+#include "Headers/Entity.h"
 
 Entity::Entity(int hitPoints)
 	: mHitPoints(hitPoints) {}

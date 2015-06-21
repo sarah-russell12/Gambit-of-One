@@ -1,4 +1,4 @@
-#include "Component.h"
+#include "Headers/Component.h"
 
 GUI::Component::Component()
 	: mIsActive(false)

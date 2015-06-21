@@ -1,10 +1,32 @@
-#ifndef AIRCRAFT_HPP
-#define AIRCRAFT_HPP
+/*
+Creature.hpp
 
-#include "Entities_Facilities.h"
+Date Last Updated: June 20, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Updates:
+- June 20, 2015:
+	- Moved to "Headers" folder
+	- Opted to not use "facilities" header files anymore
+*/
+
+#ifndef CREATURE_HPP
+#define CREATURE_HPP
+
 #include "Command.hpp"
+#include "CommandQueue.h"
+#include "DataTables.hpp"
+#include "Entity.h"
 #include "Enumerations.hpp"
+#include "Pickup.h"
+#include "Projectile.h"
+#include "SFML_facilities.h"
 #include "TextNode.h"
+#include "UtilityFunctions.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -16,6 +38,8 @@ public:
 	{
 		Hero,
 		Rat,
+		Thief,
+		Archer,
 		TypeCount,
 	};
 
@@ -26,22 +50,29 @@ public:
 	virtual unsigned int	getCategory() const;
 	virtual sf::FloatRect	getBoundingRect() const;
 	virtual bool 			isMarkedForRemoval() const;
+	int						getDamage();
 	bool					isAllied() const;
+	bool					isRanged() const;
+	bool					isGuided() const;
+	bool					isAttacking();
 	float					getMaxSpeed() const;
 
 	void					increaseFireRate();
 	void					increaseSpread();
-	void					collectMissiles(unsigned int count);
+	void					collectArrows(unsigned int count);
 
-	void 					fire();
-	void					launchMissile();
+	void					guideTowards(sf::Vector2f position);
+
+	void 					attack();
+	void					fireArrow();
+
 
 
 private:
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void 			updateCurrent(sf::Time dt, CommandQueue& commands);
 	void					updateMovementPattern(sf::Time dt);
-	void					guideTowards(sf::Vector2f position);
+	
 	void					checkPickupDrop(CommandQueue& commands);
 	void					checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
 
@@ -51,8 +82,7 @@ private:
 
 	void					updateTexts();
 
-	void					collectArrows(unsigned int count);
-	void					fireArrow();
+	
 	
 
 
@@ -69,6 +99,7 @@ private:
 	bool					mIsGuidedEnemy;
 	sf::Vector2f			mTargetDirection;
 
+	int						mDamage;
 	int						mArrowCount;
 
 	Command 				mDropPickupCommand;
@@ -78,4 +109,4 @@ private:
 	TextNode*				mArrowDisplay;
 };
 
-#endif // AIRCRAFT_HPP
+#endif // CREATURE_HPP

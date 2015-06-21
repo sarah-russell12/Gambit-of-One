@@ -1,4 +1,4 @@
-#include "Label.h"
+#include "Headers/Label.h"
 
 GUI::Label::Label(const std::string& text, const FontHolder& fonts)
 	: mText(text, fonts.get(Fonts::Main), 16) {}

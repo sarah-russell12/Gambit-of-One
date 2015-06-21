@@ -1,13 +1,4 @@
-#ifndef CENTERING_H
-#define CENTERING_H
-
-/*
-  The new equivalent to the Book's Utility.hpp
-*/
-
-#include "SFML_facilities.h"
-#include "Entity.h"
-#include <assert.h>
+#include "UtilityFunctions.hpp"
 
 void centerOrigin(sf::Text text)
 {
@@ -57,4 +48,17 @@ bool collision(const SceneNode& lhs, const SceneNode& rhs)
 	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
 }
 
-#endif //CENTERING_H
+namespace
+{
+	std::default_random_engine createRandomEngine()
+	{
+		auto seed = static_cast<unsigned long>(std::time(nullptr));
+		return std::default_random_engine(seed);
+	}
+}
+
+int randomInt(int bound)
+{
+	std::uniform_int_distribution<> distr(0, bound - 1);
+	return distr(RandomEngine);
+}

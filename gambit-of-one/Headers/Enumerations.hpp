@@ -1,10 +1,14 @@
 /*
-	Enumerations.hpp
+Enumerations.hpp
 
-	Author: Sarah Russell
-	Last Updated: 16 April, 2015
+Date Last Updated: June 20, 2015
 
-	A collection of enumerations.
+A collection of enumerations
+
+Updates:
+- June 20, 2015:
+	- Moved to "Headers" folder
+	- Opted to not use "facilities" header files anymore
 */
 
 #ifndef ENUMERATIONS_HPP
@@ -50,6 +54,7 @@ namespace States
 		Menu,
 		Pause,
 		Settings,
+		GameOver,
 	};
 };
 

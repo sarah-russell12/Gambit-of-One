@@ -1,10 +1,12 @@
 #ifndef PICKUP_H
 #define PICKUP_H
 
-#include "SFML_facilities.h"
-#include "Entities_Facilities.h"
-#include "ResourceHolder.hpp"
+#include "Entity.h"
 #include "DataTables.hpp"
+#include "ResourceHolder.hpp"
+#include "SFML_facilities.h"
+#include "UtilityFunctions.hpp"
+
 
 namespace
 {
@@ -27,7 +29,7 @@ public:
 	virtual unsigned int		getCategory() const;
 	virtual sf::FloatRect		getBoundingRect() const;
 
-	void						apply(Aircraft& player) const;
+	void						apply(Creature& player) const;
 
 protected:
 	virtual void		drawCurrent(sf::RenderTarget& target,
