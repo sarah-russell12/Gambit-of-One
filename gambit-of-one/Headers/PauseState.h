@@ -36,6 +36,7 @@ public:
 	virtual bool			handleEvent(const sf::Event& event);
 
 private:
+	sf::Sprite				mBackgroundSprite;
 	sf::Text				mPausedText;
 	GUI::Container			mGUIContainer;
 };

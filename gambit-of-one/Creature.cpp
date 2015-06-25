@@ -1,5 +1,5 @@
 #include "Headers/Creature.hpp"
-
+#include "Headers/DataTables.hpp"
 #include <cmath>
 
 namespace

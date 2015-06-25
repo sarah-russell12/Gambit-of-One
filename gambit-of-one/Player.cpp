@@ -87,20 +87,6 @@ sf::Keyboard::Key Player::getAssignedKey(Action action) const
 	return sf::Keyboard::Unknown;
 }
 
-bool Player::isRealtimeAction(Action action)
-{
-	switch (action)
-	{
-	case MoveDown:
-	case MoveLeft:
-	case MoveUp:
-	case MoveRight:
-		return true;
-	default:
-		return false;
-	}
-}
-
 void Player::setStatus(Status status)
 {
 	mStatus = status;

@@ -30,6 +30,7 @@ Updates:
 
 #include <SFML/Graphics/Sprite.hpp>
 
+class Entity;
 
 class Creature : public Entity
 {

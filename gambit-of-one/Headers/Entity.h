@@ -21,6 +21,8 @@ Updates:
 #include "SceneNode.h"
 #include "SFML_facilities.h"
 
+class SceneNode;
+
 class Entity : public SceneNode
 {
 public:

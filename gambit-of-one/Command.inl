@@ -1,3 +1,6 @@
+#include <cassert>
+#include <assert.h>
+
 Command::Command()
 	: action()
 	, category(Category::None) {}

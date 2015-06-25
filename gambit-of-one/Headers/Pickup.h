@@ -17,7 +17,6 @@ Updates:
 #ifndef PICKUP_H
 #define PICKUP_H
 
-#include "Creature.hpp"
 #include "Entity.h"
 #include "DataTables.hpp"
 #include "ResourceHolder.hpp"
@@ -25,6 +24,8 @@ Updates:
 #include "UtilityFunctions.hpp"
 
 #include <vector>
+
+class Creature;
 
 class Pickup : public Entity
 {

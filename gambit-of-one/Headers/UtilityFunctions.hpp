@@ -57,7 +57,7 @@ namespace
 
 int randomInt(int bound);
 
-template<typname T>
+template<typename T>
 std::string		toString(const T& value);
 
 std::string		toString(sf::Keyboard::Key key);

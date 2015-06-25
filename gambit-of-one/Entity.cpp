@@ -1,4 +1,5 @@
 #include "Headers/Entity.h"
+#include "Headers/SceneNode.h"
 
 Entity::Entity(int hitPoints)
 	: mHitPoints(hitPoints) {}
