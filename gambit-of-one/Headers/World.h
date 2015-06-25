@@ -1,13 +1,34 @@
+/*
+World.h
+
+Date Last Updated: June 22, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Updates:
+- June 20, 2015:
+	- Moved to "Headers" folder
+	- Opted to not use most of "facilities" header files anymore
+- June 24, 2015:
+	- Implemented adaptPlayerVelocity() and adaptPlayerPosition()
+	  in World.cpp
+	- Rearranged methods in World.cpp
+*/
+
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "SFML_facilities.h"
-#include "Entities_Facilities.h"
-#include "ResourceHolder.hpp"
-#include "CommandQueue.h"
 #include "Command.hpp"
-
-#include <SFML/System/NonCopyable.hpp>
+#include "CommandQueue.h"
+#include "Creature.hpp"
+#include "Enumerations.hpp"
+#include "SceneNode.h"
+#include "SFML_facilities.h"
+#include "SpriteNode.h"
+#include "ResourceHolder.hpp"
 
 #include <array>
 #include <queue>
@@ -19,7 +40,10 @@ public:
 	explicit			World(sf::RenderWindow& window, FontHolder& fonts);
 	void				update(sf::Time dt);
 	void				draw();
-	CommandQueue		getCommandQueue();
+	CommandQueue&		getCommandQueue();
+
+	bool				hasAlivePlayer() const;
+	bool				allEnemiesDefeated() const;
 
 
 private:
@@ -34,14 +58,13 @@ private:
 	sf::FloatRect		getBattlefieldBounds() const;
 	sf::FloatRect		getViewBounds() const;
 
-	void				guideMissiles();
+	void				guideEnemies();
 	
 	void				adaptPlayerPosition();
 	void				adaptPlayerVelocity();
 	void				handleCollisions();
 
 	void				destroyEntitiesOutsideView();
-	void				guideEnemies();
 
 private:
 	enum Layer

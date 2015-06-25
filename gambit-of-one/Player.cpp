@@ -1,4 +1,6 @@
-#include "Player.h"
+#include "Headers/Player.h"
+
+using namespace std::placeholders;
 
 struct CreatureMover
 {
@@ -15,6 +17,7 @@ struct CreatureMover
 	sf::Vector2f velocity;
 };
 
+// public
 Player::Player()
 {
 	mKeyBinding[sf::Keyboard::Left] = MoveLeft;
@@ -32,18 +35,6 @@ Player::Player()
 	}
 }
 
-void Player::handleRealtimeInput(CommandQueue& commands)
-{
-	for (auto pair : mKeyBinding)
-	{
-		if (sf::Keyboard::isKeyPressed(pair.first)
-			&& isRealtimeAction(pair.second))
-		{
-			commands.push(mActionBinding[pair.second]);
-		}
-	}
-}
-
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
 	if (event.type == sf::Event::KeyPressed)
@@ -57,17 +48,15 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 	}
 }
 
-bool Player::isRealtimeAction(Action action)
+void Player::handleRealtimeInput(CommandQueue& commands)
 {
-	switch (action)
+	for (auto pair : mKeyBinding)
 	{
-	case MoveDown:
-	case MoveLeft:
-	case MoveUp:
-	case MoveRight:
-		return true;
-	default:
-		return false;
+		if (sf::Keyboard::isKeyPressed(pair.first)
+			&& isRealtimeAction(pair.second))
+		{
+			commands.push(mActionBinding[pair.second]);
+		}
 	}
 }
 
@@ -86,25 +75,26 @@ void Player::assignKey(Action action, sf::Keyboard::Key key)
 	mKeyBinding[key] = action;
 }
 
-void Player::initializeActions()
+sf::Keyboard::Key Player::getAssignedKey(Action action) const
 {
-	mActionBinding[MoveLeft].action = derivedAction<Creature>(CreatureMover(-1, 0));
-	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
-	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
-	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
-	mActionBinding[Attack].action = derivedAction<Creature>(std::bind(&Creature::attack, _1));
-	mActionBinding[FireArrow].action = derivedAction<Creature>(std::bind(&Creature::fireArrow, _1));
+	for (auto pair : mKeyBinding)
+	{
+		if (pair.second == action)
+		{
+			return pair.first;
+		}
+	}
+	return sf::Keyboard::Unknown;
 }
 
 bool Player::isRealtimeAction(Action action)
 {
 	switch (action)
 	{
-	case MoveLeft:
-	case MoveRight:
-	case MoveUp:
 	case MoveDown:
-	case Attack:
+	case MoveLeft:
+	case MoveUp:
+	case MoveRight:
 		return true;
 	default:
 		return false;
@@ -121,3 +111,28 @@ Player::Status Player::getStatus() const
 	return mStatus;
 }
 
+// private
+bool Player::isRealtimeAction(Action action)
+{
+	switch (action)
+	{
+	case MoveLeft:
+	case MoveRight:
+	case MoveUp:
+	case MoveDown:
+	case Attack:
+		return true;
+	default:
+		return false;
+	}
+}
+
+void Player::initializeActions()
+{
+	mActionBinding[MoveLeft].action = derivedAction<Creature>(CreatureMover(-1, 0));
+	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
+	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
+	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
+	mActionBinding[Attack].action = derivedAction<Creature>(std::bind(&Creature::attack));
+	mActionBinding[FireArrow].action = derivedAction<Creature>(std::bind(&Creature::fireArrow));
+}

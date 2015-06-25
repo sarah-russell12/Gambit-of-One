@@ -84,6 +84,12 @@
     <ClCompile Include="UtilityFunctions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TextNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Headers\Application.h">
@@ -179,6 +185,12 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Headers\StateStack.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Command.inl">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="Headers\UtilityFunctions.inl">
       <Filter>Header Files</Filter>
     </None>
   </ItemGroup>

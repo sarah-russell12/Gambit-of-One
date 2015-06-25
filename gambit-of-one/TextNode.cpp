@@ -1,4 +1,4 @@
-#include "TextNode.h"
+#include "Headers/TextNode.h"
 
 TextNode::TextNode(const FontHolder& fonts, const std::string& text)
 {

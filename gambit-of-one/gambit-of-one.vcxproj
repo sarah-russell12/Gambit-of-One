@@ -105,7 +105,9 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SettingsState.cpp" />
+    <ClCompile Include="SpriteNode.cpp" />
     <ClCompile Include="State.cpp" />
+    <ClCompile Include="TextNode.cpp" />
     <ClCompile Include="TitleState.cpp" />
     <ClCompile Include="UtilityFunctions.cpp" />
     <ClCompile Include="World.cpp" />
@@ -142,8 +144,10 @@
     <ClInclude Include="Headers\World.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Command.inl" />
     <None Include="Headers\ResourceHolder.inl" />
     <None Include="Headers\StateStack.inl" />
+    <None Include="Headers\UtilityFunctions.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

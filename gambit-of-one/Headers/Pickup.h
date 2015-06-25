@@ -1,17 +1,30 @@
+/*
+Pickup.h
+
+Date Last Updated: June 21, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Updates:
+- June 20, 2015:
+	- Moved to "Headers" folder
+	- Opted to not use most of "facilities" header files anymore
+*/
+
 #ifndef PICKUP_H
 #define PICKUP_H
 
+#include "Creature.hpp"
 #include "Entity.h"
 #include "DataTables.hpp"
 #include "ResourceHolder.hpp"
 #include "SFML_facilities.h"
 #include "UtilityFunctions.hpp"
 
-
-namespace
-{
-	const std::vector<PickupData> PickupTable = initializePickupData();
-}
+#include <vector>
 
 class Pickup : public Entity
 {

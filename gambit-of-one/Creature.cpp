@@ -200,6 +200,9 @@ void Creature::checkPickupDrop(CommandQueue& commands)
 
 void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
+	// Only ranged units can fire
+	if (!isRanged()) return;
+
 	// Enemies try to fire all the time
 	if (!isAllied() && isRanged())
 		fireArrow();

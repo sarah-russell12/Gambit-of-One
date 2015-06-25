@@ -1,5 +1,3 @@
-#include "StateStack.hpp"
-
 StateStack::StateStack(State::Context context)
 	: mStack()
 	, mPendingList()
@@ -23,6 +21,21 @@ State::Ptr StateStack::createState(States::ID stateID)
 	return found->second();
 }
 
+void StateStack::update(sf::Time dt)
+{
+	for (auto itr = mStack.rbegin(); itr != mStack.rend(); ++itr)
+	{
+		if (!(*itr)->update(dt))
+			return;
+	}
+}void StateStack::draw()
+{
+	for (State::Ptr& state : mStack)
+	{
+		state->draw();
+	}
+}
+
 void StateStack::handleEvent(const sf::Event& event)
 {
 	for (auto itr = mStack.begin(); itr != mStack.end(); ++itr)
@@ -34,22 +47,7 @@ void StateStack::handleEvent(const sf::Event& event)
 	applyPendingChanges();
 }
 
-void StateStack::update(sf::Time dt)
-{
-	for (auto itr = mStack.begin(); itr != mStack.end(); ++itr)
-	{
-		if (!(*itr)->update(dt))
-			return;
-	}
-}
 
-void StateStack::draw()
-{
-	for (auto itr = mStack.begin(); itr != mStack.end(); ++itr)
-	{
-		(*itr)->draw();
-	}
-}
 
 void StateStack::pushState(States::ID stateID)
 {

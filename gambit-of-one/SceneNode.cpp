@@ -1,9 +1,6 @@
-#include "SceneNode.h"
-#include "Command.h"
-#ifndef NDEBUG
-#include <assert.h>
-#endif
+#include "Headers/SceneNode.h"
 
+// public
 SceneNode::SceneNode(Category::Type category)
 	: mChildren()
 	, mParent(nullptr)
@@ -27,57 +24,15 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 	return result;
 }
 
-void SceneNode::draw(sf::RenderTarget& target,
-	sf::RenderStates states) const
-{
-	states.transform *= getTransform();
-
-	drawCurrent(target, states);
-	drawChildren(target, states);
-
-}
-
-void SceneNode::drawCurrent(sf::RenderTarget& target,
-	sf::RenderStates states) const {}
-
-void SceneNode::drawChildren(sf::RenderTarget& target,
-	sf::RenderStates states) const
-{
-	for (const Ptr& child : mChildren)
-	{
-		child->draw(target, states);
-	}
-}
-
-void SceneNode::drawBoundingRect(sf::RenderTarget& target,
-	sf::RenderStates states) const
-{
-	sf::FloatRect rect = getBoundingRect();
-
-	sf::RectangleShape shape;
-	shape.setPosition(sf::Vector2f(rect.left, rect.top));
-	shape.setSize(sf::Vector2f(rect.width, rect.height));
-	shape.setFillColor(sf::Color::Transparent);
-	shape.setOutlineColor(sf::Color::Green);
-	shape.setOutlineThickness(1.f);
-
-	target.draw(shape);
-}
-
 void SceneNode::update(sf::Time dt, CommandQueue& commands)
 {
 	updateCurrent(dt, commands);
 	updateChildren(dt, commands);
 }
 
-void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands) {}
-
-void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
+sf::Vector2f SceneNode::getWorldPosition() const
 {
-	for (Ptr& child : mChildren)
-	{
-		child->update(dt, commands);
-	}
+	return getWorldTransform() * sf::Vector2f();
 }
 
 sf::Transform SceneNode::getWorldTransform() const
@@ -92,19 +47,9 @@ sf::Transform SceneNode::getWorldTransform() const
 	return transform;
 }
 
-sf::Vector2f SceneNode::getWorldPosition() const
-{
-	return getWorldTransform() * sf::Vector2f();
-}
-
-unsigned int SceneNode::getCategory() const
-{
-	return Category::Scene;
-}
-
 void SceneNode::onCommand(const struct Command& command, sf::Time dt)
 {
-	if (command.category & getCategory()) 
+	if (command.category & getCategory())
 	{
 		command.action(*this, dt);
 	}
@@ -115,10 +60,15 @@ void SceneNode::onCommand(const struct Command& command, sf::Time dt)
 	}
 }
 
+unsigned int SceneNode::getCategory() const
+{
+	return mDefaultCategory;
+}
+
 void SceneNode::checkSceneCollision(SceneNode& sceneGraph,
 	std::set<Pair>& collisionPairs)
 {
-	checkNodeCollision(sceneGraph);
+	checkNodeCollision(sceneGraph, collisionPairs);
 
 	for (Ptr& child : mChildren)
 	{
@@ -164,4 +114,63 @@ bool SceneNode::isMarkedForRemoval() const
 bool SceneNode::isDestroyed() const
 {
 	return false;
+}
+
+// private
+void SceneNode::draw(sf::RenderTarget& target,
+	sf::RenderStates states) const
+{
+	states.transform *= getTransform();
+
+	drawCurrent(target, states);
+	drawChildren(target, states);
+
+}
+
+void SceneNode::drawCurrent(sf::RenderTarget& target,
+	sf::RenderStates states) const {}
+
+void SceneNode::drawChildren(sf::RenderTarget& target,
+	sf::RenderStates states) const
+{
+	for (const Ptr& child : mChildren)
+	{
+		child->draw(target, states);
+	}
+}
+
+void SceneNode::drawBoundingRect(sf::RenderTarget& target,
+	sf::RenderStates states) const
+{
+	sf::FloatRect rect = getBoundingRect();
+
+	sf::RectangleShape shape;
+	shape.setPosition(sf::Vector2f(rect.left, rect.top));
+	shape.setSize(sf::Vector2f(rect.width, rect.height));
+	shape.setFillColor(sf::Color::Transparent);
+	shape.setOutlineColor(sf::Color::Green);
+	shape.setOutlineThickness(1.f);
+
+	target.draw(shape);
+}
+
+void SceneNode::updateCurrent(sf::Time dt, CommandQueue& commands) {}
+
+void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
+{
+	for (Ptr& child : mChildren)
+	{
+		child->update(dt, commands);
+	}
+}
+
+// SceneNode-specific functions
+bool collision(const SceneNode& lhs, const SceneNode& rhs)
+{
+	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
+}
+
+float distance(const SceneNode& e1, const SceneNode& e2)
+{
+	return length(e1.getWorldPosition() - e2.getWorldPosition());
 }

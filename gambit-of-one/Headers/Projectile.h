@@ -1,16 +1,36 @@
+/*
+Projectile.h
+
+Date Last Updated: June 21, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Updates:
+- June 20, 2015:
+	- Moved to "Headers" folder
+	- Opted to not use most of "facilities" header files anymore
+- June 25, 2015:
+	- Implemented methods that were not implemented previously
+*/
+
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-#include "SFML_facilities.h"
-#include "ResourceHolder.hpp"
-#include "DataTables.hpp"
 #include "CommandQueue.h"
+#include "DataTables.hpp"
 #include "Entity.h"
+#include "ResourceHolder.hpp"
+#include "SFML_facilities.h"
+#include "UtilityFunctions.hpp"
 
-namespace
-{
-	const std::vector<ProjectileData> ProjectileTable = initializeProjectileData();
-}
+#include <cmath>
+#include <assert.h>
+#include <vector>
+
+struct ProjectileData;
 
 class Projectile : public Entity
 {

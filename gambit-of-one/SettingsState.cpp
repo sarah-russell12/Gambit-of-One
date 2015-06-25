@@ -1,4 +1,4 @@
-#include "SettingsState.h"
+#include "Headers/SettingsState.h"
 
 SettingsState::SettingsState(StateStack& stack, Context context)
 	: State(stack, context)
@@ -50,7 +50,7 @@ void SettingsState::updateLabels()
 	{
 		sf::Keyboard::Key key =
 			player.getAssignedKey(static_cast<Player::Action>(i));
-		mBindingLabels[i]->setText(std::to_string(key));
+		mBindingLabels[i]->setText(toString(key));
 	}
 }
 

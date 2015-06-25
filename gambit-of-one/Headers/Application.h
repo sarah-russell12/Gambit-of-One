@@ -22,11 +22,14 @@ Updates:
 #include "GameOverState.h"
 #include "MenuState.h"
 #include "PauseState.h"
+#include "Player.h"
 #include "ResourceHolder.hpp"
 #include "SettingsState.h"
 #include "SFML_facilities.h"
+#include "State.h"
 #include "StateStack.hpp"
 #include "TitleState.h"
+#include "UtilityFunctions.hpp"
 
 
 

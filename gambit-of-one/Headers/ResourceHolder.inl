@@ -1,7 +1,3 @@
-#include "ResourceHolder.hpp"
-#define NDEBUG
-#include <assert.h>
-
 template <typename Resource, typename Identifier>
 void ResourceHolder<Resource, Identifier>::load(Identifier id,
 	const std::string& filename)

@@ -1,4 +1,6 @@
-#include "World.h"
+#include "Headers/World.h"
+
+// public
 
 World::World(sf::RenderWindow& window, FontHolder& fonts)
 	: mWindow(window)
@@ -27,56 +29,6 @@ World::World(sf::RenderWindow& window, FontHolder& fonts)
 	loadTextures();
 	buildScene();
 	mWorldView.setCenter(mSpawnPosition);
-}
-
-void World::loadTextures()
-{
-	mTextures = TextureHolder();
-	mTextures.load(Textures::HeroFront, "Media/Textures/HeroFront.png");
-	mTextures.load(Textures::Rat, "Media/Textures/Rat.png");
-	mTextures.load(Textures::DirtRoad, "Media/Textures/DirtRoadHorizontal.png");
-	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
-	mTextures.load(Textures::HealthPotion, "Media/Textures/Potion.png");
-	mTextures.load(Textures::Quiver, "Media/Textures/Quiver.png");
-}
-
-void World::buildScene()
-{
-	//setting up the graph
-	for (std::size_t i = 0; i < LayerCount; ++i)
-	{
-		SceneNode::Ptr layer(new SceneNode());
-		mSceneLayers[i] = layer.get();
-
-		mSceneGraph.attachChild(std::move(layer));
-	}
-
-	//setting up the tiled background
-	sf::Texture& texture = mTextures.get(Textures::DirtRoad);
-	sf::IntRect textureRect(mWorldBounds);
-	texture.setRepeated(true);
-
-	std::unique_ptr<SpriteNode> backgroundSprite(
-		new SpriteNode(texture, textureRect));
-	backgroundSprite->setPosition(
-		mWorldBounds.left,
-		mWorldBounds.top);
-	mSceneLayers[Background]->attachChild(
-		std::move(backgroundSprite));
-
-	//setting up the lead aircraft Eagle
-	std::unique_ptr<Creature> hero(
-		new Creature(Creature::Hero, mTextures, mFonts));
-	mPlayerAvatar = hero.get();
-	mPlayerAvatar->setPosition(mSpawnPosition);
-	mPlayerAvatar->setVelocity(0.f, 0.f);
-	mSceneLayers[Ground]->attachChild(std::move(hero));
-}
-
-void World::draw()
-{
-	mWindow.setView(mWorldView);
-	mWindow.draw(mSceneGraph);
 }
 
 void World::update(sf::Time dt)
@@ -115,23 +67,73 @@ void World::update(sf::Time dt)
 	mPlayerAvatar->setPosition(position);
 }
 
-CommandQueue World::getCommandQueue()
+void World::draw()
+{
+	mWindow.setView(mWorldView);
+	mWindow.draw(mSceneGraph);
+}
+
+CommandQueue& World::getCommandQueue()
 {
 	return mCommandQueue;
 }
 
-sf::FloatRect World::getViewBounds() const
+bool World::hasAlivePlayer() const
 {
-	return sf::FloatRect(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
+	return !mPlayerAvatar->isMarkedForRemoval();
 }
 
-sf::FloatRect World::getBattlefieldBounds() const
+bool World::allEnemiesDefeated() const
 {
-	sf::FloatRect bounds = getViewBounds();
-	bounds.top -= 100.f;
-	bounds.height += 100.f;
 
-	return bounds;
+}
+
+
+// private
+
+void World::loadTextures()
+{
+	mTextures = TextureHolder();
+	mTextures.load(Textures::HeroFront, "Media/Textures/HeroFront.png");
+	mTextures.load(Textures::Rat, "Media/Textures/Rat.png");
+	mTextures.load(Textures::DirtRoad, "Media/Textures/DirtRoadHorizontal.png");
+	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
+	mTextures.load(Textures::HealthPotion, "Media/Textures/Potion.png");
+	mTextures.load(Textures::Quiver, "Media/Textures/Quiver.png");
+}
+
+
+void World::buildScene()
+{
+	//setting up the graph
+	for (std::size_t i = 0; i < LayerCount; ++i)
+	{
+		SceneNode::Ptr layer(new SceneNode());
+		mSceneLayers[i] = layer.get();
+
+		mSceneGraph.attachChild(std::move(layer));
+	}
+
+	//setting up the tiled background
+	sf::Texture& texture = mTextures.get(Textures::DirtRoad);
+	sf::IntRect textureRect(mWorldBounds);
+	texture.setRepeated(true);
+
+	std::unique_ptr<SpriteNode> backgroundSprite(
+		new SpriteNode(texture, textureRect));
+	backgroundSprite->setPosition(
+		mWorldBounds.left,
+		mWorldBounds.top);
+	mSceneLayers[Background]->attachChild(
+		std::move(backgroundSprite));
+
+	//setting up the lead aircraft Eagle
+	std::unique_ptr<Creature> hero(
+		new Creature(Creature::Hero, mTextures, mFonts));
+	mPlayerAvatar = hero.get();
+	mPlayerAvatar->setPosition(mSpawnPosition);
+	mPlayerAvatar->setVelocity(0.f, 0.f);
+	mSceneLayers[Ground]->attachChild(std::move(hero));
 }
 
 void World::spawnEnemies()
@@ -175,6 +177,20 @@ void World::addEnemies()
 	});
 }
 
+sf::FloatRect World::getViewBounds() const
+{
+	return sf::FloatRect(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
+}
+
+sf::FloatRect World::getBattlefieldBounds() const
+{
+	sf::FloatRect bounds = getViewBounds();
+	bounds.top -= 100.f;
+	bounds.height += 100.f;
+
+	return bounds;
+}
+
 void World::guideEnemies()
 {
 	Command enemyCollector;
@@ -201,6 +217,29 @@ void World::guideEnemies()
 	mCommandQueue.push(beastGuider);
 
 	mActiveEnemies.clear();
+}
+
+void World::adaptPlayerPosition()
+{
+	sf::FloatRect viewBounds = getViewBounds();
+	const float borderDistance = 40.f;
+
+	sf::Vector2f position = mPlayerAvatar->getPosition();
+	position.x = std::max(position.x, viewBounds.left + borderDistance);
+	position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
+	position.y = std::max(position.y, viewBounds.top + borderDistance);
+	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+	mPlayerAvatar->setPosition(position);
+}
+
+void World::adaptPlayerVelocity()
+{
+	sf::Vector2f velocity = mPlayerAvatar->getVelocity();
+
+	if (velocity.x != 0.f && velocity.y != 0.f)
+	{
+		mPlayerAvatar->setVelocity(velocity / std::sqrt(2.f));
+	}
 }
 
 bool matchesCategories(SceneNode::Pair& colliders,

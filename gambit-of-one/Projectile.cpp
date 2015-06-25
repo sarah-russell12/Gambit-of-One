@@ -1,14 +1,16 @@
-#include "Projectile.h"
-#include "Entities_Facilities.h"
-#include "Centering.h"
+#include "Headers/Projectile.h"
 
-#include <cmath>
-#include <assert.h>
+namespace
+{
+	const std::vector<ProjectileData> ProjectileTable = initializeProjectileData();
+}
 
+// public
 Projectile::Projectile(Type type, const TextureHolder& textures)
 	: Entity(1)
 	, mType(type)
 	, mSprite(textures.get(ProjectileTable[type].texture))
+	, mTargetDirection()
 {
 	centerOrigin(mSprite);
 }
@@ -24,6 +26,34 @@ void Projectile::guideTowards(sf::Vector2f position)
 	mTargetDirection = unitVector(position - getWorldPosition());
 }
 
+unsigned int Projectile::getCategory() const
+{
+	if (mType == EnemyArrow)
+	{
+		return Category::EnemyProjectile;
+	}
+	else
+	{
+		return Category::AlliedProjectile;
+	}
+}
+
+sf::FloatRect Projectile::getBoundingRect() const
+{
+	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+}
+
+float Projectile::getMaxSpeed() const
+{
+	return ProjectileTable[mType].speed;
+}
+
+int Projectile::getDamage() const
+{
+	return ProjectileTable[mType].damage;
+}
+
+// private
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	if (isGuided())
@@ -40,5 +70,10 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 		setVelocity(newVelocity);
 	}
 	Entity::updateCurrent(dt, commands);
+}
+
+void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(mSprite, states);
 }
 

@@ -1,5 +1,16 @@
-#include "State.h"
-#include "StateStack.hpp"
+#include "Headers/State.h"
+#include "Headers/StateStack.hpp"
+
+State::Context::Context(sf::RenderWindow& window, TextureHolder& textures,
+	FontHolder& fonts, Player& player)
+	: window(&window)
+	, textures(&textures)
+	, fonts(&fonts)
+	, player(&player) {}
+
+State::State(StateStack& stack, Context context)
+	: mStack(&stack)
+	, mContext(context) {}
 
 void State::requestStackPush(States::ID stateID)
 {

@@ -1,4 +1,4 @@
-#include "TitleState.h"
+#include "Headers/TitleState.h"
 
 TitleState::TitleState(StateStack& stack, Context context) 
 	: State(stack, context)
@@ -13,14 +13,15 @@ TitleState::TitleState(StateStack& stack, Context context)
 	mText.setPosition(sf::Vector2f(context.window->getSize() / 2u));
 }
 
-bool TitleState::handleEvent(const sf::Event& event)
+void TitleState::draw()
 {
-	if (event.type == sf::Event::KeyPressed)
+	sf::RenderWindow window = *getContext().window;
+	window.draw(mBackgroundSprite);
+	
+	if (mShowText)
 	{
-		requestStackPop();
-		requestStackPush(States::Menu);
+		window.draw(mText);
 	}
-	return true;
 }
 
 bool TitleState::update(sf::Time dt)
@@ -33,3 +34,14 @@ bool TitleState::update(sf::Time dt)
 	}
 	return true;
 }
+
+bool TitleState::handleEvent(const sf::Event& event)
+{
+	if (event.type == sf::Event::KeyPressed)
+	{
+		requestStackPop();
+		requestStackPush(States::Menu);
+	}
+	return true;
+}
+

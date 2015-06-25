@@ -23,6 +23,8 @@ Updates:
 #include "State.h"
 #include "UtilityFunctions.hpp"
 
+#include <assert.h>
+
 
 class PauseState : public State
 {
