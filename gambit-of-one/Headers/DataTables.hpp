@@ -17,8 +17,6 @@ Updates:
 #ifndef DATATABLES_HPP
 #define DATATABLES_HPP
 
-
-#include "Creature.hpp"
 #include "Enumerations.hpp"
 #include "Pickup.h"
 #include "Projectile.h"

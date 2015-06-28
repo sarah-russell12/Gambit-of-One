@@ -1,4 +1,5 @@
 #include "Headers/DataTables.hpp"
+#include "Headers/Creature.hpp"
 
 
 // For std::bind() placeholders _1, _2, ...

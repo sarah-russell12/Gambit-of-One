@@ -37,7 +37,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
 	else
 		mGameOverText.setString("You Win!");
 
-	mGameOverText.setCharacterSize(50.f);
+	mGameOverText.setCharacterSize(50);
 	centerOrigin(mGameOverText);
 	mGameOverText.setPosition(100, 225);
 }

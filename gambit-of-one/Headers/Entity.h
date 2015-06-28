@@ -17,11 +17,11 @@ Updates:
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "CommandQueue.h"
-#include "SceneNode.h"
-#include "SFML_facilities.h"
 
-class SceneNode;
+#include "SceneNode.h"
+
+#include <cassert>
+#include <assert.h>
 
 class Entity : public SceneNode
 {
@@ -39,6 +39,8 @@ public:
 	void			repair(int points);
 	void			damage(int points);
 	void			destroy();
+
+protected:
 	virtual void	updateCurrent(sf::Time dt, CommandQueue& commands);
 
 private:

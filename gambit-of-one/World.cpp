@@ -85,7 +85,7 @@ bool World::hasAlivePlayer() const
 
 bool World::allEnemiesDefeated() const
 {
-
+	return mActiveEnemies.empty();
 }
 
 
@@ -127,7 +127,6 @@ void World::buildScene()
 	mSceneLayers[Background]->attachChild(
 		std::move(backgroundSprite));
 
-	//setting up the lead aircraft Eagle
 	std::unique_ptr<Creature> hero(
 		new Creature(Creature::Hero, mTextures, mFonts));
 	mPlayerAvatar = hero.get();
