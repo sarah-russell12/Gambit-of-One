@@ -20,7 +20,6 @@ Updates:
 #define PROJECTILE_H
 
 #include "CommandQueue.h"
-#include "DataTables.hpp"
 #include "Entity.h"
 #include "ResourceHolder.hpp"
 #include "SFML_facilities.h"
@@ -29,8 +28,6 @@ Updates:
 #include <cmath>
 #include <assert.h>
 #include <vector>
-
-struct ProjectileData;
 
 class Projectile : public Entity
 {
@@ -64,5 +61,7 @@ private:
 	sf::Sprite					mSprite;
 	sf::Vector2f				mTargetDirection;
 };
+
+
 
 #endif //PROJECTILE_H

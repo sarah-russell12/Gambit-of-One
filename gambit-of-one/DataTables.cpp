@@ -56,3 +56,4 @@ std::vector<PickupData> initializePickupData()
 
 	return data;
 }
+

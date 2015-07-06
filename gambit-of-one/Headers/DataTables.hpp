@@ -17,11 +17,10 @@ Updates:
 #ifndef DATATABLES_HPP
 #define DATATABLES_HPP
 
-
+#include "Projectile.h"
 #include "Creature.hpp"
 #include "Enumerations.hpp"
 #include "Pickup.h"
-#include "Projectile.h"
 #include "SFML_facilities.h"
 
 #include <vector>
@@ -52,12 +51,7 @@ struct CreatureData
 	std::vector<Direction>			directions;
 };
 
-struct ProjectileData
-{
-	int								damage;
-	float							speed;
-	Textures::ID					texture;
-};
+
 
 struct PickupData
 {
@@ -65,8 +59,14 @@ struct PickupData
 	Textures::ID					texture;
 };
 
+struct ProjectileData
+{
+	int                                damage;
+	float                            speed;
+	Textures::ID                    texture;
+};
 
-std::vector<CreatureData>	initializeAircraftData();
+std::vector<CreatureData>	initializeCreatureData();
 std::vector<ProjectileData>	initializeProjectileData();
 std::vector<PickupData>		initializePickupData();
 

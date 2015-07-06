@@ -1,4 +1,6 @@
+#include "UtilityFunctions.cpp"
 #include "Headers/SceneNode.h"
+#include "Headers/Command.hpp"
 
 // public
 SceneNode::SceneNode(Category::Type category)

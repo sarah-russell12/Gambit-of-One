@@ -22,7 +22,7 @@ bool GameState::update(sf::Time dt)
 		mPlayer.setStatus(Player::Failure);
 		requestStackPush(States::GameOver);
 	}
-	else if (mWorld.hasPlayerDefeatedEnemies())
+	else if (mWorld.allEnemiesDefeated())
 	{
 		mPlayer.setStatus(Player::Success);
 		requestStackPush(States::GameOver);
