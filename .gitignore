@@ -218,3 +218,7 @@ FakesAssemblies/
 *.la
 *.a
 *.lib
+
+# Visual Studio Project Properties
+*.vcxproj
+*.vcxproj.filters
