@@ -21,9 +21,9 @@ Updates:
 #ifndef SCENE_NODE_H
 #define SCENE_NODE_H
 
-
-#include "SFML_facilities.h"
 #include "Enumerations.hpp"
+#include "SFML_facilities.h"
+#include "UtilityFunctions.hpp"
 
 #include <vector>
 #include <set>

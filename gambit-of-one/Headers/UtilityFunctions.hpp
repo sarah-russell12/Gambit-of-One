@@ -22,8 +22,6 @@ Updates:
 #ifndef UTILITY_FUNCTIONS_HPP
 #define UTILITY_FUNCTIONS_HPP
 
-#include "Entity.h"
-#include "SceneNode.h"
 #include "SFML_facilities.h"
 
 

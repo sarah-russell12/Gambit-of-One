@@ -1,4 +1,4 @@
-#include "Headers/Projectile.h"
+#include "DataTables.cpp"
 
 namespace
 {
@@ -76,4 +76,5 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 {
 	target.draw(mSprite, states);
 }
+
 
