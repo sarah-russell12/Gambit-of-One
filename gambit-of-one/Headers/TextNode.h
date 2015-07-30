@@ -1,40 +1,38 @@
 /*
 TextNode.h
 
-Date Last Updated: June 21, 2015
+Sarah Russell
 
-This header file was made during the Spring 2015 SFML Game Development
-Tutorial at New College of Florida.  This code follows the code from the
-textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
-Hansson, and Jan Haller.
+Date Last Updated: July 25, 2015
+
+The TextNode is a wrapper for sf::Text that fits into the SceneGraph structure
+created in Chapter 3.
 
 Updates:
-- June 20, 2015:
-	- Moved to "Headers" folder
-	- Opted to not use most of "facilities" header files anymore
+- July 25, 2015: Declared TextNode
 */
 
 #ifndef TEXT_NODE_H
 #define TEXT_NODE_H
 
-#include "ResourceHolder.hpp"
-#include "SceneNode.h"
-#include "SFML_facilities.h"
-#include "UtilityFunctions.hpp"
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 #include <string>
+
+#include "Identifiers.hpp"
+#include "ResourceHolder.hpp"
+#include "SceneNode.h"
 
 class TextNode : public SceneNode
 {
 public:
-	explicit		TextNode(const FontHolder& fonts, 
-								const std::string& text);
-
+	explicit		TextNode(const FontHolder& fonts, const std::string& text);
 	void			setString(const std::string& text);
 
 private:
-	virtual void	drawCurrent(sf::RenderTarget& target, 
-								sf::RenderStates states);
+	virtual void	drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
 	sf::Text		mText;

@@ -1,29 +1,31 @@
 /*
 Pickup.h
 
-Date Last Updated: June 21, 2015
+Sarah Russell
 
-This header file was made during the Spring 2015 SFML Game Development
-Tutorial at New College of Florida.  This code follows the code from the
-textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
-Hansson, and Jan Haller.
+Date Last Updated: July 27, 2015
+
+Pickups are another important part of gameplay in the genre of game we are
+working with.  Without alterations or improvements to the player's stats, the
+gameplay can be a very unsatisfying experience.  This is where pickups come
+into play.  Pickups are entities that the player can obtain from enemy units
+in order to alter their stats and, in effect, alter strategies.
 
 Updates:
-- June 20, 2015:
-	- Moved to "Headers" folder
-	- Opted to not use most of "facilities" header files anymore
+- July 27, 2015: Declared Pickup and defined its methods
 */
 
 #ifndef PICKUP_H
 #define PICKUP_H
 
-#include "Entity.h"
-#include "DataTables.hpp"
-#include "ResourceHolder.hpp"
-#include "SFML_facilities.h"
-#include "UtilityFunctions.hpp"
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
-#include <vector>
+#include "Command.hpp"
+#include "Entity.h"
+#include "Enumerations.hpp"
+#include "ResourceHolder.hpp"
 
 class Creature;
 
@@ -38,20 +40,19 @@ public:
 	};
 
 public:
-	Pickup(Type type, const TextureHolder& textures);
+							Pickup(Type type, const TextureHolder& textures);
 
-	virtual unsigned int		getCategory() const;
-	virtual sf::FloatRect		getBoundingRect() const;
+	virtual unsigned int	getCategory() const;
+	virtual sf::FloatRect	getBoundingRect() const;
 
-	void						apply(Creature& player) const;
+	void					apply(Creature& player) const;
 
 protected:
-	virtual void		drawCurrent(sf::RenderTarget& target,
-						sf::RenderStates states) const;
+	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
-	Type				mType;
-	sf::Sprite			mSprite;
+	Type					mType;
+	sf::Sprite				mSprite;
 };
 
 #endif //PICKUP_H

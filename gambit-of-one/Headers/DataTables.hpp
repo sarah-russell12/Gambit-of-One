@@ -37,17 +37,26 @@ struct Direction
 	{
 	}
 
-	float angle;
-	float distance;
+	float			angle;
+	float			distance;
+	float			sign;
 };
 
 struct CreatureData
 {
+	// hitpoints:		the ammount of damage the creature can take before being
+	//					destroyed
+	// speed:			how fast the creature travels accross the screen, in pixels
+	// attackDamage:	If a creature can physically attack, they will have a 
 	int								hitpoints;
 	float							speed;
-	int								damage;
-	Textures::ID					texture;
+	int								attackDamage;
+	float							aggroDistance;
+	Textures::ID					normalTexture;
+	Textures::ID					attackTexture;
+	Textures::ID					firingTexture;
 	sf::Time						fireInterval;
+	sf::Time						attackInterval;
 	std::vector<Direction>			directions;
 };
 

@@ -172,7 +172,7 @@ void World::addEnemies()
 	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(),
 		[] (SpawnPoint lhs, SpawnPoint rhs)
 	{
-		return lhs.y < rhs.y;
+		return lhs.x < rhs.x;
 	});
 }
 
@@ -204,7 +204,7 @@ void World::guideEnemies()
 	Command beastGuider;
 	beastGuider.category = Category::Enemy;
 	beastGuider.action = derivedAction<Creature>(
-		[this](Creature& beast, sf::Time)
+		[this] (Creature& beast, sf::Time)
 	{
 		if (beast.isGuided())
 		{

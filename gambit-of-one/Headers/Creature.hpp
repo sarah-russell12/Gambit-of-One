@@ -1,7 +1,7 @@
 /*
 Creature.hpp
 
-Date Last Updated: June 20, 2015
+Date Last Updated: June 30, 2015
 
 This header file was made during the Spring 2015 SFML Game Development
 Tutorial at New College of Florida.  This code follows the code from the
@@ -12,6 +12,8 @@ Updates:
 - June 20, 2015:
 	- Moved to "Headers" folder
 	- Opted to not use "facilities" header files anymore
+- June 30, 2015: Built a new Creature class that better follows the
+				 structure of the textbook code.
 */
 
 #ifndef CREATURE_HPP
@@ -38,76 +40,86 @@ public:
 	enum Type
 	{
 		Hero,
+		Guide,
 		Rat,
-		Thief,
 		Archer,
+		Theif,
 		TypeCount,
 	};
-
 
 public:
 	Creature(Type type, const TextureHolder& textures, const FontHolder& fonts);
 
 	virtual unsigned int	getCategory() const;
 	virtual sf::FloatRect	getBoundingRect() const;
-	virtual bool 			isMarkedForRemoval() const;
-	int						getDamage();
+	virtual bool			isMarkedForRemoval() const;
 	bool					isAllied() const;
-	bool					isRanged() const;
 	bool					isGuided() const;
-	bool					isAttacking();
+	bool					isRanged() const;
+	bool					isAttacking() const;
 	float					getMaxSpeed() const;
 
-	void					increaseFireRate();
-	void					increaseSpread();
 	void					collectArrows(unsigned int count);
+
+	void					attack();
+	void					fireArrow();
 
 	void					guideTowards(sf::Vector2f position);
 
-	void 					attack();
-	void					fireArrow();
-
-
+//	For later: See if we can make the direction that the ranged creature is
+//	firing depend on the position of the player
+//	void					checkRotation(sf::Vector2f positon);
 
 private:
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-	virtual void 			updateCurrent(sf::Time dt, CommandQueue& commands);
+	virtual void			updateCurrent(sf::Time dt, CommandQueue& commands);
+
 	void					updateMovementPattern(sf::Time dt);
-	
-	void					checkPickupDrop(CommandQueue& commands);
+
+	void					checkAttacks(sf::Time dt, CommandQueue& commands);
 	void					checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
+	void					checkPickupDrop(CommandQueue& commands);
+	void					checkAggro(sf::Vector2f position);
 
 	void					createArrows(SceneNode& node, const TextureHolder& textures) const;
-	void					createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const;
 	void					createPickup(SceneNode& node, const TextureHolder& textures) const;
+	void					createProjectile(SceneNode& node, Projectile::Type type,
+									float xOffset, float yOffset,
+									const TextureHolder& textures) const;
 
 	void					updateTexts();
 
-	
-	
-
-
 private:
-	Type					mType;
-	sf::Sprite				mSprite;
-	Command 				mAttackCommand;
-	Command					mFireCommand;
-	sf::Time				mFireCountdown;
-	bool 					mIsAttacking;
-	bool					mIsFiring;
-	bool 					mIsMarkedForRemoval;
+	Type				mType;
+	sf::Sprite			mSprite;
 
-	bool					mIsGuidedEnemy;
-	sf::Vector2f			mTargetDirection;
+	TextNode*			mHealthDisplay;
+	TextNode*			mArrowDisplay;
 
-	int						mDamage;
-	int						mArrowCount;
+	sf::Time			mAttackCountdown;
+	sf::Time			mFireCountdown;
 
-	Command 				mDropPickupCommand;
-	float					mTravelledDistance;
-	std::size_t				mDirectionIndex;
-	TextNode*				mHealthDisplay;
-	TextNode*				mArrowDisplay;
+	Command				mFireCommand;
+	Command				mDropPickupCommand;
+
+	bool				mIsFiring;
+	bool				mIsAttacking;
+	bool				mIsMarkedForRemoval;
+
+	sf::Texture			mNormalTexture;
+	sf::Texture			mAttackTexture;
+	sf::Texture			mFiringTexture;
+
+	int					mArrowAmmo;
+
+	float				mTravelledDistance;
+	std::size_t			mDirectionIndex;
+
+	// For guided creatures, aggro (short for 'aggrovation', or the act of a
+	// non-player entity wanting to attack a player entity) is set off when the
+	// player is in within the aggro distance.
+	sf::Vector2f		mTargetDirection;
+	bool				mIsAggroed;
 };
 
 #endif // CREATURE_HPP

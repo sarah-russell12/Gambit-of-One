@@ -1,33 +1,31 @@
 /*
 Projectile.h
 
-Date Last Updated: June 21, 2015
+Sarah Russell
 
-This header file was made during the Spring 2015 SFML Game Development
-Tutorial at New College of Florida.  This code follows the code from the
-textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
-Hansson, and Jan Haller.
+Date Last Updated: July 26, 2015
+
+Pojectiles are key Entities in the implementation of this game's mechanics.
+Since this game is a jet pilot shoot-em-up, the projectiles are the shooting
+implements and are essential for combat.
 
 Updates:
-- June 20, 2015:
-	- Moved to "Headers" folder
-	- Opted to not use most of "facilities" header files anymore
-- June 25, 2015:
-	- Implemented methods that were not implemented previously
+- July 26, 2015: Declared Projectile
 */
 
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+
+#include <cassert>
+
 #include "CommandQueue.h"
 #include "Entity.h"
+#include "Enumerations.hpp"
 #include "ResourceHolder.hpp"
-#include "SFML_facilities.h"
-#include "UtilityFunctions.hpp"
-
-#include <cmath>
-#include <assert.h>
-#include <vector>
 
 class Projectile : public Entity
 {
@@ -40,10 +38,10 @@ public:
 	};
 
 public:
-	Projectile(Type type, const TextureHolder& textures);
+						Projectile(Type type, const TextureHolder& textures);
 
-	void			guideTowards(sf::Vector2f position);
-	bool			isGuided() const;
+	void				guideTowards(sf::Vector2f position);
+	bool				isGuided() const;
 
 	virtual unsigned int		getCategory() const;
 	virtual sf::FloatRect		getBoundingRect() const;
@@ -51,17 +49,13 @@ public:
 	int							getDamage() const;
 
 private:
-	virtual void				updateCurrent(sf::Time dt, 
-									CommandQueue& commands);
-	virtual void				drawCurrent(sf::RenderTarget& target,
-									sf::RenderStates states) const;
+	virtual void		updateCurrent(sf::Time dt, CommandQueue& commands);
+	virtual void		drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
-	Type						mType;
-	sf::Sprite					mSprite;
-	sf::Vector2f				mTargetDirection;
+	Type				mType;
+	sf::Sprite			mSprite;
+	sf::Vector2f		mTargetDirection;
 };
-
-
 
 #endif //PROJECTILE_H

@@ -7,27 +7,35 @@ namespace
 	const std::vector<CreatureData> Table = initializeCreatureData();
 }
 
+// public methods
+
 Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	: Entity(Table[type].hitpoints)
 	, mType(type)
-	, mDamage(Table[type].damage)
-	, mSprite(textures.get(Table[type].texture))
-	, mFireCommand()
-	, mFireCountdown(sf::Time::Zero)
-	, mIsAttacking(false)
-	, mIsMarkedForRemoval(false)
-	, mDropPickupCommand()
-	, mTravelledDistance(0.f)
-	, mDirectionIndex(0)
 	, mHealthDisplay(nullptr)
 	, mArrowDisplay(nullptr)
+	, mAttackCountdown(Table[type].attackInterval)
+	, mFireCountdown(Table[type].fireInterval)
+	, mFireCommand()
+	, mDropPickupCommand()
+	, mIsFiring(false)
+	, mIsAttacking(false)
+	, mIsMarkedForRemoval(false)
+	, mNormalTexture(textures.get(Table[type].normalTexture))
+	, mAttackTexture(textures.get(Table[type].attackTexture))
+	, mFiringTexture(textures.get(Table[type].firingTexture))
+	, mArrowAmmo(1)
+	, mTravelledDistance(0)
+	, mDirectionIndex(0)
+	, mIsAggroed(false)
 {
+	mSprite.setTexture(mNormalTexture);
 	centerOrigin(mSprite);
 
 	mFireCommand.category = Category::Scene;
 	mFireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
-		createArrows(node, textures);
+			createArrows(node, textures);
 	};
 
 	mDropPickupCommand.category = Category::Scene;
@@ -40,10 +48,6 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 	mHealthDisplay = healthDisplay.get();
 	attachChild(std::move(healthDisplay));
 
-	std::unique_ptr<TextNode> arrowDisplay(new TextNode(fonts, ""));
-	mHealthDisplay = arrowDisplay.get();
-	attachChild(std::move(arrowDisplay));
-
 	if (getCategory() == Category::Player)
 	{
 		std::unique_ptr<TextNode> arrowDisplay(new TextNode(fonts, ""));
@@ -54,44 +58,12 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 	updateTexts();
 }
 
-void Creature::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(mSprite, states);
-}
-
-void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
-{
-	// Entity has been destroyed: Possibly drop pickup, mark for removal
-	if (isDestroyed())
-	{
-		checkPickupDrop(commands);
-
-		mIsMarkedForRemoval = true;
-		return;
-	}
-
-	// Check if bullets or missiles are fired
-	checkProjectileLaunch(dt, commands);
-
-	// Update enemy movement pattern; apply velocity
-	updateMovementPattern(dt);
-	Entity::updateCurrent(dt, commands);
-
-	// Update texts
-	updateTexts();
-}
-
 unsigned int Creature::getCategory() const
 {
 	if (isAllied())
 		return Category::Player;
 	else
 		return Category::Enemy;
-}
-
-int Creature::getDamage()
-{
-	return mDamage;
 }
 
 sf::FloatRect Creature::getBoundingRect() const
@@ -109,17 +81,17 @@ bool Creature::isAllied() const
 	return mType == Hero;
 }
 
-bool Creature::isRanged() const
-{
-	return (mType == Hero || mType == Archer);
-}
-
 bool Creature::isGuided() const
 {
-	return (mType == Rat);
+	return Table[mType].aggroDistance != 0.f;
 }
 
-bool Creature::isAttacking() 
+bool Creature::isRanged() const
+{
+	return Table[mType].fireInterval != sf::Time::Zero;
+}
+
+bool Creature::isAttacking() const
 {
 	return mIsAttacking;
 }
@@ -131,16 +103,65 @@ float Creature::getMaxSpeed() const
 
 void Creature::collectArrows(unsigned int count)
 {
-	mArrowCount += count;
+	mArrowAmmo += count;
+}
+
+void Creature::attack()
+{
+	if (isAllied() || !isRanged())
+	{
+		mIsAttacking = true;
+		mSprite.setTexture(mAttackTexture);
+		centerOrigin(mSprite);
+	}
 }
 
 void Creature::fireArrow()
 {
-	if (mArrowCount > 0)
+	if (isRanged())
 	{
 		mIsFiring = true;
-		--mArrowCount;
+		mSprite.setTexture(mFiringTexture);
+		centerOrigin(mSprite);
 	}
+}
+
+void Creature::guideTowards(sf::Vector2f position)
+{
+	assert(isGuided());
+	checkAggro(position);
+	mTargetDirection = unitVector(position - getWorldPosition());
+}
+
+
+// private methods
+
+void Creature::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(mSprite, states);
+}
+
+void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
+{
+	// Entity has been destroyed: Possibly drop pickup, mark for removal
+	if (isDestroyed())
+	{
+		checkPickupDrop(commands);
+
+		mIsMarkedForRemoval = true;
+		return;
+	}
+
+	// Check if there are ranged or melee attacks being done
+	checkAttacks(dt, commands);
+	checkProjectileLaunch(dt, commands);
+
+	// Update enemy movement pattern; apply velocity
+	updateMovementPattern(dt);
+	Entity::updateCurrent(dt, commands);
+
+	// Update texts
+	updateTexts();
 }
 
 void Creature::updateMovementPattern(sf::Time dt)
@@ -161,10 +182,12 @@ void Creature::updateMovementPattern(sf::Time dt)
 				mTravelledDistance = 0.f;
 			}
 
+			float sign = directions[mDirectionIndex].sign;
+
 			// Compute velocity from direction
 			float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
-			float vx = getMaxSpeed() * std::cos(radians);
-			float vy = getMaxSpeed() * std::sin(radians);
+			float vx = getMaxSpeed() * std::cos(radians) * sign;
+			float vy = getMaxSpeed() * std::sin(radians) * sign;
 
 			setVelocity(vx, vy);
 
@@ -173,29 +196,54 @@ void Creature::updateMovementPattern(sf::Time dt)
 	} 
 	else
 	{
-		const float approachRate = 200.f;
+		if (mIsAggroed)
+		{ 
+			const float approachRate = 200.f;
 
-		sf::Vector2f newVelocity = unitVector(approachRate
-			* dt.asSeconds() * mTargetDirection + getVelocity());
+			sf::Vector2f newVelocity = unitVector(approachRate
+				* dt.asSeconds() * mTargetDirection + getVelocity());
 
-		newVelocity *= getMaxSpeed();
-		float angle = std::atan2(newVelocity.y, newVelocity.x);
-
-		setRotation(toDegree(angle) + 90.f);
-		setVelocity(newVelocity);
+			newVelocity *= getMaxSpeed();
+			setVelocity(newVelocity);
+		}
 	}
-}
-
-void Creature::guideTowards(sf::Vector2f position)
-{
-	assert(mIsGuidedEnemy);
-	mTargetDirection = unitVector(position - getWorldPosition());
 }
 
 void Creature::checkPickupDrop(CommandQueue& commands)
 {
 	if (!isAllied() && randomInt(3) == 0)
 		commands.push(mDropPickupCommand);
+}
+
+void Creature::checkAggro(sf::Vector2f position)
+{
+	if (!isGuided())
+		return;
+	
+	sf::Vector2f thisPosition = getPosition();
+	if (length(thisPosition - position) < Table[mType].aggroDistance)
+		mIsAggroed = true;
+	else
+		mIsAggroed = false;
+}
+
+void Creature::checkAttacks(sf::Time dt, CommandQueue& commands)
+{
+	if (!isAllied())
+		attack();
+
+	if (mIsAttacking && mAttackCountdown <= sf::Time::Zero)
+	{
+		mAttackCountdown += Table[mType].attackInterval;
+		mIsAttacking = false;
+		mSprite.setTexture(mNormalTexture);
+		centerOrigin(mSprite);
+	}
+	else if (mAttackCountdown > sf::Time::Zero)
+	{
+		mAttackCountdown -= dt;
+		mIsAttacking = false;
+	}
 }
 
 void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
@@ -214,6 +262,8 @@ void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 		commands.push(mFireCommand);
 		mFireCountdown += Table[mType].fireInterval;
 		mIsFiring = false;
+		mSprite.setTexture(mNormalTexture);
+		centerOrigin(mSprite);
 	}
 	else if (mFireCountdown > sf::Time::Zero)
 	{
@@ -261,9 +311,9 @@ void Creature::updateTexts()
 
 	if (mArrowDisplay)
 	{
-		if (mArrowCount == 0)
+		if (mArrowAmmo == 0)
 			mArrowDisplay->setString("");
 		else
-			mArrowDisplay->setString("M: " + std::to_string(mArrowCount));
+			mArrowDisplay->setString("M: " + toString(mArrowAmmo));
 	}
 }

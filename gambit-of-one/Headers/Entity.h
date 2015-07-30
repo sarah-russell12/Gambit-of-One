@@ -1,51 +1,52 @@
 /*
 Entity.h
 
-Date Last Updated: June 20, 2015
+Sarah Russell
 
-This header file was made during the Spring 2015 SFML Game Development
-Tutorial at New College of Florida.  This code follows the code from the
-textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
-Hansson, and Jan Haller.
+Date Last Updated: July 25, 2015
+
+An Entity is an object within the gameworld that can or will be seen eventually
+by the player.  Entities can move, be still, and interact with other Entities.
 
 Updates:
-- June 20, 2015:
-	- Moved to "Headers" folder
-	- Opted to not use "facilities" header files anymore
+- July 20, 2015: Declared the Entity class
+- July 21, 2015: Added acceleration to functionality
+- July 25, 2015: Added vital methods and stats related to gameplay
 */
 
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include <SFML/Graphics.hpp>
 
+#include "CommandQueue.h"
 #include "SceneNode.h"
-
-#include <cassert>
-#include <assert.h>
 
 class Entity : public SceneNode
 {
 public:
-					Entity(int hitPoints);
+	explicit		Entity(int hitpoints);
 
-	void			setVelocity(sf::Vector2f velocity);
-	void			setVelocity(float vx, float vy);
-	void			accelerate(sf::Vector2f velocity);
-	void			accelerate(float vx, float vy);
-	sf::Vector2f	getVelocity() const;
-
-	int				getHitpoints() const;
-	virtual bool	isDestroyed() const;
 	void			repair(int points);
 	void			damage(int points);
 	void			destroy();
+
+	int				getHitpoints() const;
+	virtual bool	isDestroyed() const;
+
+	void			setVelocity(sf::Vector2f velocity);
+	void			setVelocity(float vx, float vy);
+	sf::Vector2f	getVelocity() const;
+
+	void			accelerate(sf::Vector2f velocity);
+	void			accelerate(float vx, float vy);
 
 protected:
 	virtual void	updateCurrent(sf::Time dt, CommandQueue& commands);
 
 private:
 	sf::Vector2f	mVelocity;
-	int				mHitPoints;
+	int				mHitpoints;
 };
 
 #endif //ENTITY_H
