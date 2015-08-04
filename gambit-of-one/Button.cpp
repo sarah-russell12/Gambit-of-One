@@ -1,11 +1,10 @@
 #include "Headers/Button.h"
 
 
-GUI::Button::Button(const FontHolder& fonts, const TextureHolder& textures, Type type)
-	: mType(type)
-	, mNormalTexture(mType == Big ? textures.get(Textures::BigButtonNormal) : textures.get(Textures::SmallButtonNormal))
-	, mSelectedTexture(mType == Big ? textures.get(Textures::BigButtonSelected) : textures.get(Textures::SmallButtonSelected))
-	, mPressedTexture(mType == Big ? textures.get(Textures::BigButtonPressed) : textures.get(Textures::SmallButtonPressed))
+GUI::Button::Button(const FontHolder& fonts, const TextureHolder& textures)
+	: mNormalTexture(textures.get(Textures::ButtonNormal))
+	, mSelectedTexture(textures.get(Textures::ButtonSelected))
+	, mPressedTexture(textures.get(Textures::ButtonPressed))
 	, mSprite()
 	, mText("", fonts.get(Fonts::Main), 16)
 	, mIsToggle(false)

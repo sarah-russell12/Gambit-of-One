@@ -31,11 +31,8 @@ class Creature;
 
 struct Direction
 {
-	Direction(float angle, float distance)
-		: angle(angle)
-		, distance(distance)
-	{
-	}
+	Direction(float angle, float distance, float sign)
+		: angle(angle), distance(distance), sign(sign){}
 
 	float			angle;
 	float			distance;
@@ -44,10 +41,20 @@ struct Direction
 
 struct CreatureData
 {
-	// hitpoints:		the ammount of damage the creature can take before being
-	//					destroyed
-	// speed:			how fast the creature travels accross the screen, in pixels
-	// attackDamage:	If a creature can physically attack, they will have a 
+	// hitpoints:		how much damage the Creature can take before it is dead
+	// speed:			the speed the creature travels across the screen, in
+	//					in pixels(?)
+	// attackDamage:	If a creature can physically attack, then it will have
+	//					a physical attack damage
+	// aggroDistance:	aggro is a gaming term short for "aggrovation". It is
+	//					the state of an attackable entity that means they are
+	//					actively trying to kill the player.  Aggro distance is
+	//					how close the player has to be to have the creature
+	//					aggro them
+	// fireInterval:	ranged attackers fire arrows periodically
+	// attackInterval:	melee attackers attack periodically
+	// directions:		some creatures move in set paths, the directions define
+	//					them
 	int								hitpoints;
 	float							speed;
 	int								attackDamage;

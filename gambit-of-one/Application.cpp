@@ -9,12 +9,7 @@ mStateStack(State::Context(mWindow, mTextures, mFonts, mPlayer))
 {
 	mWindow.setKeyRepeatEnabled(false);
 
-	mFonts.load(Fonts::Main, "Media/Sansation.ttf");
-
-	mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
-	mTextures.load(Textures::BigButtonNormal, "Media/Textures/BigButtonNormal.png");
-	mTextures.load(Textures::BigButtonSelected, "Media/Textures/BigButtonSelected.png");
-	mTextures.load(Textures::BigButtonPressed, "Media/Textures/BigButtonPressed.png");
+	loadResources();
 
 	registerStates();
 	mStateStack.pushState(States::Title);
@@ -45,6 +40,41 @@ void Application::run()
 	}
 }
 
+void Application::loadResources()
+{
+	mFonts.load(Fonts::Main, "Media/Sansation.ttf");
+
+	std::string path = "Media/Textures/";
+	mTextures.load(Textures::HeroFront,			path + "HeroFront.png");
+	mTextures.load(Textures::HeroAttack,		path + "HeroAttack.png");
+	mTextures.load(Textures::HeroFire,			path + "HeroFire.png");
+	mTextures.load(Textures::HeroFire,			path + "HeroFire.png");
+	mTextures.load(Textures::Rat,				path + "Rat.png");
+	mTextures.load(Textures::RatAttack,			path + "RatAttack.png");
+	mTextures.load(Textures::Bandit,			path + "Bandit.png");
+	mTextures.load(Textures::BanditAttack,		path + "BanditAttack.png");
+	mTextures.load(Textures::Archer,			path + "Archer.png");
+	mTextures.load(Textures::ArcherFire,		path + "ArcherFire.png");
+	mTextures.load(Textures::HealthPotion,		path + "HealthPotion.png");
+	mTextures.load(Textures::Quiver,			path + "Quiver.png");
+	mTextures.load(Textures::WoodHouse,			path + "WoodHouse.png");
+	mTextures.load(Textures::DirtRoad,			path + "DirtRoad.png");
+	mTextures.load(Textures::TitleScreen,		path + "TitleScreen.png");
+	mTextures.load(Textures::ButtonNormal,		path + "ButtonNormal.png");
+	mTextures.load(Textures::ButtonSelected,	path + "ButtonSelected.png");
+	mTextures.load(Textures::ButtonPressed,		path + "ButtonPressed.png");
+}
+
+void Application::registerStates()
+{
+	mStateStack.registerState<TitleState>(States::Title);
+	mStateStack.registerState<MenuState>(States::Menu);
+	mStateStack.registerState<GameState>(States::Game);
+	mStateStack.registerState<PauseState>(States::Pause);
+	mStateStack.registerState<SettingsState>(States::Settings);
+	mStateStack.registerState<GameOverState>(States::GameOver);
+}
+
 void Application::processInput()
 {
 	sf::Event event;
@@ -60,16 +90,6 @@ void Application::processInput()
 void Application::update(sf::Time dt)
 {
 	mStateStack.update(dt);
-}
-
-void Application::registerStates()
-{
-	mStateStack.registerState<TitleState>(States::Title);
-	mStateStack.registerState<MenuState>(States::Menu);
-	mStateStack.registerState<GameState>(States::Game);
-	mStateStack.registerState<PauseState>(States::Pause);
-	mStateStack.registerState<SettingsState>(States::Settings);
-	mStateStack.registerState<GameOverState>(States::GameOver);
 }
 
 void Application::render()

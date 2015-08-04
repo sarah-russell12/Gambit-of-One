@@ -19,21 +19,23 @@ namespace Textures
 	enum ID
 	{
 		HeroFront,
+		HeroAttack,
+		HeroFire,
 		Rat,
-		Thief,
+		RatAttack,
+		Bandit,
+		BanditAttack,
 		Archer,
+		ArcherFire,
 		Arrow,
 		HealthPotion,
 		Quiver,
 		WoodHouse,
 		DirtRoad,
 		TitleScreen,
-		BigButtonNormal,
-		BigButtonSelected,
-		BigButtonPressed,
-		SmallButtonNormal,
-		SmallButtonSelected,
-		SmallButtonPressed
+		ButtonNormal,
+		ButtonSelected,
+		ButtonPressed,
 	};
 };
 

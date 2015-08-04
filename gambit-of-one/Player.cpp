@@ -119,6 +119,6 @@ void Player::initializeActions()
 	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
 	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
 	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
-	mActionBinding[Attack].action = derivedAction<Creature>(std::bind(&Creature::attack, _1));
-	mActionBinding[FireArrow].action = derivedAction<Creature>(std::bind(&Creature::fireArrow, _1));
+	mActionBinding[Attack].action = derivedAction<Creature>([](Creature& c, sf::Time){ c.attack(); });
+	mActionBinding[FireArrow].action = derivedAction<Creature>([](Creature& c, sf::Time){ c.fireArrow(); });
 }

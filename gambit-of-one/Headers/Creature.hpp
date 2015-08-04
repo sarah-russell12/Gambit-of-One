@@ -43,7 +43,7 @@ public:
 		Guide,
 		Rat,
 		Archer,
-		Theif,
+		Bandit,
 		TypeCount,
 	};
 
@@ -56,8 +56,10 @@ public:
 	bool					isAllied() const;
 	bool					isGuided() const;
 	bool					isRanged() const;
+	bool					isMelee() const;
 	bool					isAttacking() const;
 	float					getMaxSpeed() const;
+	int						getDamage() const;
 
 	void					collectArrows(unsigned int count);
 

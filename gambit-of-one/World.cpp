@@ -2,11 +2,11 @@
 
 // public
 
-World::World(sf::RenderWindow& window, FontHolder& fonts)
+World::World(sf::RenderWindow& window, TextureHolder* textures, FontHolder* fonts)
 	: mWindow(window)
 	, mSceneGraph()
 	, mFonts(fonts)
-	, mTextures()
+	, mTextures(textures)
 	, mSceneLayers()
 	, mScrollSpeed(-50.f)
 	, mEnemySpawnPoints()
@@ -25,8 +25,6 @@ World::World(sf::RenderWindow& window, FontHolder& fonts)
 		);
 	mPlayerAvatar = nullptr;
 
-
-	loadTextures();
 	buildScene();
 	mWorldView.setCenter(mSpawnPosition);
 }
@@ -91,18 +89,6 @@ bool World::allEnemiesDefeated() const
 
 // private
 
-void World::loadTextures()
-{
-	mTextures = TextureHolder();
-	mTextures.load(Textures::HeroFront, "Media/Textures/HeroFront.png");
-	mTextures.load(Textures::Rat, "Media/Textures/Rat.png");
-	mTextures.load(Textures::DirtRoad, "Media/Textures/DirtRoadHorizontal.png");
-	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
-	mTextures.load(Textures::HealthPotion, "Media/Textures/Potion.png");
-	mTextures.load(Textures::Quiver, "Media/Textures/Quiver.png");
-}
-
-
 void World::buildScene()
 {
 	//setting up the graph
@@ -115,7 +101,7 @@ void World::buildScene()
 	}
 
 	//setting up the tiled background
-	sf::Texture& texture = mTextures.get(Textures::DirtRoad);
+	sf::Texture& texture = mTextures->get(Textures::DirtRoad);
 	sf::IntRect textureRect(mWorldBounds);
 	texture.setRepeated(true);
 
@@ -128,7 +114,7 @@ void World::buildScene()
 		std::move(backgroundSprite));
 
 	std::unique_ptr<Creature> hero(
-		new Creature(Creature::Hero, mTextures, mFonts));
+		new Creature(Creature::Hero, *mTextures, *mFonts));
 	mPlayerAvatar = hero.get();
 	mPlayerAvatar->setPosition(mSpawnPosition);
 	mPlayerAvatar->setVelocity(0.f, 0.f);
@@ -143,7 +129,7 @@ void World::spawnEnemies()
 		SpawnPoint spawn = mEnemySpawnPoints.back();
 
 		std::unique_ptr<Creature> enemy(
-			new Creature(spawn.type, mTextures, mFonts));
+			new Creature(spawn.type, *mTextures, *mFonts));
 		enemy->setPosition(spawn.x, spawn.y);
 		enemy->setRotation(180.f);
 

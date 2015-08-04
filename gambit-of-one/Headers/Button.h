@@ -31,14 +31,8 @@ namespace GUI
 		typedef std::shared_ptr<Button> Ptr;
 		typedef std::function<void()> Callback;
 
-		enum Type
-		{
-			Big,
-			Small,
-		};
-
 	public:
-		Button(const FontHolder& fonts, const TextureHolder& textures, Type type);
+		Button(const FontHolder& fonts, const TextureHolder& textures);
 
 		virtual bool	isSelectable() const;
 		virtual void	select();
@@ -65,7 +59,6 @@ namespace GUI
 		const sf::Texture&		mSelectedTexture;
 		const sf::Texture&		mPressedTexture;
 		Callback				mCallback;
-		Type					mType;
 	};
 }
 

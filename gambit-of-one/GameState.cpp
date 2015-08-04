@@ -1,12 +1,9 @@
 #include "Headers/GameState.h"
 
-GameState::GameState(StateStack& stack, Context context) :
-State(stack, context),
-mWorld(*context.window, *context.fonts),
-mPlayer(*context.player)
-{
-	
-}
+GameState::GameState(StateStack& stack, Context context) 
+	: State(stack, context)
+	, mWorld(*context.window, context.textures, context.fonts)
+	, mPlayer(*context.player) {}
 
 void GameState::draw()
 {

@@ -41,7 +41,9 @@ public:
 	void				run();
 
 private:
+	void				loadResources();
 	void				registerStates();
+
 	void				processInput();
 	void				update(sf::Time dt);
 	void				render();

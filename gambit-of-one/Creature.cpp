@@ -91,6 +91,11 @@ bool Creature::isRanged() const
 	return Table[mType].fireInterval != sf::Time::Zero;
 }
 
+bool Creature::isMelee() const
+{
+	return Table[mType].attackInterval != sf::Time::Zero;
+}
+
 bool Creature::isAttacking() const
 {
 	return mIsAttacking;
@@ -99,6 +104,11 @@ bool Creature::isAttacking() const
 float Creature::getMaxSpeed() const
 {
 	return Table[mType].speed;
+}
+
+int Creature::getDamage() const
+{
+	return Table[mType].attackDamage;
 }
 
 void Creature::collectArrows(unsigned int count)

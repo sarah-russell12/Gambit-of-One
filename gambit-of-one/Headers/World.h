@@ -37,7 +37,7 @@ class World : public sf::NonCopyable
 {
 public:
 	World();
-	explicit			World(sf::RenderWindow& window, FontHolder& fonts);
+	explicit			World(sf::RenderWindow& window, TextureHolder* textures, FontHolder* fonts);
 	void				update(sf::Time dt);
 	void				draw();
 	CommandQueue&		getCommandQueue();
@@ -47,7 +47,6 @@ public:
 
 
 private:
-	void				loadTextures();
 	void				buildScene();
 	
 	void				spawnEnemies();
@@ -86,8 +85,8 @@ private:
 private:
 	sf::RenderWindow&					mWindow;
 	sf::View							mWorldView;
-	TextureHolder						mTextures;
-	FontHolder							mFonts;
+	TextureHolder*						mTextures;
+	FontHolder*							mFonts;
 	SceneNode							mSceneGraph;
 	std::array<SceneNode*, LayerCount>	mSceneLayers;
 	
