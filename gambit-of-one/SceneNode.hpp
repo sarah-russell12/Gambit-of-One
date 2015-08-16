@@ -1,3 +1,21 @@
+/*
+SceneNode.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+SceneNodes are the structure in which all Entity interaction and transformation
+is built on.  SceneNodes have a tree structure to them: All SceneNodes, except
+for the root node will have parent SceneNodes, and all ScenNodes can have any
+number of children SceneNodes.  The children SceneNodes will have positions and
+transformations that are relative to their parent.  When their parent
+transforms, all the children transform relative to their parent.
+*/
+
 #ifndef SCENENODE_HPP
 #define SCENENODE_HPP
 

@@ -1,3 +1,10 @@
+/*
+Foreach.hpp
+
+This code is from the code shared with the textbook "SFML Game Development" by Artur 
+Moreira, Henrick Vogelius Hansson, and Jan Haller.
+*/
+
 #ifndef FOREACH_HPP
 #define FOREACH_HPP
 

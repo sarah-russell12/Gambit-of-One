@@ -1,3 +1,18 @@
+/*
+Container.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+The Container is a manager of other GUI Components.  It may or may not be the
+sole manager of a Component.  It will tell the Components under its management
+which are active or selected, and which are not.
+*/
+
 #ifndef CONTAINER_HPP
 #define CONTAINER_HPP
 

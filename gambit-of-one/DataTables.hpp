@@ -1,3 +1,20 @@
+/*
+DataTables.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+In gameplay there are many stats that need to be accounted for, since even one
+subclass of Entities can have different types, which means different stats.  We
+need all this data to be organized in one place so that we can just grab it
+when we need it and not have to worry about consistency or unnecessary logic
+blocks messing with the readability of our code.
+*/
+
 #ifndef DATATABLES_HPP
 #define DATATABLES_HPP
 

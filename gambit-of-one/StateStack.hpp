@@ -1,3 +1,18 @@
+/*
+StateStack.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+The State Stack is a structure that organizes the states that the game program
+can be in.  The state at the top of the State Stack is the state that the user
+sees on the screen.
+*/
+
 #ifndef STATESTACK_HPP
 #define STATESTACK_HPP
 

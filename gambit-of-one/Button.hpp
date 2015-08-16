@@ -1,3 +1,18 @@
+/*
+Button.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Buttons are the interactive part of the GUI.  Their textures change according
+to how the user is interacting with them.  Their selection and activation is
+tracked by the program to indicate a change in states.
+*/
+
 #ifndef BUTTON_HPP
 #define BUTTON_HPP
 

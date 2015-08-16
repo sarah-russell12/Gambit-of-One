@@ -1,3 +1,17 @@
+/*
+Utility.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+This file contains a collection of global functions that are used in different
+parts of the program often.
+*/
+
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 

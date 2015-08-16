@@ -1,3 +1,18 @@
+/*
+Projectile.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Projectiles are Entities that aid in combat.  They are shot both by
+enemies and the player and are meant to inflict damage to those that
+interact with them.
+*/
+
 #ifndef PROJECTILE_HPP
 #define PROJECTILE_HPP
 

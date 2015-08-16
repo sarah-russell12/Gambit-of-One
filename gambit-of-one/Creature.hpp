@@ -1,3 +1,19 @@
+/*
+Creature.hpp
+
+Date Last Updated: August 16, 2015
+
+This header file was made during the Spring 2015 SFML Game Development
+Tutorial at New College of Florida.  This code follows the code from the
+textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
+Hansson, and Jan Haller.
+
+Creature is one of the main Entities of the game.  They fight with each
+other using varied behaviors including ranged attacks and melee attacks.
+Some move can move in patterns, some stand still, while others will
+converge on the player when they are within a certain distance.
+*/
+
 #ifndef CREATURE_HPP
 #define CREATURE_HPP
 
