@@ -1,9 +1,13 @@
-#include "Headers/GameState.h"
+#include "GameState.hpp"
 
-GameState::GameState(StateStack& stack, Context context) 
+
+GameState::GameState(StateStack& stack, Context context)
 	: State(stack, context)
-	, mWorld(*context.window, context.textures, context.fonts)
-	, mPlayer(*context.player) {}
+	, mWorld(*context.window, *context.fonts)
+	, mPlayer(*context.player)
+{
+	mPlayer.setMissionStatus(Player::MissionRunning);
+}
 
 void GameState::draw()
 {
@@ -16,12 +20,12 @@ bool GameState::update(sf::Time dt)
 
 	if (!mWorld.hasAlivePlayer())
 	{
-		mPlayer.setStatus(Player::Failure);
+		mPlayer.setMissionStatus(Player::MissionFailure);
 		requestStackPush(States::GameOver);
 	}
-	else if (mWorld.allEnemiesDefeated())
+	else if (mWorld.hasPlayerReachedEnd())
 	{
-		mPlayer.setStatus(Player::Success);
+		mPlayer.setMissionStatus(Player::MissionSuccess);
 		requestStackPush(States::GameOver);
 	}
 
@@ -33,11 +37,13 @@ bool GameState::update(sf::Time dt)
 
 bool GameState::handleEvent(const sf::Event& event)
 {
+	// Game input handling
 	CommandQueue& commands = mWorld.getCommandQueue();
 	mPlayer.handleEvent(event, commands);
 
-	mPlayer.handleRealtimeInput(commands);
+	// Escape pressed, trigger the pause screen
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		requestStackPush(States::Pause);
 
 	return true;
 }
-

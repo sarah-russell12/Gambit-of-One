@@ -10,6 +10,78 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="Container.cpp" />
+    <ClCompile Include="Creature.cpp" />
+    <ClCompile Include="DataTables.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="GameOverState.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Label.cpp" />
+    <ClCompile Include="LoadingState.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MenuState.cpp" />
+    <ClCompile Include="ParallelTask.cpp" />
+    <ClCompile Include="PauseState.cpp" />
+    <ClCompile Include="Pickup.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Projectile.cpp" />
+    <ClCompile Include="SceneNode.cpp" />
+    <ClCompile Include="SettingsState.cpp" />
+    <ClCompile Include="SpriteNode.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateStack.cpp" />
+    <ClCompile Include="TextNode.cpp" />
+    <ClCompile Include="TitleState.cpp" />
+    <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Animation.hpp" />
+    <ClInclude Include="Application.hpp" />
+    <ClInclude Include="Button.hpp" />
+    <ClInclude Include="Category.hpp" />
+    <ClInclude Include="Command.hpp" />
+    <ClInclude Include="CommandQueue.hpp" />
+    <ClInclude Include="Component.hpp" />
+    <ClInclude Include="Container.hpp" />
+    <ClInclude Include="Creature.hpp" />
+    <ClInclude Include="DataTables.hpp" />
+    <ClInclude Include="Entity.hpp" />
+    <ClInclude Include="Foreach.hpp" />
+    <ClInclude Include="GameOverState.hpp" />
+    <ClInclude Include="GameState.hpp" />
+    <ClInclude Include="Label.hpp" />
+    <ClInclude Include="LoadingState.hpp" />
+    <ClInclude Include="MenuState.hpp" />
+    <ClInclude Include="ParallelTask.hpp" />
+    <ClInclude Include="PauseState.hpp" />
+    <ClInclude Include="Pickup.hpp" />
+    <ClInclude Include="Player.hpp" />
+    <ClInclude Include="Projectile.hpp" />
+    <ClInclude Include="ResourceHolder.hpp" />
+    <ClInclude Include="ResourceIdentifiers.hpp" />
+    <ClInclude Include="SceneNode.hpp" />
+    <ClInclude Include="SettingsState.hpp" />
+    <ClInclude Include="SpriteNode.hpp" />
+    <ClInclude Include="State.hpp" />
+    <ClInclude Include="StateIdentifiers.hpp" />
+    <ClInclude Include="StateStack.hpp" />
+    <ClInclude Include="TextNode.hpp" />
+    <ClInclude Include="TitleState.hpp" />
+    <ClInclude Include="Utility.hpp" />
+    <ClInclude Include="World.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ResourceHolder.inl" />
+    <None Include="Utility.inl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{644A3E6B-0A3B-4275-A778-6263061443D1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -85,70 +157,6 @@
       <AdditionalDependencies>sfml-main.lib;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="CommandQueue.cpp" />
-    <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Container.cpp" />
-    <ClCompile Include="Creature.cpp" />
-    <ClCompile Include="DataTables.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="GameOverState.cpp" />
-    <ClCompile Include="GameState.cpp" />
-    <ClCompile Include="Label.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MenuState.cpp" />
-    <ClCompile Include="PauseState.cpp" />
-    <ClCompile Include="Pickup.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="SceneNode.cpp" />
-    <ClCompile Include="SettingsState.cpp" />
-    <ClCompile Include="SpriteNode.cpp" />
-    <ClCompile Include="State.cpp" />
-    <ClCompile Include="TextNode.cpp" />
-    <ClCompile Include="TitleState.cpp" />
-    <ClCompile Include="UtilityFunctions.cpp" />
-    <ClCompile Include="World.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Headers\Application.h" />
-    <ClInclude Include="Headers\Button.h" />
-    <ClInclude Include="Headers\Command.hpp" />
-    <ClInclude Include="Headers\CommandQueue.h" />
-    <ClInclude Include="Headers\Component.h" />
-    <ClInclude Include="Headers\Container.h" />
-    <ClInclude Include="Headers\Creature.hpp" />
-    <ClInclude Include="Headers\DataTables.hpp" />
-    <ClInclude Include="Headers\Entity.h" />
-    <ClInclude Include="Headers\Enumerations.hpp" />
-    <ClInclude Include="Headers\GameOverState.h" />
-    <ClInclude Include="Headers\GameState.h" />
-    <ClInclude Include="Headers\Label.h" />
-    <ClInclude Include="Headers\MenuState.h" />
-    <ClInclude Include="Headers\PauseState.h" />
-    <ClInclude Include="Headers\Pickup.h" />
-    <ClInclude Include="Headers\Player.h" />
-    <ClInclude Include="Headers\Projectile.h" />
-    <ClInclude Include="Headers\ResourceHolder.hpp" />
-    <ClInclude Include="Headers\SceneNode.h" />
-    <ClInclude Include="Headers\SettingsState.h" />
-    <ClInclude Include="Headers\SFML_facilities.h" />
-    <ClInclude Include="Headers\SpriteNode.h" />
-    <ClInclude Include="Headers\State.h" />
-    <ClInclude Include="Headers\StateStack.hpp" />
-    <ClInclude Include="Headers\TextNode.h" />
-    <ClInclude Include="Headers\TitleState.h" />
-    <ClInclude Include="Headers\UtilityFunctions.hpp" />
-    <ClInclude Include="Headers\World.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Command.inl" />
-    <None Include="Headers\ResourceHolder.inl" />
-    <None Include="Headers\StateStack.inl" />
-    <None Include="Headers\UtilityFunctions.inl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

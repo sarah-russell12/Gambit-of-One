@@ -1,68 +1,56 @@
-#include "Headers/World.h"
+#include "World.hpp"
+#include "Projectile.hpp"
+#include "Pickup.hpp"
+#include "Foreach.hpp"
+#include "TextNode.hpp"
 
-// public
+#include <SFML/Graphics/RenderWindow.hpp>
 
-World::World(sf::RenderWindow& window, TextureHolder* textures, FontHolder* fonts)
+#include <algorithm>
+#include <cmath>
+#include <limits>
+
+World::World(sf::RenderWindow& window, FontHolder& fonts)
 	: mWindow(window)
-	, mSceneGraph()
+	, mWorldView(window.getDefaultView())
 	, mFonts(fonts)
-	, mTextures(textures)
+	, mTextures()
+	, mSceneGraph()
 	, mSceneLayers()
-	, mScrollSpeed(-50.f)
+	, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f)
+	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
+	, mScrollSpeed(0.f)
+	, mPlayerCreature(nullptr)
 	, mEnemySpawnPoints()
 	, mActiveEnemies()
 {
-	mWorldView = sf::View(window.getDefaultView());
-	mWorldBounds = sf::FloatRect(
-		0.f,					//left x position
-		0.f,					//top y position
-		mWorldView.getSize().x,	//width
-		2000.f					//height
-		);
-	mSpawnPosition = sf::Vector2f(
-		mWorldView.getSize().x / 2.f,
-		mWorldBounds.height - mWorldView.getSize().y
-		);
-	mPlayerAvatar = nullptr;
-
+	loadTextures();
 	buildScene();
+
 	mWorldView.setCenter(mSpawnPosition);
 }
 
 void World::update(sf::Time dt)
 {
-	// The screen is static vertically and follows the player
-	// as they move horizontally
-	mWorldView.move(mPlayerAvatar->getVelocity().x * dt.asSeconds(), 0.f);
-	mPlayerAvatar->setVelocity(0.f, 0.f);
 
-	//Foward commands to the scene graph
+	sf::Vector2f velocity = mPlayerCreature->getVelocity();
+
+	mWorldView.move(velocity.x * dt.asSeconds(), velocity.y * dt.asSeconds());
+	mPlayerCreature->setVelocity(0.f, 0.f);
+
+	guideCreatures();
+
 	while (!mCommandQueue.isEmpty())
-	{
 		mSceneGraph.onCommand(mCommandQueue.pop(), dt);
-	}
+	adaptPlayerVelocity();
 
-	sf::Vector2f velocity = mPlayerAvatar->getVelocity();
-	if (velocity.x != 0.f && velocity.y != 0.f)
-	{
-		mPlayerAvatar->setVelocity(velocity / std::sqrt(2.f));
-	}
-	mPlayerAvatar->accelerate(sf::Vector2f(0.f, mScrollSpeed));
+	handleCollisions();
 
-	//Regular update step
+	mSceneGraph.removeWrecks();
+	spawnEnemies();
+
 	mSceneGraph.update(dt, mCommandQueue);
-
-	sf::FloatRect viewBounds(
-		mWorldView.getCenter() - mWorldView.getSize() / 2.f,
-		mWorldView.getSize());
-	const float borderDistance = 40.f;
-
-	sf::Vector2f position = mPlayerAvatar->getPosition();
-	position.x = std::max(position.x, viewBounds.left + borderDistance);
-	position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-	position.y = std::max(position.y, viewBounds.top + borderDistance);
-	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-	mPlayerAvatar->setPosition(position);
+	adaptPlayerPosition();
 }
 
 void World::draw()
@@ -78,130 +66,28 @@ CommandQueue& World::getCommandQueue()
 
 bool World::hasAlivePlayer() const
 {
-	return !mPlayerAvatar->isMarkedForRemoval();
+	return !mPlayerCreature->isMarkedForRemoval();
 }
 
-bool World::allEnemiesDefeated() const
+bool World::hasPlayerReachedEnd() const
 {
-	return mActiveEnemies.empty();
+	return !mWorldBounds.contains(mPlayerCreature->getPosition());
 }
 
-
-// private
-
-void World::buildScene()
+void World::loadTextures()
 {
-	//setting up the graph
-	for (std::size_t i = 0; i < LayerCount; ++i)
-	{
-		SceneNode::Ptr layer(new SceneNode());
-		mSceneLayers[i] = layer.get();
+	mTextures.load(Textures::Hero, "Media/Textures/HeroSpriteSheet.png");
+	mTextures.load(Textures::Rat, "Media/Textures/RatSpriteSheet.png");
+	mTextures.load(Textures::Archer, "Media/Textures/ArcherSpriteSheet.png");
+	mTextures.load(Textures::Bandit, "Media/Textures/BanditSpriteSheet.png");
 
-		mSceneGraph.attachChild(std::move(layer));
-	}
+	mTextures.load(Textures::Road, "Media/Textures/DirtRoad.png");
+	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
 
-	//setting up the tiled background
-	sf::Texture& texture = mTextures->get(Textures::DirtRoad);
-	sf::IntRect textureRect(mWorldBounds);
-	texture.setRepeated(true);
-
-	std::unique_ptr<SpriteNode> backgroundSprite(
-		new SpriteNode(texture, textureRect));
-	backgroundSprite->setPosition(
-		mWorldBounds.left,
-		mWorldBounds.top);
-	mSceneLayers[Background]->attachChild(
-		std::move(backgroundSprite));
-
-	std::unique_ptr<Creature> hero(
-		new Creature(Creature::Hero, *mTextures, *mFonts));
-	mPlayerAvatar = hero.get();
-	mPlayerAvatar->setPosition(mSpawnPosition);
-	mPlayerAvatar->setVelocity(0.f, 0.f);
-	mSceneLayers[Ground]->attachChild(std::move(hero));
-}
-
-void World::spawnEnemies()
-{
-	while (!mEnemySpawnPoints.empty() 
-		&& mEnemySpawnPoints.back().y > getBattlefieldBounds().top)
-	{
-		SpawnPoint spawn = mEnemySpawnPoints.back();
-
-		std::unique_ptr<Creature> enemy(
-			new Creature(spawn.type, *mTextures, *mFonts));
-		enemy->setPosition(spawn.x, spawn.y);
-		enemy->setRotation(180.f);
-
-		mEnemySpawnPoints.pop_back();
-	}
-}
-
-void World::addEnemy(Creature::Type type, float relX, float relY)
-{
-	SpawnPoint spawn(type, mSpawnPosition.x + relX,
-		mSpawnPosition.y - relY);
-	mEnemySpawnPoints.push_back(spawn);
-}
-
-void World::addEnemies()
-{
-	addEnemy(Creature::Rat, 500.f, 0.f);
-	addEnemy(Creature::Rat, 1000.f, 0.f);
-	addEnemy(Creature::Rat, 1100.f, + 100.f);
-	addEnemy(Creature::Rat, 1100.f, - 100.f);
-	addEnemy(Creature::Rat, 1400.f, - 70.f);
-	addEnemy(Creature::Rat, 1600.f, - 70.f);
-	addEnemy(Creature::Rat, 1400.f, 70.f);
-	addEnemy(Creature::Rat, 1600.f, 70.f);
-
-	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(),
-		[] (SpawnPoint lhs, SpawnPoint rhs)
-	{
-		return lhs.x < rhs.x;
-	});
-}
-
-sf::FloatRect World::getViewBounds() const
-{
-	return sf::FloatRect(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
-}
-
-sf::FloatRect World::getBattlefieldBounds() const
-{
-	sf::FloatRect bounds = getViewBounds();
-	bounds.top -= 100.f;
-	bounds.height += 100.f;
-
-	return bounds;
-}
-
-void World::guideEnemies()
-{
-	Command enemyCollector;
-	enemyCollector.category = Category::Enemy;
-	enemyCollector.action = derivedAction<Creature>(
-		[this](Creature& enemy, sf::Time)
-	{
-		if (!enemy.isDestroyed())
-			mActiveEnemies.push_back(&enemy);
-	});
-
-	Command beastGuider;
-	beastGuider.category = Category::Enemy;
-	beastGuider.action = derivedAction<Creature>(
-		[this] (Creature& beast, sf::Time)
-	{
-		if (beast.isGuided())
-		{
-			beast.guideTowards(mPlayerAvatar->getWorldPosition());
-		}
-	});
-
-	mCommandQueue.push(enemyCollector);
-	mCommandQueue.push(beastGuider);
-
-	mActiveEnemies.clear();
+	mTextures.load(Textures::HealthRefill, "Media/Textures/HealthPotion.png");
+	mTextures.load(Textures::MissileRefill, "Media/Textures/Quiver.png");
+	mTextures.load(Textures::FireSpread, "Media/Textures/FireSpread.png");
+	mTextures.load(Textures::FireRate, "Media/Textures/FireRate.png");
 }
 
 void World::adaptPlayerPosition()
@@ -209,26 +95,25 @@ void World::adaptPlayerPosition()
 	sf::FloatRect viewBounds = getViewBounds();
 	const float borderDistance = 40.f;
 
-	sf::Vector2f position = mPlayerAvatar->getPosition();
+	sf::Vector2f position = mPlayerCreature->getPosition();
 	position.x = std::max(position.x, viewBounds.left + borderDistance);
 	position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
 	position.y = std::max(position.y, viewBounds.top + borderDistance);
 	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-	mPlayerAvatar->setPosition(position);
+	mPlayerCreature->setPosition(position);
 }
 
 void World::adaptPlayerVelocity()
 {
-	sf::Vector2f velocity = mPlayerAvatar->getVelocity();
+	sf::Vector2f velocity = mPlayerCreature->getVelocity();
 
 	if (velocity.x != 0.f && velocity.y != 0.f)
-	{
-		mPlayerAvatar->setVelocity(velocity / std::sqrt(2.f));
-	}
+		mPlayerCreature->setVelocity(velocity / std::sqrt(2.f));
+
+	mPlayerCreature->accelerate(0.f, mScrollSpeed);
 }
 
-bool matchesCategories(SceneNode::Pair& colliders,
-	Category::Type type1, Category::Type type2)
+bool matchesCategories(SceneNode::Pair& colliders, Category::Type type1, Category::Type type2)
 {
 	unsigned int category1 = colliders.first->getCategory();
 	unsigned int category2 = colliders.second->getCategory();
@@ -253,47 +138,35 @@ void World::handleCollisions()
 	std::set<SceneNode::Pair> collisionPairs;
 	mSceneGraph.checkSceneCollision(mSceneGraph, collisionPairs);
 
-	for (SceneNode::Pair pair : collisionPairs)
+	FOREACH(SceneNode::Pair pair, collisionPairs)
 	{
-		if (matchesCategories(pair, 
-			Category::Player, Category::Enemy))
+		if (matchesCategories(pair, Category::PlayerCreature, Category::EnemyCreature))
 		{
-			//react to player enemy collision
-			//If the player is attacking, the enemy takes damage
-			//player takes a physical hit if they are not attacking
-
 			auto& player = static_cast<Creature&>(*pair.first);
 			auto& enemy = static_cast<Creature&>(*pair.second);
 
-			if (player.isAttacking()) {
+			if (player.isAttacking() && !enemy.isImmune())
 				enemy.damage(player.getDamage());
-			}
-			else
-			{ 
+			
+			if (!player.isImmune() && !player.isAttacking() && enemy.isAttacking())
+			{
 				player.damage(enemy.getDamage());
 			}
-			
+			//enemy.destroy();
 		}
-		else if (matchesCategories(pair, 
-			Category::Player, Category::Pickup))
-		{
-			//react to player pickup collision
-			//player recieves a buff
 
+		else if (matchesCategories(pair, Category::PlayerCreature, Category::Pickup))
+		{
 			auto& player = static_cast<Creature&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);
 
 			pickup.apply(player);
 			pickup.destroy();
 		}
-		else if (matchesCategories(pair,
-			Category::Enemy, Category::AlliedProjectile)
-			|| matchesCategories(pair,
-			Category::Player, Category::EnemyProjectile))
-		{
-			//react to aircraft projectile collision
-			//the creature is hit and damaged and the projectile is destroyed
 
+		else if (matchesCategories(pair, Category::EnemyCreature, Category::AlliedProjectile)
+			|| matchesCategories(pair, Category::PlayerCreature, Category::EnemyProjectile))
+		{
 			auto& aircraft = static_cast<Creature&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
 
@@ -301,4 +174,133 @@ void World::handleCollisions()
 			projectile.destroy();
 		}
 	}
+}
+
+void World::buildScene()
+{
+	for (std::size_t i = 0; i < LayerCount; ++i)
+	{
+		Category::Type category = (i == Air) ? Category::SceneAirLayer : Category::None;
+
+		SceneNode::Ptr layer(new SceneNode(category));
+		mSceneLayers[i] = layer.get();
+
+		mSceneGraph.attachChild(std::move(layer));
+	}
+
+	sf::Texture& texture = mTextures.get(Textures::Road);
+	sf::IntRect textureRect(mWorldBounds);
+	texture.setRepeated(true);
+
+	std::unique_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
+	backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
+	mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
+
+	std::unique_ptr<Creature> player(new Creature(Creature::Hero, mTextures, mFonts));
+	mPlayerCreature = player.get();
+	mPlayerCreature->setPosition(mSpawnPosition);
+	mSceneLayers[Air]->attachChild(std::move(player));
+
+	addEnemies();
+}
+
+void World::addEnemies()
+{
+	addEnemy(Creature::Bandit, -350.f, 750.f);
+	addEnemy(Creature::Rat, +100.f, 1200.f);
+	//addEnemy(Creature::Archer, -400.f, 1100.f);
+	addEnemy(Creature::Rat, -70.f, 1400.f);
+	//addEnemy(Creature::Archer, -400.f, 1500.f);
+	addEnemy(Creature::Rat, 400.f, 1400.f);
+	addEnemy(Creature::Bandit, -200.f, 1600.f);
+	addEnemy(Creature::Rat, 0.f, 500.f);
+
+	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs)
+	{
+		return lhs.y < rhs.y;
+	});
+}
+
+void World::addEnemy(Creature::Type type, float relX, float relY)
+{
+	SpawnPoint spawn(type, mSpawnPosition.x + relX, mSpawnPosition.y - relY);
+	mEnemySpawnPoints.push_back(spawn);
+}
+
+void World::spawnEnemies()
+{
+	while (!mEnemySpawnPoints.empty()
+		&& mEnemySpawnPoints.back().y > getBattlefieldBounds().top)
+	{
+		SpawnPoint spawn = mEnemySpawnPoints.back();
+
+		std::unique_ptr<Creature> enemy(new Creature(spawn.type, mTextures, mFonts));
+		enemy->setPosition(spawn.x, spawn.y);
+
+		mSceneLayers[Air]->attachChild(std::move(enemy));
+
+		mEnemySpawnPoints.pop_back();
+	}
+}
+
+void World::destroyEntitiesOutsideView()
+{
+	Command command;
+	command.category = Category::Projectile | Category::EnemyCreature;
+	command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
+	{
+		if (!getBattlefieldBounds().intersects(e.getBoundingRect()))
+			e.destroy();
+	});
+
+	mCommandQueue.push(command);
+}
+
+void World::guideCreatures()
+{
+	Command enemyCollector;
+	enemyCollector.category = Category::EnemyCreature;
+	enemyCollector.action = derivedAction<Creature>([this](Creature& enemy, sf::Time)
+	{
+		if (!enemy.isDestroyed())
+			mActiveEnemies.push_back(&enemy);
+	});
+	
+	Command creatureGuider;
+	creatureGuider.category = Category::EnemyCreature;
+	creatureGuider.action = derivedAction<Creature>([this](Creature& creature, sf::Time)
+	{
+		if (!creature.isGuided())
+			return;
+
+		sf::Vector2f playerPosition = mPlayerCreature->getWorldPosition();
+		FOREACH(Creature* enemy, mActiveEnemies)
+		{
+			enemy->checkAggro(playerPosition);
+			if (enemy->isAggroed() && enemy->isGuided())
+				enemy->guideTowards(playerPosition);
+			
+			float enemyDistance = distance(*mPlayerCreature, *enemy);
+			if (enemyDistance < 10.f)
+				enemy->attack();
+		}	
+	});
+
+	mCommandQueue.push(enemyCollector);
+	mCommandQueue.push(creatureGuider);
+	mActiveEnemies.clear();
+}
+
+sf::FloatRect World::getViewBounds() const
+{
+	return sf::FloatRect(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
+}
+
+sf::FloatRect World::getBattlefieldBounds() const
+{
+	sf::FloatRect bounds = getViewBounds();
+	bounds.top -= 100.f;
+	bounds.height += 100.f;
+
+	return bounds;
 }

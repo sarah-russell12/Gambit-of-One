@@ -1,4 +1,8 @@
-#include "Headers/TextNode.h"
+#include "TextNode.hpp"
+#include "Utility.hpp"
+
+#include <SFML/Graphics/RenderTarget.hpp>
+
 
 TextNode::TextNode(const FontHolder& fonts, const std::string& text)
 {
@@ -7,13 +11,13 @@ TextNode::TextNode(const FontHolder& fonts, const std::string& text)
 	setString(text);
 }
 
+void TextNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(mText, states);
+}
+
 void TextNode::setString(const std::string& text)
 {
 	mText.setString(text);
 	centerOrigin(mText);
-}
-
-void TextNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states)
-{
-	target.draw(mText, states);
 }

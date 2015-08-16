@@ -1,5 +1,7 @@
-#include "Headers/DataTables.hpp"
-#include "Headers/Creature.hpp"
+#include "DataTables.hpp"
+#include "Creature.hpp"
+#include "Projectile.hpp"
+#include "Pickup.hpp"
 
 
 // For std::bind() placeholders _1, _2, ...
@@ -9,51 +11,47 @@ std::vector<CreatureData> initializeCreatureData()
 {
 	std::vector<CreatureData> data(Creature::TypeCount);
 
-	data[Creature::Hero].hitpoints			= 100;
-	data[Creature::Hero].speed				= 200.f;
-	data[Creature::Hero].attackDamage		= 20;
-	data[Creature::Hero].aggroDistance		= 0;
-	data[Creature::Hero].fireInterval		= sf::seconds(1.f);
-	data[Creature::Hero].attackInterval		= sf::seconds(1.f);
-	data[Creature::Hero].normalTexture		= Textures::HeroFront;
-	data[Creature::Hero].attackTexture		= Textures::HeroAttack;
-	data[Creature::Hero].firingTexture		= Textures::HeroFire;
-
+	data[Creature::Hero].hitpoints = 100;
+	data[Creature::Hero].speed = 200.f;
+	data[Creature::Hero].attackDamage = 20;
+	data[Creature::Hero].aggroDistance = 0;
+	data[Creature::Hero].attackInterval = sf::seconds(0.5f);
+	data[Creature::Hero].fireInterval = sf::seconds(1);
+	data[Creature::Hero].texture = Textures::Hero;
+	data[Creature::Hero].textureRect = sf::IntRect(0, 0, 62, 66);
+	
 	// Rats run at the player, though they hit for little, they can be a real
 	// pest if left to attack the player
-	data[Creature::Rat].hitpoints			= 10;
-	data[Creature::Rat].speed				= 200.f;
-	data[Creature::Rat].attackDamage		= 5;
-	data[Creature::Rat].aggroDistance		= 40;
-	data[Creature::Rat].fireInterval		= sf::Time::Zero;
-	data[Creature::Rat].attackInterval		= sf::seconds(2.f);
-	data[Creature::Rat].normalTexture		= Textures::Rat;
-	data[Creature::Rat].attackTexture		= Textures::RatAttack;
-	data[Creature::Rat].firingTexture		= Textures::Rat;
-
+	data[Creature::Rat].hitpoints = 50;
+	data[Creature::Rat].speed = 50.f;
+	data[Creature::Rat].attackDamage = 5;
+	data[Creature::Rat].aggroDistance = 300.f;
+	data[Creature::Rat].fireInterval = sf::Time::Zero;
+	data[Creature::Rat].attackInterval = sf::seconds(2.f);
+	data[Creature::Rat].texture = Textures::Rat;
+	data[Creature::Rat].textureRect = sf::IntRect(0, 0, 34, 16);
+	
 	// Bandits move in a predetermined way and attack frequently
-	data[Creature::Bandit].hitpoints		= 50;
-	data[Creature::Bandit].speed			= 100.f;
-	data[Creature::Bandit].attackDamage		= 10;
-	data[Creature::Bandit].aggroDistance	= 0;
-	data[Creature::Bandit].fireInterval		= sf::Time::Zero;
-	data[Creature::Bandit].attackInterval	= sf::seconds(0.5f);
-	data[Creature::Bandit].normalTexture	= Textures::Bandit;
-	data[Creature::Bandit].attackTexture	= Textures::BanditAttack;
-	data[Creature::Bandit].firingTexture	= Textures::Bandit;
-	data[Creature::Bandit].directions.push_back(Direction(0.f, 50.f, +1.f));
-	data[Creature::Bandit].directions.push_back(Direction(0.f, 50.f, -1.f));
+	data[Creature::Bandit].hitpoints = 80;
+	data[Creature::Bandit].speed = 100.f;
+	data[Creature::Bandit].attackDamage = 10;
+	data[Creature::Bandit].aggroDistance = 200.f;
+	data[Creature::Bandit].fireInterval = sf::Time::Zero;
+	data[Creature::Bandit].attackInterval = sf::seconds(0.5f);
+	data[Creature::Bandit].texture = Textures::Bandit;
+	data[Creature::Bandit].textureRect = sf::IntRect(0, 0, 48, 67);
+
 
 	// Archers are stationary and fire arrows in one direction frequently
-	data[Creature::Archer].hitpoints		= 25;
-	data[Creature::Archer].speed			= 0.f;
-	data[Creature::Archer].attackDamage		= 0;
-	data[Creature::Archer].aggroDistance	= 0;
-	data[Creature::Archer].fireInterval		= sf::seconds(0.5f);
-	data[Creature::Archer].attackInterval	= sf::Time::Zero;
-	data[Creature::Archer].normalTexture	= Textures::Archer;
-	data[Creature::Archer].attackTexture	= Textures::Archer;
-	data[Creature::Archer].firingTexture	= Textures::ArcherFire;
+	data[Creature::Archer].hitpoints = 60;
+	data[Creature::Archer].speed = 0.f;
+	data[Creature::Archer].attackDamage = 0;
+	data[Creature::Archer].aggroDistance = 500.f;
+	data[Creature::Archer].fireInterval = sf::seconds(3.f);
+	data[Creature::Archer].attackInterval = sf::Time::Zero;
+	data[Creature::Archer].texture = Textures::Archer;
+	data[Creature::Archer].textureRect = sf::IntRect(0, 0, 35, 59);
+
 
 	return data;
 }
@@ -62,14 +60,13 @@ std::vector<ProjectileData> initializeProjectileData()
 {
 	std::vector<ProjectileData> data(Projectile::TypeCount);
 
-	data[Projectile::AlliedArrow].damage = 10;
-	data[Projectile::AlliedArrow].speed = 300.f;
-	data[Projectile::AlliedArrow].texture = Textures::Arrow;
+	data[Projectile::AlliedBullet].damage = 10;
+	data[Projectile::AlliedBullet].speed = 300.f;
+	data[Projectile::AlliedBullet].texture = Textures::Arrow;
 
-	data[Projectile::EnemyArrow].damage = 10;
-	data[Projectile::EnemyArrow].speed = 300.f;
-	data[Projectile::EnemyArrow].texture = Textures::Arrow;
-
+	data[Projectile::EnemyBullet].damage = 10;
+	data[Projectile::EnemyBullet].speed = 300.f;
+	data[Projectile::EnemyBullet].texture = Textures::Arrow;
 
 	return data;
 }
@@ -78,12 +75,16 @@ std::vector<PickupData> initializePickupData()
 {
 	std::vector<PickupData> data(Pickup::TypeCount);
 
-	data[Pickup::HealthRefill].texture = Textures::HealthPotion;
+	data[Pickup::HealthRefill].texture = Textures::HealthRefill;
 	data[Pickup::HealthRefill].action = [](Creature& a) { a.repair(25); };
 
-	data[Pickup::ArrowRefill].texture = Textures::Quiver;
-	data[Pickup::ArrowRefill].action = std::bind(&Creature::collectArrows, _1, 3);
+	data[Pickup::MissileRefill].texture = Textures::MissileRefill;
+
+	data[Pickup::FireSpread].texture = Textures::FireSpread;
+	data[Pickup::FireSpread].action = std::bind(&Creature::increaseSpread, _1);
+
+	data[Pickup::FireRate].texture = Textures::FireRate;
+	data[Pickup::FireRate].action = std::bind(&Creature::increaseFireRate, _1);
 
 	return data;
 }
-

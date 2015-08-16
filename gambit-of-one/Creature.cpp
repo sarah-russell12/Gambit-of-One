@@ -1,5 +1,13 @@
-#include "Headers/Creature.hpp"
-#include "Headers/DataTables.hpp"
+#include "Creature.hpp"
+#include "DataTables.hpp"
+#include "Utility.hpp"
+#include "Pickup.hpp"
+#include "CommandQueue.hpp"
+#include "ResourceHolder.hpp"
+
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+
 #include <cmath>
 
 namespace
@@ -7,38 +15,38 @@ namespace
 	const std::vector<CreatureData> Table = initializeCreatureData();
 }
 
-// public methods
-
 Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	: Entity(Table[type].hitpoints)
 	, mType(type)
-	, mHealthDisplay(nullptr)
-	, mArrowDisplay(nullptr)
-	, mAttackCountdown(Table[type].attackInterval)
-	, mFireCountdown(Table[type].fireInterval)
+	, mSprite(textures.get(Table[type].texture), Table[type].textureRect)
 	, mFireCommand()
-	, mDropPickupCommand()
+	, mAttackCountdown(sf::Time::Zero)
+	, mFireCountdown(sf::Time::Zero)
 	, mIsFiring(false)
 	, mIsAttacking(false)
 	, mIsMarkedForRemoval(false)
-	, mNormalTexture(textures.get(Table[type].normalTexture))
-	, mAttackTexture(textures.get(Table[type].attackTexture))
-	, mFiringTexture(textures.get(Table[type].firingTexture))
-	, mArrowAmmo(1)
-	, mTravelledDistance(0)
+	, mFireRateLevel(1)
+	, mSpreadLevel(1)
+	, mDropPickupCommand()
+	, mTravelledDistance(0.f)
 	, mDirectionIndex(0)
+	, mHealthDisplay(nullptr)
+	, mHeroTextures()
+	, mCompass(South)
 	, mIsAggroed(false)
+	, mTargetDirection()
+		
 {
-	mSprite.setTexture(mNormalTexture);
+
 	centerOrigin(mSprite);
 
-	mFireCommand.category = Category::Scene;
+	mFireCommand.category = Category::SceneAirLayer;
 	mFireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
-			createArrows(node, textures);
+		createArrows(node, textures);
 	};
 
-	mDropPickupCommand.category = Category::Scene;
+	mDropPickupCommand.category = Category::SceneAirLayer;
 	mDropPickupCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
 		createPickup(node, textures);
@@ -48,22 +56,45 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 	mHealthDisplay = healthDisplay.get();
 	attachChild(std::move(healthDisplay));
 
-	if (getCategory() == Category::Player)
+	updateTexts();
+}
+
+void Creature::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(mSprite, states);
+}
+
+void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
+{
+	updateSprite();
+	// Entity has been destroyed: Possibly drop pickup, mark for removal
+	if (isDestroyed())
 	{
-		std::unique_ptr<TextNode> arrowDisplay(new TextNode(fonts, ""));
-		arrowDisplay->setPosition(0, 70);
-		attachChild(std::move(arrowDisplay));
+		checkPickupDrop(commands);
+
+		mIsMarkedForRemoval = true;
+		return;
 	}
 
+	checkProjectileLaunch(dt, commands);
+
+	checkAttacks(dt, commands);
+
+
+	// Update enemy movement pattern; apply velocity
+	updateMovementPattern(dt);
+	Entity::updateCurrent(dt, commands);
+
+	// Update texts
 	updateTexts();
 }
 
 unsigned int Creature::getCategory() const
 {
 	if (isAllied())
-		return Category::Player;
+		return Category::PlayerCreature;
 	else
-		return Category::Enemy;
+		return Category::EnemyCreature;
 }
 
 sf::FloatRect Creature::getBoundingRect() const
@@ -79,6 +110,11 @@ bool Creature::isMarkedForRemoval() const
 bool Creature::isAllied() const
 {
 	return mType == Hero;
+}
+
+bool Creature::isAggroed() const
+{
+	return mIsAggroed;
 }
 
 bool Creature::isGuided() const
@@ -111,110 +147,64 @@ int Creature::getDamage() const
 	return Table[mType].attackDamage;
 }
 
-void Creature::collectArrows(unsigned int count)
+float Creature::getAggroDistance() const
 {
-	mArrowAmmo += count;
+	return Table[mType].aggroDistance;
+}
+
+void Creature::increaseFireRate()
+{
+	if (mFireRateLevel < 10)
+		++mFireRateLevel;
+}
+
+void Creature::increaseSpread()
+{
+	if (mSpreadLevel < 3)
+		++mSpreadLevel;
+}
+
+void Creature::fire()
+{
+	if (Table[mType].fireInterval != sf::Time::Zero)
+		mIsFiring = true;
 }
 
 void Creature::attack()
 {
-	if (isAllied() || !isRanged())
-	{
+	if (Table[mType].attackInterval != sf::Time::Zero)
 		mIsAttacking = true;
-		mSprite.setTexture(mAttackTexture);
-		centerOrigin(mSprite);
-	}
-}
-
-void Creature::fireArrow()
-{
-	if (isRanged())
-	{
-		mIsFiring = true;
-		mSprite.setTexture(mFiringTexture);
-		centerOrigin(mSprite);
-	}
-}
-
-void Creature::guideTowards(sf::Vector2f position)
-{
-	assert(isGuided());
-	checkAggro(position);
-	mTargetDirection = unitVector(position - getWorldPosition());
-}
-
-
-// private methods
-
-void Creature::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(mSprite, states);
-}
-
-void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
-{
-	// Entity has been destroyed: Possibly drop pickup, mark for removal
-	if (isDestroyed())
-	{
-		checkPickupDrop(commands);
-
-		mIsMarkedForRemoval = true;
-		return;
-	}
-
-	// Check if there are ranged or melee attacks being done
-	checkAttacks(dt, commands);
-	checkProjectileLaunch(dt, commands);
-
-	// Update enemy movement pattern; apply velocity
-	updateMovementPattern(dt);
-	Entity::updateCurrent(dt, commands);
-
-	// Update texts
-	updateTexts();
 }
 
 void Creature::updateMovementPattern(sf::Time dt)
 {
-	// Different AI for different enemies
-	// Beast enemies, like rats, converge on the hero.
-	// Humanoid enemies have set pathing.
-	if (!isGuided()) 
+	if (isGuided() && mIsAggroed)
 	{
-		// Enemy airplane: Movement pattern
-		const std::vector<Direction>& directions = Table[mType].directions;
-		if (!directions.empty())
+		const float approachRate = getMaxSpeed();
+
+		sf::Vector2f newVelocity = unitVector(approachRate * dt.asSeconds() * mTargetDirection + getVelocity());
+		newVelocity *= getMaxSpeed();
+		
+		setVelocity(newVelocity);
+	}
+
+	if (isRanged() && mIsAggroed)
+	{
+		sf::Vector2f currentDirection = mTargetDirection;
+
+		if (abs(currentDirection.x) > abs(currentDirection.y))
 		{
-			// Moved long enough in current direction: Change direction
-			if (mTravelledDistance > directions[mDirectionIndex].distance)
-			{
-				mDirectionIndex = (mDirectionIndex + 1) % directions.size();
-				mTravelledDistance = 0.f;
-			}
-
-			float sign = directions[mDirectionIndex].sign;
-
-			// Compute velocity from direction
-			float radians = toRadian(directions[mDirectionIndex].angle + 90.f);
-			float vx = getMaxSpeed() * std::cos(radians) * sign;
-			float vy = getMaxSpeed() * std::sin(radians) * sign;
-
-			setVelocity(vx, vy);
-
-			mTravelledDistance += getMaxSpeed() * dt.asSeconds();
+			if (currentDirection.x > 0)
+				mCompass = East;
+			else
+				mCompass = West;
 		}
-	} 
-	else
-	{
-		if (mIsAggroed)
-		{ 
-			const float approachRate = 200.f;
-
-			sf::Vector2f newVelocity = unitVector(approachRate
-				* dt.asSeconds() * mTargetDirection + getVelocity());
-
-			newVelocity *= getMaxSpeed();
-			setVelocity(newVelocity);
+		else if (!(currentDirection.x == 0 && currentDirection.y == 0))
+		{
+			if (currentDirection.y > 0)
+				mCompass = South;
+			else
+				mCompass = North;
 		}
 	}
 }
@@ -225,55 +215,20 @@ void Creature::checkPickupDrop(CommandQueue& commands)
 		commands.push(mDropPickupCommand);
 }
 
-void Creature::checkAggro(sf::Vector2f position)
-{
-	if (!isGuided())
-		return;
-	
-	sf::Vector2f thisPosition = getPosition();
-	if (length(thisPosition - position) < Table[mType].aggroDistance)
-		mIsAggroed = true;
-	else
-		mIsAggroed = false;
-}
-
-void Creature::checkAttacks(sf::Time dt, CommandQueue& commands)
-{
-	if (!isAllied())
-		attack();
-
-	if (mIsAttacking && mAttackCountdown <= sf::Time::Zero)
-	{
-		mAttackCountdown += Table[mType].attackInterval;
-		mIsAttacking = false;
-		mSprite.setTexture(mNormalTexture);
-		centerOrigin(mSprite);
-	}
-	else if (mAttackCountdown > sf::Time::Zero)
-	{
-		mAttackCountdown -= dt;
-		mIsAttacking = false;
-	}
-}
-
 void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
-	// Only ranged units can fire
-	if (!isRanged()) return;
-
 	// Enemies try to fire all the time
-	if (!isAllied() && isRanged())
-		fireArrow();
+	if (!isAllied())
+		fire();
 
 	// Check for automatic gunfire, allow only in intervals
 	if (mIsFiring && mFireCountdown <= sf::Time::Zero)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
-		mFireCountdown += Table[mType].fireInterval;
-		mIsFiring = false;
-		mSprite.setTexture(mNormalTexture);
-		centerOrigin(mSprite);
+		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
+		mIsFiring = false; 
+		// update Sprite
 	}
 	else if (mFireCountdown > sf::Time::Zero)
 	{
@@ -283,23 +238,88 @@ void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	}
 }
 
+void Creature::checkAttacks(sf::Time dt, CommandQueue& commands)
+{
+	if (mIsAttacking && mAttackCountdown <= sf::Time::Zero)
+	{
+		mAttackCountdown += Table[mType].attackInterval;
+		mIsAttacking = false;
+	}
+	else if (mAttackCountdown > sf::Time::Zero)
+	{
+		mAttackCountdown -= dt;
+		mIsAttacking = false;
+	}
+}
+
+void Creature::checkAggro(sf::Vector2f position)
+{
+	if (!isGuided())
+		return;
+
+	sf::Vector2f thisPosition = getPosition();
+	if (length(thisPosition - position) < Table[mType].aggroDistance)
+		mIsAggroed = true;
+	else
+		mIsAggroed = false;
+}
+
 void Creature::createArrows(SceneNode& node, const TextureHolder& textures) const
 {
-	Projectile::Type type = isAllied() ? Projectile::AlliedArrow : Projectile::EnemyArrow;
-		
-	createProjectile(node, type, 0.0f, 0.5f, textures);
+	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
+
+	switch (mSpreadLevel)
+	{
+	case 1:
+		createProjectile(node, type, 0.0f, 0.5f, textures);
+		break;
+
+	case 2:
+		createProjectile(node, type, -0.33f, 0.33f, textures);
+		createProjectile(node, type, +0.33f, 0.33f, textures);
+		break;
+
+	case 3:
+		createProjectile(node, type, -0.5f, 0.33f, textures);
+		createProjectile(node, type, 0.0f, 0.5f, textures);
+		createProjectile(node, type, +0.5f, 0.33f, textures);
+		break;
+	}
 }
 
 void Creature::createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const
 {
-	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
+	std::unique_ptr<Projectile> projectile(new Projectile(type, textures, mCompass));
 
-	sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
-	sf::Vector2f velocity(0, projectile->getMaxSpeed());
+	//sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
+	
+	/*sf::Vector2f velocity(0, projectile->getMaxSpeed());
+	float sign = isAllied() ? -1.f : +1.f;*/
+	sf::Vector2f velocity;
+	float sign;
 
-	float sign = isAllied() ? -1.f : +1.f;
-	projectile->setPosition(getWorldPosition() + offset * sign);
-	projectile->setVelocity(velocity * sign);
+	switch (mCompass)
+	{
+	case North:
+		velocity.x = 0;
+		velocity.y = projectile->getMaxSpeed() * -1.f;
+		break;
+	case South:
+		velocity.x = 0;
+		velocity.y = projectile->getMaxSpeed();
+		break;
+	case East:
+		velocity.x = projectile->getMaxSpeed();
+		velocity.y = 0;
+		break;
+	case West:
+		velocity.x = projectile->getMaxSpeed() * -1.f;
+		velocity.y = 0;
+		break;
+	}
+	
+	projectile->setPosition(getWorldPosition());
+	projectile->setVelocity(velocity);
 	node.attachChild(std::move(projectile));
 }
 
@@ -315,15 +335,73 @@ void Creature::createPickup(SceneNode& node, const TextureHolder& textures) cons
 
 void Creature::updateTexts()
 {
-	mHealthDisplay->setString(std::to_string(getHitpoints()) + " HP");
+	mHealthDisplay->setString(toString(getHitpoints()) + " HP");
 	mHealthDisplay->setPosition(0.f, 50.f);
 	mHealthDisplay->setRotation(-getRotation());
+}
 
-	if (mArrowDisplay)
+Entity::cDirection Creature::getCompass() const
+{
+	return mCompass;
+}
+
+void Creature::updateCompass()
+{
+	sf::Vector2f velocity = getVelocity();
+	if (abs(velocity.x) > abs(velocity.y))
 	{
-		if (mArrowAmmo == 0)
-			mArrowDisplay->setString("");
+		if (velocity.x > 0)
+			mCompass = East;
 		else
-			mArrowDisplay->setString("M: " + toString(mArrowAmmo));
+			mCompass = West;
 	}
+	else if (!(velocity.x == 0 && velocity.y == 0))
+	{
+		if (velocity.y > 0)
+			mCompass = South;
+		else
+			mCompass = North;
+	}
+}
+
+void Creature::updateCreatureDirection()
+{
+	sf::IntRect textureRect = mSprite.getTextureRect();
+	textureRect.left = 0;
+	updateCompass();
+	switch (mCompass)
+	{
+	case North:
+		textureRect.left += 2 * textureRect.width;
+		break;
+	case South:
+		textureRect.left = 0;
+		break;
+	case East:
+		textureRect.left += textureRect.width;
+		break;
+	case West:
+		textureRect.left += 3 * textureRect.width;
+		break;
+	}
+	mSprite.setTextureRect(textureRect);
+}
+
+void Creature::updateSprite()
+{
+	updateCreatureDirection();
+	sf::IntRect textureRect = mSprite.getTextureRect();
+	textureRect.top = 0;
+
+	if (mIsFiring || mFireCountdown > sf::Time::Zero)
+		textureRect.top += textureRect.height;
+	if (mIsAttacking || mAttackCountdown > sf::Time::Zero)
+		textureRect.top += 2 * textureRect.height;
+	mSprite.setTextureRect(textureRect);
+}
+
+void Creature::guideTowards(sf::Vector2f position)
+{
+	assert(isGuided());
+	mTargetDirection = unitVector(position - getWorldPosition());
 }

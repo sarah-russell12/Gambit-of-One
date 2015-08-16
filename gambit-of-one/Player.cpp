@@ -1,6 +1,15 @@
-#include "Headers/Player.h"
+#include "Player.hpp"
+#include "CommandQueue.hpp"
+#include "Creature.hpp"
+#include "Foreach.hpp"
+
+#include <map>
+#include <string>
+#include <algorithm>
+
 
 using namespace std::placeholders;
+
 
 struct CreatureMover
 {
@@ -17,100 +26,82 @@ struct CreatureMover
 	sf::Vector2f velocity;
 };
 
-// public
 Player::Player()
+	: mCurrentMissionStatus(MissionRunning)
 {
-	mKeyBinding[sf::Keyboard::Left] = MoveLeft;
-	mKeyBinding[sf::Keyboard::Right] = MoveRight;
-	mKeyBinding[sf::Keyboard::Up] = MoveUp;
-	mKeyBinding[sf::Keyboard::Down] = MoveDown;
-	mKeyBinding[sf::Keyboard::Space] = Attack;
-	mKeyBinding[sf::Keyboard::F] = FireArrow;
+	// Set initial key bindings
+	mKeyBinding[sf::Keyboard::A] = MoveLeft;
+	mKeyBinding[sf::Keyboard::D] = MoveRight;
+	mKeyBinding[sf::Keyboard::W] = MoveUp;
+	mKeyBinding[sf::Keyboard::S] = MoveDown;
+	mKeyBinding[sf::Keyboard::M] = Attack;
+	mKeyBinding[sf::Keyboard::Space] = Fire;
+	//mKeyBinding[sf::Keyboard::M] = LaunchMissile;
 
+	// Set initial action bindings
 	initializeActions();
 
-	for (auto& pair : mActionBinding)
-	{
-		pair.second.category = Category::Player;
-	}
+	// Assign all categories to player's aircraft
+	FOREACH(auto& pair, mActionBinding)
+		pair.second.category = Category::PlayerCreature;
 }
 
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
 	if (event.type == sf::Event::KeyPressed)
 	{
+		// Check if pressed key appears in key binding, trigger command if so
 		auto found = mKeyBinding.find(event.key.code);
-		if (found != mKeyBinding.end()
-			&& !isRealtimeAction(found->second))
-		{
+		if (found != mKeyBinding.end() && !isRealtimeAction(found->second))
 			commands.push(mActionBinding[found->second]);
-		}
 	}
 }
 
 void Player::handleRealtimeInput(CommandQueue& commands)
 {
-	for (auto pair : mKeyBinding)
+	// Traverse all assigned keys and check if they are pressed
+	FOREACH(auto pair, mKeyBinding)
 	{
-		if (sf::Keyboard::isKeyPressed(pair.first)
-			&& isRealtimeAction(pair.second))
-		{
+		// If key is pressed, lookup action and trigger corresponding command
+		if (sf::Keyboard::isKeyPressed(pair.first) && isRealtimeAction(pair.second))
 			commands.push(mActionBinding[pair.second]);
-		}
 	}
 }
 
 void Player::assignKey(Action action, sf::Keyboard::Key key)
 {
-	for (auto pair : mKeyBinding) 
+	// Remove all keys that already map to action
+	for (auto itr = mKeyBinding.begin(); itr != mKeyBinding.end();)
 	{
-		if (pair.second == action) 
-		{
-			auto pos = mKeyBinding.find(pair.first);
-			mKeyBinding.erase(pos);
-			mKeyBinding[key] = action;
-			return;
-		}
+		if (itr->second == action)
+			mKeyBinding.erase(itr++);
+		else
+			++itr;
 	}
+
+	// Insert new binding
 	mKeyBinding[key] = action;
 }
 
 sf::Keyboard::Key Player::getAssignedKey(Action action) const
 {
-	for (auto pair : mKeyBinding)
+	FOREACH(auto pair, mKeyBinding)
 	{
 		if (pair.second == action)
-		{
 			return pair.first;
-		}
 	}
+
 	return sf::Keyboard::Unknown;
 }
 
-void Player::setStatus(Status status)
+void Player::setMissionStatus(MissionStatus status)
 {
-	mStatus = status;
+	mCurrentMissionStatus = status;
 }
 
-Player::Status Player::getStatus() const
+Player::MissionStatus Player::getMissionStatus() const
 {
-	return mStatus;
-}
-
-// private
-bool Player::isRealtimeAction(Action action)
-{
-	switch (action)
-	{
-	case MoveLeft:
-	case MoveRight:
-	case MoveUp:
-	case MoveDown:
-	case Attack:
-		return true;
-	default:
-		return false;
-	}
+	return mCurrentMissionStatus;
 }
 
 void Player::initializeActions()
@@ -119,6 +110,22 @@ void Player::initializeActions()
 	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
 	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
 	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
-	mActionBinding[Attack].action = derivedAction<Creature>([](Creature& c, sf::Time){ c.attack(); });
-	mActionBinding[FireArrow].action = derivedAction<Creature>([](Creature& c, sf::Time){ c.fireArrow(); });
+	mActionBinding[Attack].action = derivedAction<Creature>([](Creature& a, sf::Time){ a.attack(); });
+	mActionBinding[Fire].action = derivedAction<Creature>([](Creature& a, sf::Time){ a.fire(); });
+}
+
+bool Player::isRealtimeAction(Action action)
+{
+	switch (action)
+	{
+	case MoveLeft:
+	case MoveRight:
+	case MoveDown:
+	case MoveUp:
+	case Fire:
+		return true;
+
+	default:
+		return false;
+	}
 }

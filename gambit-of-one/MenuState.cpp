@@ -1,17 +1,20 @@
-#include "Headers/MenuState.h"
+#include "MenuState.hpp"
+#include "Utility.hpp"
+#include "Button.hpp"
+#include "ResourceHolder.hpp"
 
-MenuState::MenuState(StateStack& stack, Context& context) :
-State(stack, context),
-//mOptions(),
-//mOptionIndex(0),
-mGUIContainer(),
-mBackgroundSprite()
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
+
+
+MenuState::MenuState(StateStack& stack, Context context)
+	: State(stack, context)
+	, mGUIContainer()
 {
-	mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));
-	sf::Font& font = context.fonts->get(Fonts::Main);
+	sf::Texture& texture = context.textures->get(Textures::TitleScreen);
+	mBackgroundSprite.setTexture(texture);
 
-	auto playButton = std::make_shared<GUI::Button>(*context.fonts, 
-		*context.textures, GUI::Button::Big);
+	auto playButton = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
 	playButton->setPosition(100, 300);
 	playButton->setText("Play");
 	playButton->setCallback([this]()
@@ -19,40 +22,34 @@ mBackgroundSprite()
 		requestStackPop();
 		requestStackPush(States::Game);
 	});
-	mGUIContainer.pack(playButton);
 
-	auto settingsButton = std::make_shared<GUI::Button>(*context.fonts,
-		*context.textures, GUI::Button::Big);
+	auto settingsButton = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
 	settingsButton->setPosition(100, 350);
-	settingsButton->setText("Key Bindings");
+	settingsButton->setText("Settings");
 	settingsButton->setCallback([this]()
 	{
 		requestStackPush(States::Settings);
 	});
-	mGUIContainer.pack(settingsButton);
 
-	auto exitButton = std::make_shared<GUI::Button>(*context.fonts, 
-		*context.textures, GUI::Button::Big);
+	auto exitButton = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
 	exitButton->setPosition(100, 400);
 	exitButton->setText("Exit");
 	exitButton->setCallback([this]()
 	{
-		requestStackClear();
+		requestStackPop();
 	});
+
+	mGUIContainer.pack(playButton);
+	mGUIContainer.pack(settingsButton);
 	mGUIContainer.pack(exitButton);
-
-}
-
-bool MenuState::handleEvent(const sf::Event& event)
-{
-	mGUIContainer.handleEvent(event);
-	return false;
 }
 
 void MenuState::draw()
 {
 	sf::RenderWindow& window = *getContext().window;
+
 	window.setView(window.getDefaultView());
+
 	window.draw(mBackgroundSprite);
 	window.draw(mGUIContainer);
 }
@@ -60,4 +57,10 @@ void MenuState::draw()
 bool MenuState::update(sf::Time)
 {
 	return true;
+}
+
+bool MenuState::handleEvent(const sf::Event& event)
+{
+	mGUIContainer.handleEvent(event);
+	return false;
 }

@@ -1,8 +1,16 @@
-#include "Headers/Entity.h"
-#include "Headers/SceneNode.h"
+#include"Entity.hpp"
 
-Entity::Entity(int hitPoints)
-	: mHitPoints(hitPoints) {}
+#include <cassert>
+
+
+Entity::Entity(int hitpoints)
+	: mVelocity()
+	, mHitpoints(hitpoints)
+	, mImmunity(false)
+	, mImmunityCountdown()
+{
+	//mCompass = South;
+}
 
 void Entity::setVelocity(sf::Vector2f velocity)
 {
@@ -31,35 +39,61 @@ void Entity::accelerate(float vx, float vy)
 	mVelocity.y += vy;
 }
 
-void Entity::updateCurrent(sf::Time dt, CommandQueue& commands) {
-	move(mVelocity * dt.asSeconds());
-}
-
 int Entity::getHitpoints() const
 {
-	return mHitPoints;
-}
-
-bool Entity::isDestroyed() const
-{
-	return mHitPoints <= 0;
+	return mHitpoints;
 }
 
 void Entity::repair(int points)
 {
 	assert(points > 0);
 
-	mHitPoints += points;
+	mHitpoints += points;
 }
 
 void Entity::damage(int points)
 {
 	assert(points > 0);
-
-	mHitPoints -= points;
+	mHitpoints -= points;
+	mImmunity = true;
 }
 
 void Entity::destroy()
 {
-	mHitPoints = 0;
+	mHitpoints = 0;
 }
+
+bool Entity::isDestroyed() const
+{
+	return mHitpoints <= 0;
+}
+
+bool Entity::isImmune() const
+{
+	if (mImmunityCountdown > sf::Time::Zero)
+		return true;
+	return false;
+}
+
+void Entity::checkImmunity(sf::Time dt)
+{
+	if (mImmunity && mImmunityCountdown <= sf::Time::Zero)
+	{
+		// Restart Immunity Timer
+		mImmunityCountdown += sf::seconds(3);
+		mImmunity = false;
+	}
+	else if (mImmunityCountdown > sf::Time::Zero)
+	{
+		// Interval not expired: Decrease it further
+		mImmunityCountdown -= dt;
+		mImmunity = false;
+	}
+}
+
+void Entity::updateCurrent(sf::Time dt, CommandQueue&)
+{
+	move(mVelocity * dt.asSeconds());	
+	checkImmunity(dt);
+}
+

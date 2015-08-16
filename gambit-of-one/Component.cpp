@@ -1,38 +1,46 @@
-#include "Headers/Component.h"
+#include "Component.hpp"
 
-GUI::Component::Component()
-	: mIsActive(false)
-	, mIsSelected(false)
-{}
-
-bool GUI::Component::isSelected() const
+namespace GUI
 {
-	return mIsSelected;
+
+	Component::Component()
+		: mIsSelected(false)
+		, mIsActive(false)
+	{
+	}
+
+	Component::~Component()
+	{
+	}
+
+	bool Component::isSelected() const
+	{
+		return mIsSelected;
+	}
+
+	void Component::select()
+	{
+		mIsSelected = true;
+	}
+
+	void Component::deselect()
+	{
+		mIsSelected = false;
+	}
+
+	bool Component::isActive() const
+	{
+		return mIsActive;
+	}
+
+	void Component::activate()
+	{
+		mIsActive = true;
+	}
+
+	void Component::deactivate()
+	{
+		mIsActive = false;
+	}
+
 }
-
-void GUI::Component::select()
-{
-	mIsSelected = true;
-}
-
-void GUI::Component::deselect()
-{
-	mIsSelected = false;
-}
-
-bool GUI::Component::isActive() const
-{
-	return mIsActive;
-}
-
-void GUI::Component::activate()
-{
-	mIsActive = true;
-}
-
-void GUI::Component::deactivate()
-{
-	mIsActive = false;
-}
-
-

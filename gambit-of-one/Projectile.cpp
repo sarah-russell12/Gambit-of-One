@@ -1,41 +1,91 @@
-#include "DataTables.cpp"
+#include "Projectile.hpp"
+#include "DataTables.hpp"
+#include "Utility.hpp"
+#include "ResourceHolder.hpp"
+
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+
+#include <cmath>
+#include <cassert>
+
 
 namespace
 {
-	const std::vector<ProjectileData> ProjectileTable = initializeProjectileData();
+	const std::vector<ProjectileData> Table = initializeProjectileData();
 }
 
-// public
-Projectile::Projectile(Type type, const TextureHolder& textures)
+Projectile::Projectile(Type type, const TextureHolder& textures, const Entity::cDirection& direction)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(ProjectileTable[type].texture))
+	, mSprite(textures.get(Table[type].texture))
 	, mTargetDirection()
+	, mCDirection(direction)
+	, upArrow()
+	, downArrow()
+	, leftArrow()
+	, rightArrow()
 {
+	switch (direction)
+	{
+	case North:
+		break;
+	case East:
+		rotate(90);
+		break;
+	case South:
+		rotate(180);
+		break;
+	case West:
+		rotate(270);
+		break;
+	default:
+		break;
+	}
+
 	centerOrigin(mSprite);
 }
 
+//void Projectile::guideTowards(sf::Vector2f position)
+//{
+//	assert(isGuided());
+//	mTargetDirection = unitVector(position - getWorldPosition());
+//}
+
 bool Projectile::isGuided() const
 {
-	return false;
+	return mType == Missile;
 }
 
-void Projectile::guideTowards(sf::Vector2f position)
+void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	assert(isGuided());
-	mTargetDirection = unitVector(position - getWorldPosition());
+
+	if (isGuided())
+	{
+		const float approachRate = 200.f;
+
+		sf::Vector2f newVelocity = unitVector(approachRate * dt.asSeconds() * mTargetDirection + getVelocity());
+		newVelocity *= getMaxSpeed();
+		float angle = std::atan2(newVelocity.y, newVelocity.x);
+
+		setRotation(toDegree(angle) + 90.f);
+		setVelocity(newVelocity);
+	}
+
+	Entity::updateCurrent(dt, commands);
+}
+
+void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(mSprite, states);
 }
 
 unsigned int Projectile::getCategory() const
 {
-	if (mType == EnemyArrow)
-	{
+	if (mType == EnemyBullet)
 		return Category::EnemyProjectile;
-	}
 	else
-	{
 		return Category::AlliedProjectile;
-	}
 }
 
 sf::FloatRect Projectile::getBoundingRect() const
@@ -45,36 +95,27 @@ sf::FloatRect Projectile::getBoundingRect() const
 
 float Projectile::getMaxSpeed() const
 {
-	return ProjectileTable[mType].speed;
+	return Table[mType].speed;
 }
 
 int Projectile::getDamage() const
 {
-	return ProjectileTable[mType].damage;
+	return Table[mType].damage;
 }
 
-// private
-void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
+void Projectile::updateSprite()
 {
-	if (isGuided())
-	{
-		const float approachRate = 200.f;
-
-		sf::Vector2f newVelocity = unitVector(approachRate
-			* dt.asSeconds() * mTargetDirection + getVelocity());
-
-		newVelocity *= getMaxSpeed();
-		float angle = std::atan2(newVelocity.y, newVelocity.x);
-
-		setRotation(toDegree(angle) + 90.f);
-		setVelocity(newVelocity);
-	}
-	Entity::updateCurrent(dt, commands);
+	//switch (mCDirection)
+	//{
+	//case North:
+	//	rot
+	//case East:
+	//	mSprite = rightArrow;
+	//case South:
+	//	mSprite = downArrow;
+	//case West:
+	//	mSprite = leftArrow;
+	//default:
+	//	break;
+	//}
 }
-
-void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(mSprite, states);
-}
-
-

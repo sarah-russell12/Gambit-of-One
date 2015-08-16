@@ -1,40 +1,47 @@
-#include "Headers/PauseState.h"
+#include "PauseState.hpp"
+#include "Button.hpp"
+#include "Utility.hpp"
+#include "ResourceHolder.hpp"
 
-PauseState::PauseState(StateStack& stack, Context& context) :
-State(stack, context),
-mPausedText(),
-mGUIContainer()
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
+
+
+PauseState::PauseState(StateStack& stack, Context context)
+	: State(stack, context)
+	, mBackgroundSprite()
+	, mPausedText()
+	, mGUIContainer()
 {
 	sf::Font& font = context.fonts->get(Fonts::Main);
-	sf::Vector2f viewSize = context.window->getView().getSize();
+	sf::Vector2f windowSize(context.window->getSize());
 
 	mPausedText.setFont(font);
-	mPausedText.setString("Paused");
-	mPausedText.setCharacterSize(40);
+	mPausedText.setString("Game Paused");
+	mPausedText.setCharacterSize(70);
 	centerOrigin(mPausedText);
-	mPausedText.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
+	mPausedText.setPosition(0.5f * windowSize.x, 0.4f * windowSize.y);
 
-	auto continueButton = std::make_shared<GUI::Button>(*context.fonts, 
-		*context.textures, GUI::Button::Big);
-	continueButton->setPosition(100, 250);
-	continueButton->setText("Continue");
-	continueButton->setCallback([this]()
+	auto returnButton = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
+	returnButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 75);
+	returnButton->setText("Return");
+	returnButton->setCallback([this]()
 	{
 		requestStackPop();
 	});
-	mGUIContainer.pack(continueButton);
 
-	auto menuButton = std::make_shared<GUI::Button>(*context.fonts, 
-		*context.textures, GUI::Button::Big);
-	menuButton->setPosition(100, 350);
-	menuButton->setText("Main Menu");
-	menuButton->setCallback([this]()
+	auto backToMenuButton = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
+	backToMenuButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 125);
+	backToMenuButton->setText("Back to menu");
+	backToMenuButton->setCallback([this]()
 	{
-		requestStackPop();
+		requestStateClear();
 		requestStackPush(States::Menu);
 	});
-	mGUIContainer.pack(menuButton);
 
+	mGUIContainer.pack(returnButton);
+	mGUIContainer.pack(backToMenuButton);
 }
 
 void PauseState::draw()
@@ -44,12 +51,14 @@ void PauseState::draw()
 
 	sf::RectangleShape backgroundShape;
 	backgroundShape.setFillColor(sf::Color(0, 0, 0, 150));
-	backgroundShape.setSize(sf::Vector2f(window.getSize()));
+	backgroundShape.setSize(window.getView().getSize());
 
+	window.draw(backgroundShape);
+	window.draw(mPausedText);
 	window.draw(mGUIContainer);
 }
 
-bool PauseState::update(sf::Time dt)
+bool PauseState::update(sf::Time)
 {
 	return false;
 }
@@ -57,6 +66,5 @@ bool PauseState::update(sf::Time dt)
 bool PauseState::handleEvent(const sf::Event& event)
 {
 	mGUIContainer.handleEvent(event);
-
 	return false;
 }

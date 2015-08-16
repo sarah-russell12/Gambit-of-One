@@ -1,16 +1,22 @@
-#include "Headers/Pickup.h"
-#include "Headers/Creature.hpp"
+#include "Pickup.hpp"
+#include "DataTables.hpp"
+#include "Category.hpp"
+#include "CommandQueue.hpp"
+#include "Utility.hpp"
+#include "ResourceHolder.hpp"
+
+#include <SFML/Graphics/RenderTarget.hpp>
+
 
 namespace
 {
-	const std::vector<PickupData> PickupTable = initializePickupData();
+	const std::vector<PickupData> Table = initializePickupData();
 }
 
-// public
 Pickup::Pickup(Type type, const TextureHolder& textures)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(PickupTable[type].texture))
+	, mSprite(textures.get(Table[type].texture))
 {
 	centerOrigin(mSprite);
 }
@@ -27,10 +33,9 @@ sf::FloatRect Pickup::getBoundingRect() const
 
 void Pickup::apply(Creature& player) const
 {
-	PickupTable[mType].action(player);
+	Table[mType].action(player);
 }
 
-// private
 void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);

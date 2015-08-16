@@ -1,20 +1,36 @@
-#include "Headers/Label.h"
+#include "Label.hpp"
+#include "Utility.hpp"
 
-GUI::Label::Label(const std::string& text, const FontHolder& fonts)
-	: mText(text, fonts.get(Fonts::Main), 16) {}
+#include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
-bool GUI::Label::isSelectable() const
+
+namespace GUI
 {
-	return false;
-}
 
-void GUI::Label::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	states.transform *= getTransform();
-	target.draw(mText, states);
-}
+	Label::Label(const std::string& text, const FontHolder& fonts)
+		: mText(text, fonts.get(Fonts::Main), 16)
+	{
+	}
 
-void GUI::Label::setText(const std::string& text)
-{
-	mText.setString(text);
+	bool Label::isSelectable() const
+	{
+		return false;
+	}
+
+	void Label::handleEvent(const sf::Event&)
+	{
+	}
+
+	void Label::draw(sf::RenderTarget& target, sf::RenderStates states) const
+	{
+		states.transform *= getTransform();
+		target.draw(mText, states);
+	}
+
+	void Label::setText(const std::string& text)
+	{
+		mText.setString(text);
+	}
+
 }
