@@ -36,7 +36,6 @@ public:
 		MoveDown,
 		Attack,
 		Fire,
-		LaunchMissile,
 		ActionCount
 	};
 

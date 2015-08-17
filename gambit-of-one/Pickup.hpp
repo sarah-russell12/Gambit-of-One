@@ -34,7 +34,7 @@ public:
 	enum Type
 	{
 		HealthRefill,
-		MissileRefill,
+		//MissileRefill,   //Holding off on this until melee combat is balanced
 		FireSpread,
 		FireRate,
 		TypeCount

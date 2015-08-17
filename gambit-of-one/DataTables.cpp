@@ -33,22 +33,22 @@ std::vector<CreatureData> initializeCreatureData()
 	
 	// Rats run at the player, though they hit for little, they can be a real
 	// pest if left to attack the player
-	data[Creature::Rat].hitpoints = 50;
-	data[Creature::Rat].speed = 50.f;
+	data[Creature::Rat].hitpoints = 15;
+	data[Creature::Rat].speed = 150.f;
 	data[Creature::Rat].attackDamage = 5;
 	data[Creature::Rat].aggroDistance = 300.f;
 	data[Creature::Rat].fireInterval = sf::Time::Zero;
-	data[Creature::Rat].attackInterval = sf::seconds(2.f);
+	data[Creature::Rat].attackInterval = sf::seconds(0.5f);
 	data[Creature::Rat].texture = Textures::Rat;
 	data[Creature::Rat].textureRect = sf::IntRect(0, 0, 34, 16);
 	
 	// Bandits move in a predetermined way and attack frequently
 	data[Creature::Bandit].hitpoints = 80;
-	data[Creature::Bandit].speed = 100.f;
+	data[Creature::Bandit].speed = 120.f;
 	data[Creature::Bandit].attackDamage = 10;
-	data[Creature::Bandit].aggroDistance = 200.f;
+	data[Creature::Bandit].aggroDistance = 300.f;
 	data[Creature::Bandit].fireInterval = sf::Time::Zero;
-	data[Creature::Bandit].attackInterval = sf::seconds(0.5f);
+	data[Creature::Bandit].attackInterval = sf::seconds(1.f);
 	data[Creature::Bandit].texture = Textures::Bandit;
 	data[Creature::Bandit].textureRect = sf::IntRect(0, 0, 48, 67);
 
@@ -89,7 +89,9 @@ std::vector<PickupData> initializePickupData()
 	data[Pickup::HealthRefill].texture = Textures::HealthRefill;
 	data[Pickup::HealthRefill].action = [](Creature& a) { a.repair(25); };
 
-	data[Pickup::MissileRefill].texture = Textures::MissileRefill;
+	// Melee combat is not balanced enough for the implementation of the hero 
+	// having limited arrows
+	//data[Pickup::MissileRefill].texture = Textures::MissileRefill;
 
 	data[Pickup::FireSpread].texture = Textures::FireSpread;
 	data[Pickup::FireSpread].action = std::bind(&Creature::increaseSpread, _1);

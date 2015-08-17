@@ -32,7 +32,7 @@ namespace Textures
 		Arrow,
 		Road,
 		HealthRefill,
-		MissileRefill,
+		//MissileRefill,  //Holding off on implementing this until melee combat is balanced
 		FireSpread,
 		FireRate,
 		TitleScreen,

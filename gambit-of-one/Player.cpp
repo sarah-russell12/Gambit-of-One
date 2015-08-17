@@ -45,9 +45,8 @@ Player::Player()
 	mKeyBinding[sf::Keyboard::D] = MoveRight;
 	mKeyBinding[sf::Keyboard::W] = MoveUp;
 	mKeyBinding[sf::Keyboard::S] = MoveDown;
-	mKeyBinding[sf::Keyboard::M] = Attack;
-	mKeyBinding[sf::Keyboard::Space] = Fire;
-	//mKeyBinding[sf::Keyboard::M] = LaunchMissile;
+	mKeyBinding[sf::Keyboard::Space] = Attack;
+	mKeyBinding[sf::Keyboard::F] = Fire;
 
 	// Set initial action bindings
 	initializeActions();
@@ -133,7 +132,7 @@ bool Player::isRealtimeAction(Action action)
 	case MoveRight:
 	case MoveDown:
 	case MoveUp:
-	case Fire:
+	case Attack:
 		return true;
 
 	default:

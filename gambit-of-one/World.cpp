@@ -28,8 +28,8 @@ World::World(sf::RenderWindow& window, FontHolder& fonts)
 	, mTextures()
 	, mSceneGraph()
 	, mSceneLayers()
-	, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f)
-	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
+	, mWorldBounds(0.f, 0.f, 2750.f, mWorldView.getSize().y)
+	, mSpawnPosition(mWorldBounds.left + mWorldView.getSize().x / 2.f, mWorldView.getSize().y / 2.f)
 	, mScrollSpeed(0.f)
 	, mPlayerCreature(nullptr)
 	, mEnemySpawnPoints()
@@ -46,7 +46,7 @@ void World::update(sf::Time dt)
 
 	sf::Vector2f velocity = mPlayerCreature->getVelocity();
 
-	mWorldView.move(velocity.x * dt.asSeconds(), velocity.y * dt.asSeconds());
+	mWorldView.move(velocity.x * dt.asSeconds(), 0.f);
 	mPlayerCreature->setVelocity(0.f, 0.f);
 
 	guideCreatures();
@@ -96,7 +96,7 @@ void World::loadTextures()
 	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
 
 	mTextures.load(Textures::HealthRefill, "Media/Textures/HealthPotion.png");
-	mTextures.load(Textures::MissileRefill, "Media/Textures/Quiver.png");
+	//mTextures.load(Textures::MissileRefill, "Media/Textures/Quiver.png");
 	mTextures.load(Textures::FireSpread, "Media/Textures/FireSpread.png");
 	mTextures.load(Textures::FireRate, "Media/Textures/FireRate.png");
 }
@@ -217,14 +217,14 @@ void World::buildScene()
 
 void World::addEnemies()
 {
-	addEnemy(Creature::Bandit, -350.f, 750.f);
-	addEnemy(Creature::Rat, +100.f, 1200.f);
-	//addEnemy(Creature::Archer, -400.f, 1100.f);
-	addEnemy(Creature::Rat, -70.f, 1400.f);
+	addEnemy(Creature::Bandit, 750.f, -175.f);
+	addEnemy(Creature::Rat, 1200.f, 100.f);
+	addEnemy(Creature::Archer, 1100.f, -200.f);
+	addEnemy(Creature::Rat, 1400.f, -250.f);
 	//addEnemy(Creature::Archer, -400.f, 1500.f);
-	addEnemy(Creature::Rat, 400.f, 1400.f);
-	addEnemy(Creature::Bandit, -200.f, 1600.f);
-	addEnemy(Creature::Rat, 0.f, 500.f);
+	addEnemy(Creature::Rat, 1400.f, 200.f);
+	addEnemy(Creature::Bandit, 1600.f, -100.f);
+	addEnemy(Creature::Rat, 500.f, 0.f);
 
 	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs)
 	{
@@ -312,6 +312,8 @@ sf::FloatRect World::getBattlefieldBounds() const
 	sf::FloatRect bounds = getViewBounds();
 	bounds.top -= 100.f;
 	bounds.height += 100.f;
+	bounds.left -= 100.f;
+	bounds.width += 100.f;
 
 	return bounds;
 }

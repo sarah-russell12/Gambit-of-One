@@ -194,9 +194,14 @@ void Creature::updateMovementPattern(sf::Time dt)
 	{
 		const float approachRate = getMaxSpeed();
 
-		sf::Vector2f newVelocity = unitVector(approachRate * dt.asSeconds() * mTargetDirection + getVelocity());
-		newVelocity *= getMaxSpeed();
-		
+		sf::Vector2f newVelocity(0.f, 0.f);
+
+		if (approachRate != 0.f)
+		{
+			newVelocity += unitVector(approachRate * dt.asSeconds() * mTargetDirection + (getVelocity() * 0.5f));
+			newVelocity *= getMaxSpeed();
+		}
+
 		setVelocity(newVelocity);
 	}
 
@@ -238,7 +243,15 @@ void Creature::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
-		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
+		if (isAllied()) 
+		{
+			mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
+		}
+		else 
+		{
+			// Incredably fast ranged enemies are overpowered
+			mFireCountdown += Table[mType].fireInterval;
+		}
 		mIsFiring = false; 
 		// update Sprite
 	}
