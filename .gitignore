@@ -225,3 +225,5 @@ FakesAssemblies/
 *.vcxproj.user
 *.sln
 *.VC.opendb
+*.vcxproj
+*.filters
