@@ -222,3 +222,6 @@ FakesAssemblies/
 # Visual Studio Project Properties
 *.vcxproj
 *.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.VC.opendb
