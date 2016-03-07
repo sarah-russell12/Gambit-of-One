@@ -13,6 +13,7 @@ Hansson, and Jan Haller.
 #include "Creature.hpp"
 #include "Projectile.hpp"
 #include "Pickup.hpp"
+#include "Scenery.h"
 
 
 // For std::bind() placeholders _1, _2, ...
@@ -98,6 +99,14 @@ std::vector<PickupData> initializePickupData()
 
 	data[Pickup::FireRate].texture = Textures::FireRate;
 	data[Pickup::FireRate].action = std::bind(&Creature::increaseFireRate, _1);
+
+	return data;
+}
+
+std::vector<SceneryData> initializeSceneryData()
+{
+	std::vector<SceneryData> data(Scenery::TypeCount);
+
 
 	return data;
 }

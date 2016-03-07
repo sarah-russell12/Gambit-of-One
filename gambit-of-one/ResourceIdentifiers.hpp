@@ -38,7 +38,13 @@ namespace Textures
 		TitleScreen,
 		ButtonNormal,
 		ButtonSelected,
-		ButtonPressed
+		ButtonPressed,
+		Rock,
+		Tree1,
+		Tree2,
+		Fence,
+		Wheat,
+		House,
 	};
 }
 

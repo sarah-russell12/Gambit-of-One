@@ -24,9 +24,12 @@ namespace Category
 		Pickup = 1 << 4,
 		AlliedProjectile = 1 << 5,
 		EnemyProjectile = 1 << 6,
+		InertScenery = 1 << 7,
+		InteractiveScenery = 1 << 8,
 
 		Aircraft = PlayerCreature | AlliedCreature | EnemyCreature,
 		Projectile = AlliedProjectile | EnemyProjectile,
+		Scenery = InertScenery | InteractiveScenery,
 	};
 }
 #endif // CATEGORY_HPP

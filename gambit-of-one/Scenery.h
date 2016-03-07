@@ -12,7 +12,10 @@ Scenery is a type of Entity that can block the path of Creatures and Projectiles
 #define SCENERY_H
 
 #include "Entity.hpp"
+#include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
+
+#include <SFML/Graphics/Sprite.hpp>
 
 
 class Scenery : public Entity
@@ -39,10 +42,10 @@ public:
 
 private:
 	virtual void				drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
-	virtual void				updateCurrent(sf::Time dt, CommandQueue& commands);
 
 private:
-	sf::Texture		mTexture;
+	Type			mType;
+	sf::Sprite		mSprite;
 };
 
 #endif //SCENERY_H

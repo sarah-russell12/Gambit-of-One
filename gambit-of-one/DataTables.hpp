@@ -72,9 +72,23 @@ struct PickupData
 	Textures::ID					texture;
 };
 
+struct SceneryData
+{
+	Textures::ID					texture;
+};
 
-std::vector<CreatureData>	initializeCreatureData();
-std::vector<ProjectileData>	initializeProjectileData();
-std::vector<PickupData>		initializePickupData();
+struct InteractiveSceneryData
+{
+	Textures::ID					texture;
+	sf::IntRect						textureRect;
+	bool							isSwitch;
+	bool							isMoveable;
+};
+
+std::vector<CreatureData>				initializeCreatureData();
+std::vector<ProjectileData>				initializeProjectileData();
+std::vector<PickupData>					initializePickupData();
+std::vector<SceneryData>				initializeSceneryData();
+std::vector<InteractiveSceneryData>		initializeInteractiveSceneryData();
 
 #endif // DATATABLES_HPP
