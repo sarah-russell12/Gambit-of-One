@@ -53,6 +53,7 @@ public:
 	bool					isRanged() const;
 	bool					isMelee() const;
 	bool					isAttacking() const;
+	bool					isBlocked() const;
 	float					getMaxSpeed() const;
 	Entity::cDirection		getCompass() const;
 	float					getAggroDistance() const;
@@ -65,6 +66,7 @@ public:
 	void 					fire();
 
 	void					guideTowards(sf::Vector2f position);
+	void					block();
 	
 private:
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -99,6 +101,7 @@ private:
 	bool					mIsAttacking;
 	bool 					mIsMarkedForRemoval;
 	bool					mIsAggroed;
+	bool					mIsBlocked;					// Attempt to fix movement
 
 	cDirection				mCompass;
 	TextureHolder			mHeroTextures;

@@ -38,6 +38,11 @@ sf::FloatRect Scenery::getBoundingRect() const
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
+Scenery::Type Scenery::getType() const
+{
+	return mType;
+}
+
 void Scenery::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mSprite, states);

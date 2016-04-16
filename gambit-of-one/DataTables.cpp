@@ -107,6 +107,9 @@ std::vector<SceneryData> initializeSceneryData()
 {
 	std::vector<SceneryData> data(Scenery::TypeCount);
 
+	data[Scenery::Rock].texture = Textures::Rock;
+
+	data[Scenery::Tree1].texture = Textures::Tree1;
 
 	return data;
 }

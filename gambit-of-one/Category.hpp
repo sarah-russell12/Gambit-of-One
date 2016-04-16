@@ -17,7 +17,7 @@ namespace Category
 	enum Type
 	{
 		None = 0,
-		SceneAirLayer = 1 << 0,
+		SceneGroundLayer = 1 << 0,
 		PlayerCreature = 1 << 1,
 		AlliedCreature = 1 << 2,
 		EnemyCreature = 1 << 3,
@@ -27,7 +27,7 @@ namespace Category
 		InertScenery = 1 << 7,
 		InteractiveScenery = 1 << 8,
 
-		Aircraft = PlayerCreature | AlliedCreature | EnemyCreature,
+		Creature = PlayerCreature | AlliedCreature | EnemyCreature,
 		Projectile = AlliedProjectile | EnemyProjectile,
 		Scenery = InertScenery | InteractiveScenery,
 	};

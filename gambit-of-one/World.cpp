@@ -33,7 +33,9 @@ World::World(sf::RenderWindow& window, FontHolder& fonts)
 	, mScrollSpeed(0.f)
 	, mPlayerCreature(nullptr)
 	, mEnemySpawnPoints()
+	, mScenerySpawnPoints()
 	, mActiveEnemies()
+	, mActiveScenery()
 {
 	loadTextures();
 	buildScene();
@@ -46,7 +48,10 @@ void World::update(sf::Time dt)
 
 	sf::Vector2f velocity = mPlayerCreature->getVelocity();
 
-	mWorldView.move(velocity.x * dt.asSeconds(), 0.f);
+	if (!mPlayerCreature->isBlocked())
+	{
+		mWorldView.move(velocity.x * dt.asSeconds(), 0.f);
+	}
 	mPlayerCreature->setVelocity(0.f, 0.f);
 
 	guideCreatures();
@@ -59,6 +64,7 @@ void World::update(sf::Time dt)
 
 	mSceneGraph.removeWrecks();
 	spawnEnemies();
+	spawnScenery();
 
 	mSceneGraph.update(dt, mCommandQueue);
 	adaptPlayerPosition();
@@ -99,6 +105,8 @@ void World::loadTextures()
 	//mTextures.load(Textures::MissileRefill, "Media/Textures/Quiver.png");
 	mTextures.load(Textures::FireSpread, "Media/Textures/FireSpread.png");
 	mTextures.load(Textures::FireRate, "Media/Textures/FireRate.png");
+
+	mTextures.load(Textures::Rock, "Media/Textures/Rock.png");
 }
 
 void World::adaptPlayerPosition()
@@ -184,6 +192,53 @@ void World::handleCollisions()
 			aircraft.damage(projectile.getDamage());
 			projectile.destroy();
 		}
+		else if (matchesCategories(pair, Category::Creature, Category::Scenery))
+		{
+			// Creatures will be stopped from going in the direction that they are
+			// colliding with the Scenery, but will not turn around
+			auto& creature = static_cast<Creature&>(*pair.first);
+			auto& scenery = static_cast<Scenery&>(*pair.second);
+			
+			sf::Vector2f vel = creature.getVelocity();
+			sf::FloatRect creatureBounds = creature.getBoundingRect();
+			sf::FloatRect objectBounds = scenery.getBoundingRect();
+
+			// If a creature is moving up, it will collide halfway with any scenery.
+			// Kind of looks like it is walking up to the scenery item.
+			// Movement should be unrestricted until
+			if (creatureBounds.top < (objectBounds.top + objectBounds.height)
+				&& (creatureBounds.top + creatureBounds.height) > (objectBounds.top + objectBounds.height))
+			{
+				if (scenery.getBoundingRect().contains(creature.getPosition()))
+				{
+					creature.block();
+					creature.setVelocity(-vel.x, -vel.y);
+				}
+			}
+			else
+			{
+				// Just block it normally
+				creature.block();
+				switch (creature.getCompass())
+				{
+				case Creature::North:
+				case Creature::South:
+					creature.setVelocity(vel.x, -vel.y);
+					break;
+				case Creature::East:
+				case Creature::West:
+					creature.setVelocity(-vel.x, vel.y);
+				}
+			}
+		}
+		else if (matchesCategories(pair, Category::Projectile, Category::Scenery))
+		{
+			// Destroy the projectile upon hitting the Scenery blocking it
+
+			auto& projectile = static_cast<Projectile&>(*pair.first);
+
+			projectile.destroy();
+		}
 	}
 }
 
@@ -191,7 +246,8 @@ void World::buildScene()
 {
 	for (std::size_t i = 0; i < LayerCount; ++i)
 	{
-		Category::Type category = (i == Air) ? Category::SceneAirLayer : Category::None;
+		Category::Type category = (i == Ground) 
+			? Category::SceneGroundLayer : Category::None;
 
 		SceneNode::Ptr layer(new SceneNode(category));
 		mSceneLayers[i] = layer.get();
@@ -210,14 +266,16 @@ void World::buildScene()
 	std::unique_ptr<Creature> player(new Creature(Creature::Hero, mTextures, mFonts));
 	mPlayerCreature = player.get();
 	mPlayerCreature->setPosition(mSpawnPosition);
-	mSceneLayers[Air]->attachChild(std::move(player));
+	mSceneLayers[Ground]->attachChild(std::move(player));
 
+	addScenery();
 	addEnemies();
+	sortSpawnPoints();
 }
 
 void World::addEnemies()
 {
-	addEnemy(Creature::Bandit, 750.f, -175.f);
+	addEnemy(Creature::Rat, 750.f, -175.f);
 	addEnemy(Creature::Rat, 1200.f, 100.f);
 	addEnemy(Creature::Archer, 1100.f, -200.f);
 	addEnemy(Creature::Rat, 1400.f, -250.f);
@@ -226,10 +284,16 @@ void World::addEnemies()
 	addEnemy(Creature::Bandit, 1600.f, -100.f);
 	addEnemy(Creature::Rat, 500.f, 0.f);
 
-	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs)
-	{
-		return lhs.y < rhs.y;
-	});
+}
+
+void World::addScenery()
+{
+
+	// Test player unable to move against rock
+	addSceneryItem(Scenery::Rock, 300.f, 0.f);
+
+	// Test collision with enemy projectiles by placing rock next to archer
+	addSceneryItem(Scenery::Rock, 900.f, -200.f);
 }
 
 void World::addEnemy(Creature::Type type, float relX, float relY)
@@ -238,19 +302,41 @@ void World::addEnemy(Creature::Type type, float relX, float relY)
 	mEnemySpawnPoints.push_back(spawn);
 }
 
+void World::addSceneryItem(Scenery::Type type, float relX, float relY)
+{
+	ScenerySpawn spawn(type, mSpawnPosition.x + relX, mSpawnPosition.y - relY);
+	mScenerySpawnPoints.push_back(spawn);
+}
+
 void World::spawnEnemies()
 {
 	while (!mEnemySpawnPoints.empty()
-		&& mEnemySpawnPoints.back().y > getBattlefieldBounds().top)
+		&& mEnemySpawnPoints.back().x > getBattlefieldBounds().width)
 	{
 		SpawnPoint spawn = mEnemySpawnPoints.back();
 
 		std::unique_ptr<Creature> enemy(new Creature(spawn.type, mTextures, mFonts));
 		enemy->setPosition(spawn.x, spawn.y);
 
-		mSceneLayers[Air]->attachChild(std::move(enemy));
+		mSceneLayers[Ground]->attachChild(std::move(enemy));
 
 		mEnemySpawnPoints.pop_back();
+	}
+}
+
+void World::spawnScenery()
+{
+	while (!mScenerySpawnPoints.empty() 
+		&& mScenerySpawnPoints.back().x > getBattlefieldBounds().left)
+	{
+		ScenerySpawn spawn = mScenerySpawnPoints.back();
+		
+		std::unique_ptr<Scenery> scenery(new Scenery(spawn.type, mTextures));
+		scenery->setPosition(spawn.x, spawn.y);
+
+		mSceneLayers[Objects]->attachChild(std::move(scenery));
+
+		mScenerySpawnPoints.pop_back();
 	}
 }
 
@@ -261,6 +347,16 @@ void World::destroyEntitiesOutsideView()
 	command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
 	{
 		if (!getBattlefieldBounds().intersects(e.getBoundingRect()))
+			if (e.getCategory() == Category::Scenery) 
+			{
+				// We don't want the scenery to be destroyed so we add it back
+				// into the spawn points
+				auto& scenery = static_cast<Scenery&>(e);
+				sf::Vector2f pos = scenery.getPosition();
+				ScenerySpawn spawn(scenery.getType(), pos.x, pos.y);
+				mScenerySpawnPoints.push_back(spawn);
+				sortSpawnPoints();
+			}
 			e.destroy();
 	});
 
@@ -316,4 +412,17 @@ sf::FloatRect World::getBattlefieldBounds() const
 	bounds.width += 100.f;
 
 	return bounds;
+}
+
+void World::sortSpawnPoints()
+{
+	std::sort(mEnemySpawnPoints.begin(), mEnemySpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs)
+	{
+		return lhs.x < rhs.x;
+	});
+
+	std::sort(mScenerySpawnPoints.begin(), mScenerySpawnPoints.end(), [](ScenerySpawn lhs, ScenerySpawn rhs)
+	{
+		return lhs.x < rhs.x;
+	});
 }

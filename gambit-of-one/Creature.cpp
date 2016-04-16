@@ -37,6 +37,7 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 	, mIsFiring(false)
 	, mIsAttacking(false)
 	, mIsMarkedForRemoval(false)
+	, mIsBlocked(false)
 	, mFireRateLevel(1)
 	, mSpreadLevel(1)
 	, mDropPickupCommand()
@@ -52,13 +53,13 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 
 	centerOrigin(mSprite);
 
-	mFireCommand.category = Category::SceneAirLayer;
+	mFireCommand.category = Category::SceneGroundLayer;
 	mFireCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
 		createArrows(node, textures);
 	};
 
-	mDropPickupCommand.category = Category::SceneAirLayer;
+	mDropPickupCommand.category = Category::SceneGroundLayer;
 	mDropPickupCommand.action = [this, &textures](SceneNode& node, sf::Time)
 	{
 		createPickup(node, textures);
@@ -79,6 +80,12 @@ void Creature::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	updateSprite();
+
+	if (mIsBlocked)
+	{
+		mIsBlocked = false;
+	}
+
 	// Entity has been destroyed: Possibly drop pickup, mark for removal
 	if (isDestroyed())
 	{
@@ -99,6 +106,7 @@ void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 	// Update texts
 	updateTexts();
+
 }
 
 unsigned int Creature::getCategory() const
@@ -149,6 +157,11 @@ bool Creature::isAttacking() const
 	return mIsAttacking;
 }
 
+bool Creature::isBlocked() const
+{
+	return mIsBlocked;
+}
+
 float Creature::getMaxSpeed() const
 {
 	return Table[mType].speed;
@@ -186,6 +199,12 @@ void Creature::attack()
 {
 	if (Table[mType].attackInterval != sf::Time::Zero)
 		mIsAttacking = true;
+}
+
+void Creature::block()
+{
+	// Path of the Creature is stopped
+	mIsBlocked = true;
 }
 
 void Creature::updateMovementPattern(sf::Time dt)
@@ -372,20 +391,22 @@ Entity::cDirection Creature::getCompass() const
 
 void Creature::updateCompass()
 {
-	sf::Vector2f velocity = getVelocity();
-	if (abs(velocity.x) > abs(velocity.y))
-	{
-		if (velocity.x > 0)
-			mCompass = East;
-		else
-			mCompass = West;
-	}
-	else if (!(velocity.x == 0 && velocity.y == 0))
-	{
-		if (velocity.y > 0)
-			mCompass = South;
-		else
-			mCompass = North;
+	if (!mIsBlocked) {
+		sf::Vector2f velocity = getVelocity();
+		if (abs(velocity.x) > abs(velocity.y))
+		{
+			if (velocity.x > 0)
+				mCompass = East;
+			else
+				mCompass = West;
+		}
+		else if (!(velocity.x == 0 && velocity.y == 0))
+		{
+			if (velocity.y > 0)
+				mCompass = South;
+			else
+				mCompass = North;
+		}
 	}
 }
 

@@ -31,7 +31,26 @@ struct CreatureMover
 
 	void operator() (Creature& creature, sf::Time) const
 	{
-		creature.accelerate(velocity * creature.getMaxSpeed());
+		if (creature.isBlocked())
+		{
+			sf::Vector2f newVel;
+			switch (creature.getCompass())
+			{
+			case Creature::North:
+			case Creature::South:
+				newVel = sf::Vector2f{ velocity.x, 0.f };
+				break;
+			case Creature::East:
+			case Creature::West:
+				newVel = sf::Vector2f{ 0.f, velocity.y };
+				break;
+			}
+			creature.accelerate(newVel * creature.getMaxSpeed());
+		}
+		else
+		{
+			creature.accelerate(velocity * creature.getMaxSpeed());
+		}
 	}
 
 	sf::Vector2f velocity;

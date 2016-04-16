@@ -22,6 +22,7 @@ the view. It also handles collisions in the scene graph.
 #include "Creature.hpp"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
+#include "Scenery.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -58,33 +59,45 @@ private:
 
 	void								buildScene();
 	void								addEnemies();
+	void								addScenery();
 	void								addEnemy(Creature::Type type, float relX, float relY);
+	void								addSceneryItem(Scenery::Type type, float relX, float relY);
 	void								spawnEnemies();
+	void								spawnScenery();
 	void								destroyEntitiesOutsideView();
 	void								guideMissiles();
 	void								guideCreatures();
 	sf::FloatRect						getViewBounds() const;
 	sf::FloatRect						getBattlefieldBounds() const;
 
+	void								sortSpawnPoints();
+
 
 private:
 	enum Layer
 	{
 		Background,
-		Air,
+		Objects,
+		Ground,
 		LayerCount
 	};
 
 	struct SpawnPoint
 	{
 		SpawnPoint(Creature::Type type, float x, float y)
-			: type(type)
-			, x(x)
-			, y(y)
-		{
-		}
+			: type(type), x(x), y(y) {}
 
 		Creature::Type type;
+		float x;
+		float y;
+	};
+
+	struct ScenerySpawn
+	{
+		ScenerySpawn(Scenery::Type type, float x, float y)
+			: type(type), x(x), y(y) {}
+
+		Scenery::Type type;
 		float x;
 		float y;
 	};
@@ -106,7 +119,9 @@ private:
 	Creature*							mPlayerCreature;
 
 	std::vector<SpawnPoint>				mEnemySpawnPoints;
+	std::vector<ScenerySpawn>			mScenerySpawnPoints;
 	std::vector<Creature*>				mActiveEnemies;
+	std::vector<Scenery*>				mActiveScenery;
 };
 
 #endif // WORLD_HPP	
