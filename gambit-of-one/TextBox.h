@@ -21,6 +21,12 @@ text in a queue to display later.
 #include <string>
 #include <memory>
 
+
+namespace sf
+{
+	class RenderWindow;
+}
+
 namespace GUI
 {
 
@@ -30,7 +36,7 @@ namespace GUI
 		typedef std::shared_ptr<TextBox> Ptr;
 
 	public:
-		TextBox(const FontHolder& fonts);
+		TextBox(const FontHolder& fonts, sf::RenderWindow& window);
 
 		virtual bool	isSelectable() const;
 		
