@@ -10,10 +10,10 @@ Hansson, and Jan Haller.
 */
 
 #include "World.hpp"
-#include "Projectile.hpp"
-#include "Pickup.hpp"
+#include "nodes\Projectile.hpp"
+#include "nodes\Pickup.hpp"
 #include "Foreach.hpp"
-#include "TextNode.hpp"
+#include "nodes\TextNode.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 

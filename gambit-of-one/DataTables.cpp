@@ -10,10 +10,10 @@ Hansson, and Jan Haller.
 */
 
 #include "DataTables.hpp"
-#include "Creature.hpp"
-#include "Projectile.hpp"
-#include "Pickup.hpp"
-#include "Scenery.h"
+#include "nodes\Creature.hpp"
+#include "nodes\Projectile.hpp"
+#include "nodes\Pickup.hpp"
+#include "nodes\Scenery.h"
 
 
 // For std::bind() placeholders _1, _2, ...

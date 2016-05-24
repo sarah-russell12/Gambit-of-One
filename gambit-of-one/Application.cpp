@@ -11,14 +11,14 @@ Hansson, and Jan Haller.
 
 #include "Application.hpp"
 #include "Utility.hpp"
-#include "State.hpp"
-#include "StateIdentifiers.hpp"
-#include "TitleState.hpp"
-#include "GameState.hpp"
-#include "MenuState.hpp"
-#include "PauseState.hpp"
-#include "SettingsState.hpp"
-#include "GameOverState.hpp"
+#include "states\State.hpp"
+#include "states\StateIdentifiers.hpp"
+#include "states\TitleState.hpp"
+#include "states\GameState.hpp"
+#include "states\MenuState.hpp"
+#include "states\PauseState.hpp"
+#include "states\SettingsState.hpp"
+#include "states\GameOverState.hpp"
 
 
 

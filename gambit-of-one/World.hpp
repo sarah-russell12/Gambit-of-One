@@ -17,12 +17,12 @@ the view. It also handles collisions in the scene graph.
 
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
-#include "SceneNode.hpp"
-#include "SpriteNode.hpp"
-#include "Creature.hpp"
+#include "nodes\SceneNode.hpp"
+#include "nodes\SpriteNode.hpp"
+#include "nodes\Creature.hpp"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
-#include "Scenery.h"
+#include "nodes\Scenery.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>

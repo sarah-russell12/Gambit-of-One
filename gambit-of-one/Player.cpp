@@ -11,7 +11,7 @@ Hansson, and Jan Haller.
 
 #include "Player.hpp"
 #include "CommandQueue.hpp"
-#include "Creature.hpp"
+#include "nodes\Creature.hpp"
 #include "Foreach.hpp"
 
 #include <map>

@@ -10,7 +10,7 @@ Hansson, and Jan Haller.
 */
 
 #include "CommandQueue.hpp"
-#include "SceneNode.hpp"
+#include "nodes\SceneNode.hpp"
 
 void CommandQueue::push(const Command& command)
 {
