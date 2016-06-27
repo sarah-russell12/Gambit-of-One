@@ -18,7 +18,7 @@ sees on the screen.
 
 #include "State.hpp"
 #include "StateIdentifiers.hpp"
-#include "..\ResourceIdentifiers.hpp"
+#include "ResourceIdentifiers.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>

@@ -15,7 +15,7 @@ Hansson, and Jan Haller.
 
 
 Entity::Entity(int hitpoints)
-	: mVelocity()
+	: mVelocity(0, 0)
 	, mHitpoints(hitpoints)
 	, mImmunity(false)
 	, mImmunityCountdown()
@@ -64,7 +64,7 @@ void Entity::repair(int points)
 
 void Entity::damage(int points)
 {
-	assert(points > 0);
+	assert(points >= 0);
 	mHitpoints -= points;
 	mImmunity = true;
 }

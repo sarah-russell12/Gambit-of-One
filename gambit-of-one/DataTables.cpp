@@ -10,10 +10,10 @@ Hansson, and Jan Haller.
 */
 
 #include "DataTables.hpp"
-#include "nodes\Creature.hpp"
-#include "nodes\Projectile.hpp"
-#include "nodes\Pickup.hpp"
-#include "nodes\Scenery.h"
+#include "Creature.hpp"
+#include "Projectile.hpp"
+#include "Pickup.hpp"
+#include "Scenery.h"
 
 
 // For std::bind() placeholders _1, _2, ...
@@ -54,12 +54,12 @@ std::vector<CreatureData> initializeCreatureData()
 	data[Creature::Bandit].textureRect = sf::IntRect(0, 0, 48, 67);
 
 
-	// Archers are stationary and fire arrows in one direction frequently
+	// Archers are stationary and fire arrows in one direction infrequently
 	data[Creature::Archer].hitpoints = 60;
 	data[Creature::Archer].speed = 0.f;
 	data[Creature::Archer].attackDamage = 0;
 	data[Creature::Archer].aggroDistance = 500.f;
-	data[Creature::Archer].fireInterval = sf::seconds(3.f);
+	data[Creature::Archer].fireInterval = sf::seconds(2.f);
 	data[Creature::Archer].attackInterval = sf::Time::Zero;
 	data[Creature::Archer].texture = Textures::Archer;
 	data[Creature::Archer].textureRect = sf::IntRect(0, 0, 35, 59);
@@ -95,10 +95,10 @@ std::vector<PickupData> initializePickupData()
 	//data[Pickup::MissileRefill].texture = Textures::MissileRefill;
 
 	data[Pickup::FireSpread].texture = Textures::FireSpread;
-	data[Pickup::FireSpread].action = std::bind(&Creature::increaseSpread, _1);
+	//data[Pickup::FireSpread].action = std::bind(&PlayerCreature::increaseSpread, _1);
 
 	data[Pickup::FireRate].texture = Textures::FireRate;
-	data[Pickup::FireRate].action = std::bind(&Creature::increaseFireRate, _1);
+	//data[Pickup::FireRate].action = std::bind(&PlayerCreature::increaseFireRate, _1);
 
 	return data;
 }

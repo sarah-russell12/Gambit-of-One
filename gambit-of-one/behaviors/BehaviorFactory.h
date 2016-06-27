@@ -12,12 +12,9 @@ Will return different behaviors based upon the creature interacting with it.
 #define BEHAVIOR_FACTORY_H
 
 #include "CombatBehavior.h"
-#include "MeleeCombatBehavior.h"
-#include "NoCombatBehavior.h"
-#include "RangedCombatBehavior.h"
 
-#include "..\ResourceHolder.hpp"
-#include "..\ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
+#include "ResourceIdentifiers.hpp"
 
 class BehaviorFactory
 {
@@ -25,7 +22,8 @@ public:
 	BehaviorFactory();
 	~BehaviorFactory();
 
-	CombatBehavior		getCombatBehavior(Creature::Type type, SceneNode&);
+	CombatBehavior*		getCombatBehavior(Creature& node, const TextureHolder& textures);
+	MovementBehavior*	getMovementBehavior(Creature& node);
 
 private:
 	void				loadProjectileTextures();

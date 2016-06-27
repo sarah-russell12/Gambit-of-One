@@ -17,7 +17,7 @@ interact with them.
 #define PROJECTILE_HPP
 
 #include "Entity.hpp"
-#include "..\ResourceIdentifiers.hpp"
+#include "ResourceIdentifiers.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -35,7 +35,7 @@ public:
 
 
 public:
-	Projectile(Type type, const TextureHolder& textures, const Entity::cDirection& direction);
+	Projectile(Type type, const TextureHolder& textures, const Compass& direction);
 
 	void					guideTowards(sf::Vector2f position);
 	bool					isGuided() const;
@@ -54,16 +54,11 @@ private:
 
 
 private:
-	sf::Sprite				leftArrow;
-	sf::Sprite				rightArrow;
-	sf::Sprite				downArrow;
-	sf::Sprite				upArrow;
-
-	Type					mType;
-	sf::Sprite				mSprite;
-	sf::Sprite				OriginSprite;
-	sf::Vector2f			mTargetDirection;
-	cDirection				mCDirection;
+	Type									mType;
+	sf::Sprite								mSprite;
+	sf::Sprite								OriginSprite;
+	sf::Vector2f							mTargetDirection;
+	Compass									mCDirection;
 };
 
 #endif // PROJECTILE_HPP

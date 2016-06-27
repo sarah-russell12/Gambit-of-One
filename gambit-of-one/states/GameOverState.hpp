@@ -16,7 +16,7 @@ State.
 #define GAMEOVERSTATE_HPP
 
 #include "State.hpp"
-#include "..\gui\Container.hpp"
+#include "Container.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

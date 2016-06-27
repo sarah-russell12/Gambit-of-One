@@ -17,12 +17,13 @@ the view. It also handles collisions in the scene graph.
 
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
-#include "nodes\SceneNode.hpp"
-#include "nodes\SpriteNode.hpp"
-#include "nodes\Creature.hpp"
+#include "SceneNode.hpp"
+#include "SpriteNode.hpp"
+#include "Creature.hpp"
+#include "PlayerCreature.h"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
-#include "nodes\Scenery.h"
+#include "Scenery.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -116,7 +117,7 @@ private:
 	sf::FloatRect						mWorldBounds;
 	sf::Vector2f						mSpawnPosition;
 	float								mScrollSpeed;
-	Creature*							mPlayerCreature;
+	PlayerCreature*						mPlayerCreature;
 
 	std::vector<SpawnPoint>				mEnemySpawnPoints;
 	std::vector<ScenerySpawn>			mScenerySpawnPoints;

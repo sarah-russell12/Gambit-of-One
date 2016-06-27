@@ -22,10 +22,10 @@ quality allows the game run better on slower, older computers)
 #define SETTINGSSTATE_HPP
 
 #include "State.hpp"
-#include "..\Player.hpp"
-#include "..\gui\Container.hpp"
-#include "..\gui\Button.hpp"
-#include "..\gui\Label.hpp"
+#include "Player.hpp"
+#include "Container.hpp"
+#include "Button.hpp"
+#include "Label.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

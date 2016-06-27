@@ -10,9 +10,9 @@ Hansson, and Jan Haller.
 */
 
 #include "PauseState.hpp"
-#include "..\gui\Button.hpp"
-#include "..\Utility.hpp"
-#include "..\ResourceHolder.hpp"
+#include "Button.hpp"
+#include "Utility.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

@@ -20,8 +20,8 @@ StateStack structure.
 #define GAMESTATE_HPP
 
 #include "State.hpp"
-#include "..\World.hpp"
-#include "..\Player.hpp"
+#include "World.hpp"
+#include "Player.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

@@ -18,10 +18,10 @@ player's face.
 class NoCombatBehavior : public CombatBehavior
 {
 public:
-	NoCombatBehavior(Creature::Type type, SceneNode& node);
+	NoCombatBehavior(Creature& node);
 	~NoCombatBehavior();
 
-	virtual void		checkAttacks(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
+	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
 };
 
 #endif //NO_COMBAT_BEHAVIOR_H

@@ -11,26 +11,31 @@ RangedCombatBehavior creates projectiles that move across the screen linearly.
 #define RANGED_COMBAT_BEHAVIOR_H
 
 #include "CombatBehavior.h"
-#include "..\Command.hpp"
-#include "..\CommandQueue.hpp"
-#include "..\DataTables.hpp"
-#include "..\nodes\Projectile.hpp"
-#include "..\ResourceHolder.hpp"
+#include "Command.hpp"
+#include "CommandQueue.hpp"
+#include "DataTables.hpp"
+#include "Projectile.hpp"
+#include "ResourceHolder.hpp"
 
 class RangedCombatBehavior : public CombatBehavior
 {
 public:
-	RangedCombatBehavior(Creature::Type type, SceneNode& node, const TextureHolder& textures);
+	RangedCombatBehavior(Creature& node, const TextureHolder& textures);
 	~RangedCombatBehavior();
 
-	virtual void	checkAttacks(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
+	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
+	virtual void		checkCooldown(sf::Time dt, sf::Vector2f playerPos);
+	virtual void		attack();
 
 private:
-	virtual void	attack(CommandQueue& commands);
-	void			createArrow(SceneNode& node, const TextureHolder& textures) const;
+	virtual void		checkInterval(sf::Time dt, CommandQueue& commands);
+
+	void				attack(CommandQueue& commands);
+	void				createArrow(SceneNode& node, const TextureHolder& textures) const;
 	
 private:
 	Command			mFireCommand;
+	bool			mIsFiring;
 };
 
 #endif //RANGED_COMBAT_BEHAVIOR_H

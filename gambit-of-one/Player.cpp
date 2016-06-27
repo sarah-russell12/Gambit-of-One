@@ -11,7 +11,7 @@ Hansson, and Jan Haller.
 
 #include "Player.hpp"
 #include "CommandQueue.hpp"
-#include "nodes\Creature.hpp"
+#include "PlayerCreature.h"
 #include "Foreach.hpp"
 
 #include <map>
@@ -29,7 +29,7 @@ struct CreatureMover
 	{
 	}
 
-	void operator() (Creature& creature, sf::Time) const
+	void operator() (PlayerCreature& creature, sf::Time) const
 	{
 		if (creature.isBlocked())
 		{
@@ -135,12 +135,12 @@ Player::MissionStatus Player::getMissionStatus() const
 
 void Player::initializeActions()
 {
-	mActionBinding[MoveLeft].action = derivedAction<Creature>(CreatureMover(-1, 0));
-	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
-	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
-	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
-	mActionBinding[Attack].action = derivedAction<Creature>([](Creature& a, sf::Time){ a.attack(); });
-	mActionBinding[Fire].action = derivedAction<Creature>([](Creature& a, sf::Time){ a.fire(); });
+	mActionBinding[MoveLeft].action = derivedAction<PlayerCreature>(CreatureMover(-1, 0));
+	mActionBinding[MoveRight].action = derivedAction<PlayerCreature>(CreatureMover(+1, 0));
+	mActionBinding[MoveUp].action = derivedAction<PlayerCreature>(CreatureMover(0, -1));
+	mActionBinding[MoveDown].action = derivedAction<PlayerCreature>(CreatureMover(0, +1));
+	mActionBinding[Attack].action = derivedAction<PlayerCreature>([](PlayerCreature& a, sf::Time){ a.attack(Attack); });
+	mActionBinding[Fire].action = derivedAction<PlayerCreature>([](PlayerCreature& a, sf::Time){ a.attack(Fire); });
 }
 
 bool Player::isRealtimeAction(Action action)

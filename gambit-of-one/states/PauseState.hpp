@@ -17,7 +17,7 @@ the user can return to the main menu or return to playing the game.
 #ifndef PAUSESTATE_HPP
 #define PAUSESTATE_HPP
 
-#include "..\gui\Container.hpp"
+#include "Container.hpp"
 #include "State.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>

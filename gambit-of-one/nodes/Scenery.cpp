@@ -6,9 +6,9 @@ Date Last Updated: March 5, 2015
 
 #include "Scenery.h"
 
-#include "..\Category.hpp"
-#include "..\DataTables.hpp"
-#include "..\Utility.hpp"
+#include "Category.hpp"
+#include "DataTables.hpp"
+#include "Utility.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

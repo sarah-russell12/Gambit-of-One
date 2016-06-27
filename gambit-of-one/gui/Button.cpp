@@ -10,7 +10,7 @@ Hansson, and Jan Haller.
 */
 
 #include "Button.hpp"
-#include "..\Utility.hpp"
+#include "Utility.hpp"
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

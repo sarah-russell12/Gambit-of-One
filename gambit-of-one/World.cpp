@@ -10,10 +10,10 @@ Hansson, and Jan Haller.
 */
 
 #include "World.hpp"
-#include "nodes\Projectile.hpp"
-#include "nodes\Pickup.hpp"
+#include "Projectile.hpp"
+#include "Pickup.hpp"
 #include "Foreach.hpp"
-#include "nodes\TextNode.hpp"
+#include "TextNode.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -161,15 +161,18 @@ void World::handleCollisions()
 	{
 		if (matchesCategories(pair, Category::PlayerCreature, Category::EnemyCreature))
 		{
-			auto& player = static_cast<Creature&>(*pair.first);
+			auto& player = static_cast<PlayerCreature&>(*pair.first);
 			auto& enemy = static_cast<Creature&>(*pair.second);
 
-			if (player.isAttacking() && !enemy.isImmune())
+			if (player.isAttacking(Player::Attack) && !enemy.isImmune())
+			{
 				enemy.damage(player.getDamage());
-			
-			if (!player.isImmune() && !player.isAttacking() && enemy.isAttacking())
+				return;
+			}
+			if (!player.isAttacking(Player::Attack) && !player.isImmune() && enemy.isAttacking())
 			{
 				player.damage(enemy.getDamage());
+				return;
 			}
 			//enemy.destroy();
 		}
@@ -181,15 +184,16 @@ void World::handleCollisions()
 
 			pickup.apply(player);
 			pickup.destroy();
+			return;
 		}
 
 		else if (matchesCategories(pair, Category::EnemyCreature, Category::AlliedProjectile)
 			|| matchesCategories(pair, Category::PlayerCreature, Category::EnemyProjectile))
 		{
-			auto& aircraft = static_cast<Creature&>(*pair.first);
+			auto& creature = static_cast<Creature&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
 
-			aircraft.damage(projectile.getDamage());
+			creature.damage(projectile.getDamage());
 			projectile.destroy();
 		}
 		else if (matchesCategories(pair, Category::Creature, Category::Scenery))
@@ -263,7 +267,7 @@ void World::buildScene()
 	backgroundSprite->setPosition(mWorldBounds.left, mWorldBounds.top);
 	mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
 
-	std::unique_ptr<Creature> player(new Creature(Creature::Hero, mTextures, mFonts));
+	std::unique_ptr<PlayerCreature> player(new PlayerCreature(Creature::Hero, mTextures, mFonts));
 	mPlayerCreature = player.get();
 	mPlayerCreature->setPosition(mSpawnPosition);
 	mSceneLayers[Ground]->attachChild(std::move(player));
@@ -383,13 +387,9 @@ void World::guideCreatures()
 		sf::Vector2f playerPosition = mPlayerCreature->getWorldPosition();
 		FOREACH(Creature* enemy, mActiveEnemies)
 		{
-			enemy->checkAggro(playerPosition);
-			if (enemy->isAggroed() && enemy->isGuided())
+			//enemy->checkAggro(playerPosition);
+			//if (enemy->isAggroed() && enemy->isGuided())
 				enemy->guideTowards(playerPosition);
-			
-			float enemyDistance = distance(*mPlayerCreature, *enemy);
-			if (enemyDistance < 10.f)
-				enemy->attack();
 		}	
 	});
 

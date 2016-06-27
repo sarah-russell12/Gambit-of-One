@@ -10,7 +10,7 @@ Hansson, and Jan Haller.
 */
 
 #include "Container.hpp"
-#include "..\Foreach.hpp"
+#include "Foreach.hpp"
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

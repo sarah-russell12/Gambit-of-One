@@ -44,6 +44,14 @@ struct Direction
 	float sign;
 };
 
+struct TeleportPoint
+{
+	TeleportPoint(float x, float y, Compass comp)
+		: pos(x, y), compass(comp) {}
+	sf::Vector2f pos;
+	Compass compass;
+};
+
 struct CreatureData
 {
 	int								hitpoints;
@@ -57,6 +65,7 @@ struct CreatureData
 	sf::Time						fireInterval;
 	sf::Time						attackInterval;
 	std::vector<Direction>			directions;
+	std::vector<TeleportPoint>		teleportPoints;
 };
 
 struct ProjectileData

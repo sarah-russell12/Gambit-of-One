@@ -10,9 +10,9 @@ Hansson, and Jan Haller.
 */
 
 #include "Projectile.hpp"
-#include "..\DataTables.hpp"
-#include "..\Utility.hpp"
-#include "..\ResourceHolder.hpp"
+#include "DataTables.hpp"
+#include "Utility.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -26,29 +26,25 @@ namespace
 	const std::vector<ProjectileData> Table = initializeProjectileData();
 }
 
-Projectile::Projectile(Type type, const TextureHolder& textures, const Entity::cDirection& direction)
+Projectile::Projectile(Type type, const TextureHolder& textures, const Compass& direction)
 	: Entity(1)
 	, mType(type)
 	, mSprite(textures.get(Table[type].texture))
 	, mTargetDirection()
 	, mCDirection(direction)
-	, upArrow()
-	, downArrow()
-	, leftArrow()
-	, rightArrow()
 {
 	switch (direction)
 	{
-	case North:
+	case Compass::North:
 		break;
-	case East:
-		rotate(90);
+	case Compass::East:
+		mSprite.rotate(90);
 		break;
-	case South:
-		rotate(180);
+	case Compass::South:
+		mSprite.rotate(180);
 		break;
-	case West:
-		rotate(270);
+	case Compass::West:
+		mSprite.rotate(270);
 		break;
 	default:
 		break;

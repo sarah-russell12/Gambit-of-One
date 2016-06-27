@@ -7,44 +7,87 @@ Defines all the functions declared in MeleeCombatBehavior.h
 */
 
 #include "MeleeCombatBehavior.h"
-#include "..\Utility.hpp"
+#include "Utility.hpp"
 
 namespace
 {
 	const std::vector<CreatureData> Table = initializeCreatureData();
 }
 
-MeleeCombatBehavior::MeleeCombatBehavior(Creature::Type type, SceneNode& node)
-	: CombatBehavior(type, node)
+MeleeCombatBehavior::MeleeCombatBehavior(Creature& node)
+	: CombatBehavior(node)
 {
-	mAttackInterval = Table[type].attackInterval;
-	mAttackCooldown = 2.f * Table[type].attackInterval;
+	mAttackInterval = sf::Time::Zero;
+	mAttackCooldown = 2.f * Table[mType].attackInterval;
 }
 
 MeleeCombatBehavior::~MeleeCombatBehavior() {}
 
-void MeleeCombatBehavior::checkAttacks(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos)
+void MeleeCombatBehavior::updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos)
 {
-	if (mIsAttacking)
+	checkCooldown(dt, playerPos);
+	checkInterval(dt, commands);
+}
+
+void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
+{
+	// 1: Decriment cooldown interval
+	mAttackCooldown -= dt;
+
+	// 2: Check that the attack interval is not currently going on. If that is the case, return, since
+	//    the Creature should still be in their attack posture
+	if (mAttackInterval >= sf::Time::Zero)
 	{
-		// the creature is attacking, hold that for the interval
-		mAttackInterval -= dt;
-		if (mAttackInterval <= sf::Time::Zero)
-		{
-			mIsAttacking = false;
-			mAttackInterval = Table[mType].attackInterval;
-		}
-		mAttackCooldown -= dt;
+		mIsAttacking = true;
+		return;
 	}
-	else
+
+	// 2: Check for Player asking for an attack when the attack is on cooldown and not being performed
+	//	  If so, set mIsAttacking to false and return
+	if (mIsAttacking && mAttackCooldown >= sf::Time::Zero)
 	{
-		// the creature is not attacking, prepare to attack when the cooldown ends
-		mAttackCooldown -= dt;
-		if (mAttackCooldown <= sf::Time::Zero)
+		mIsAttacking = false;
+		return;
+	}
+
+	// 3: Check if the cooldown has hit zero.  If so, handle attack conditions, reset cooldown,
+	//	  start the attack interval, and return.
+	if (mAttackCooldown <= sf::Time::Zero)
+	{
+		if (!mCreature->isAllied())
 		{
+			// Auto-attacking enemy
 			attack(playerPos);
-			mAttackCooldown = 2.f * Table[mType].attackInterval;
+			mAttackInterval = Table[mType].attackInterval;
+			mAttackCooldown = 2.f * mAttackInterval;
+			return;
 		}
+		if (mIsAttacking)
+		{
+			// The player
+			mAttackInterval = Table[mType].attackInterval;
+			mAttackCooldown = 2.f * mAttackInterval;
+			return;
+		}
+	}
+}
+
+void MeleeCombatBehavior::attack()
+{
+	mIsAttacking = true;
+}
+
+void MeleeCombatBehavior::checkInterval(sf::Time dt, CommandQueue& commands)
+{
+	// Handling the attack interval is only necessary when the Creature is
+	// attacking
+	if (!mIsAttacking) return;
+
+	mAttackInterval -= dt;
+	
+	if (mAttackInterval <= sf::Time::Zero)
+	{
+		mIsAttacking = false;
 	}
 }
 
@@ -53,7 +96,7 @@ void MeleeCombatBehavior::attack(sf::Vector2f playerPos)
 	// a percieved enemy needs to be REALLY up close and personal with the creature
 	// for it to attack
 
-	float distance = length(mNode->getPosition() - playerPos);
+	float distance = length(mCreature->getPosition() - playerPos);
 	if (distance <= (Table[mType].aggroDistance / 10.f))
 	{
 		mIsAttacking = true;

@@ -19,7 +19,7 @@ functions independent of each other in the right order.
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "Player.hpp"
-#include "states\StateStack.hpp"
+#include "StateStack.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>

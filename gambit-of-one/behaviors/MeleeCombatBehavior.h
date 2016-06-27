@@ -13,18 +13,21 @@ Melee is also very hard to spell correctly in one try...
 #define MELEE_COMBAT_BEHAVIOR_H
 
 #include "CombatBehavior.h"
-#include "..\ResourceHolder.hpp"
-#include "..\ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
+#include "ResourceIdentifiers.hpp"
 
 class MeleeCombatBehavior : public CombatBehavior
 {
 public:
-	MeleeCombatBehavior(Creature::Type type, SceneNode& node);
+	MeleeCombatBehavior(Creature& node);
 	~MeleeCombatBehavior();
 
-	virtual void		checkAttacks(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
+	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
+	virtual void		checkCooldown(sf::Time dt, sf::Vector2f playerPos);
+	virtual void		attack();
 
 private:
+	virtual void		checkInterval(sf::Time dt, CommandQueue& commands);
 	virtual void		attack(sf::Vector2f playerPos);
 
 };

@@ -19,7 +19,7 @@ actual gameplay, are the states of the program that runs the game.
 #define STATE_HPP
 
 #include "StateIdentifiers.hpp"
-#include "..\ResourceIdentifiers.hpp"
+#include "ResourceIdentifiers.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>

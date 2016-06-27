@@ -12,9 +12,9 @@ to one in-game.
 #define GUI_PORTRAIT_H
 
 #include "Component.hpp"
-#include "..\nodes\Creature.hpp"
-#include "..\ResourceIdentifiers.hpp"
-#include "..\ResourceHolder.hpp"
+#include "Creature.hpp"
+#include "ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 

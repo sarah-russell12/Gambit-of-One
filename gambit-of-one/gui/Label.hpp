@@ -16,8 +16,8 @@ not selectable, so it doesn't do anything special outside of that.
 #define LABEL_HPP
 
 #include "Component.hpp"
-#include "..\ResourceIdentifiers.hpp"
-#include "..\ResourceHolder.hpp"
+#include "ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/Text.hpp>
 

@@ -20,8 +20,8 @@ restore the player's health so they can continue playing.
 #define PICKUP_HPP
 
 #include "Entity.hpp"
-#include "..\Command.hpp"
-#include "..\ResourceIdentifiers.hpp"
+#include "Command.hpp"
+#include "ResourceIdentifiers.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 

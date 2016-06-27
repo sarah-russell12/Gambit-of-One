@@ -17,8 +17,8 @@ tracked by the program to indicate a change in states.
 #define BUTTON_HPP
 
 #include "Component.hpp"
-#include "..\ResourceIdentifiers.hpp"
-#include "..\ResourceHolder.hpp"
+#include "ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

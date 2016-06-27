@@ -10,8 +10,8 @@ Hansson, and Jan Haller.
 */
 
 #include "SettingsState.hpp"
-#include "..\Utility.hpp"
-#include "..\ResourceHolder.hpp"
+#include "Utility.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 

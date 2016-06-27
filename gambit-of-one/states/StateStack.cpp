@@ -10,7 +10,7 @@ Hansson, and Jan Haller.
 */
 
 #include "StateStack.hpp"
-#include "..\Foreach.hpp"
+#include "Foreach.hpp"
 
 #include <cassert>
 

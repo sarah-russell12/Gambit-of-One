@@ -10,9 +10,9 @@ Hansson, and Jan Haller.
 */
 
 #include "MenuState.hpp"
-#include "..\Utility.hpp"
-#include "..\gui\Button.hpp"
-#include "..\ResourceHolder.hpp"
+#include "Utility.hpp"
+#include "Button.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/View.hpp>

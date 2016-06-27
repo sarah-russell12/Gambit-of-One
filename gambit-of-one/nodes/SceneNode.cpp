@@ -10,9 +10,9 @@ Hansson, and Jan Haller.
 */
 
 #include "SceneNode.hpp"
-#include "..\Command.hpp"
-#include "..\Foreach.hpp"
-#include "..\Utility.hpp"
+#include "Command.hpp"
+#include "Foreach.hpp"
+#include "Utility.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>

@@ -17,7 +17,7 @@ SettingsState that alters the keybindings of the actions in the game.
 #define MENUSTATE_HPP
 
 #include "State.hpp"
-#include "..\gui\Container.hpp"
+#include "Container.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>

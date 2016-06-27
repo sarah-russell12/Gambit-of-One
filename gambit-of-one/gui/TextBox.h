@@ -11,8 +11,8 @@ text in a queue to display later.
 #define GUI_TEXTBOX_H
 
 #include "Component.hpp"
-#include "..\ResourceIdentifiers.hpp"
-#include "..\ResourceHolder.hpp"
+#include "ResourceIdentifiers.hpp"
+#include "ResourceHolder.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
