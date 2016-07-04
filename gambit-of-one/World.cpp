@@ -174,7 +174,6 @@ void World::handleCollisions()
 				player.damage(enemy.getDamage());
 				return;
 			}
-			//enemy.destroy();
 		}
 
 		else if (matchesCategories(pair, Category::PlayerCreature, Category::Pickup))

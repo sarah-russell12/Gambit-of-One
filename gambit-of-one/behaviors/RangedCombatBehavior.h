@@ -3,8 +3,14 @@ RangedCombatBehavior.h
 
 Date Created: May 16, 2016
 
+Date Last Updated: July 4, 2016
+
 Ranged combat is using weapons that can shoot projectiles from a distance.
 RangedCombatBehavior creates projectiles that move across the screen linearly.
+
+Updates:
+	- July 4, 2016: Changed how the attack interval is determined to reflect a
+					change in CreatureData
 */
 #pragma once
 #ifndef RANGED_COMBAT_BEHAVIOR_H

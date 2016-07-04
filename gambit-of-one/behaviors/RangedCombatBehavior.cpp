@@ -3,6 +3,8 @@ RangedCombatBehavior.cpp
 
 Date Created: May 16, 2016
 
+Date Last Updated: July 4, 2016
+
 Defines all the methods declared in RangedCombatBehavior.h
 */
 
@@ -20,7 +22,7 @@ RangedCombatBehavior::RangedCombatBehavior(Creature& node, const TextureHolder& 
 	: CombatBehavior(node), mIsFiring(false)
 {
 	mAttackInterval = sf::Time::Zero;
-	mAttackCooldown = 3.f * Table[mType].fireInterval;
+	mAttackCooldown = 3.f * Table[mType].attackInterval;
 
 	mFireCommand.category = Category::SceneGroundLayer;
 	mFireCommand.action = [this, &textures](SceneNode& node, sf::Time)
@@ -68,7 +70,7 @@ void RangedCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 		{
 			mIsFiring = true;
 			mIsAttacking = true;
-			mAttackInterval = Table[mType].fireInterval;
+			mAttackInterval = Table[mType].attackInterval;
 			mAttackCooldown = 3.f * mAttackInterval;
 			return;
 		}

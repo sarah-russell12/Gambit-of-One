@@ -1,7 +1,7 @@
 /*
 Creature.hpp
 
-Date Last Updated: May 30, 2016
+Date Last Updated: July 4, 2016
 
 This header file was made during the Spring 2015 SFML Game Development
 Tutorial at New College of Florida.  This code follows the code from the
@@ -18,6 +18,8 @@ Updates:
 	- May 30, 2016: Commented out code made redundant by CombatBehavior
 	- June 13, 2016: Incorporated MovementBehavior, commented out redundant code, 
 					 reordered methods and members so comments were easy to find
+	- July 4, 2016: Updated isMelee() and isRanged() to reflect changes in
+					CreatureData
 */
 
 #ifndef CREATURE_HPP

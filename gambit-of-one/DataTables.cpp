@@ -28,7 +28,6 @@ std::vector<CreatureData> initializeCreatureData()
 	data[Creature::Hero].attackDamage = 20;
 	data[Creature::Hero].aggroDistance = 0;
 	data[Creature::Hero].attackInterval = sf::seconds(0.5f);
-	data[Creature::Hero].fireInterval = sf::seconds(1);
 	data[Creature::Hero].texture = Textures::Hero;
 	data[Creature::Hero].textureRect = sf::IntRect(0, 0, 62, 66);
 	
@@ -38,7 +37,6 @@ std::vector<CreatureData> initializeCreatureData()
 	data[Creature::Rat].speed = 150.f;
 	data[Creature::Rat].attackDamage = 5;
 	data[Creature::Rat].aggroDistance = 300.f;
-	data[Creature::Rat].fireInterval = sf::Time::Zero;
 	data[Creature::Rat].attackInterval = sf::seconds(0.5f);
 	data[Creature::Rat].texture = Textures::Rat;
 	data[Creature::Rat].textureRect = sf::IntRect(0, 0, 34, 16);
@@ -48,7 +46,6 @@ std::vector<CreatureData> initializeCreatureData()
 	data[Creature::Bandit].speed = 120.f;
 	data[Creature::Bandit].attackDamage = 10;
 	data[Creature::Bandit].aggroDistance = 300.f;
-	data[Creature::Bandit].fireInterval = sf::Time::Zero;
 	data[Creature::Bandit].attackInterval = sf::seconds(1.f);
 	data[Creature::Bandit].texture = Textures::Bandit;
 	data[Creature::Bandit].textureRect = sf::IntRect(0, 0, 48, 67);
@@ -59,8 +56,7 @@ std::vector<CreatureData> initializeCreatureData()
 	data[Creature::Archer].speed = 0.f;
 	data[Creature::Archer].attackDamage = 0;
 	data[Creature::Archer].aggroDistance = 500.f;
-	data[Creature::Archer].fireInterval = sf::seconds(2.f);
-	data[Creature::Archer].attackInterval = sf::Time::Zero;
+	data[Creature::Archer].attackInterval = sf::seconds(2.f);
 	data[Creature::Archer].texture = Textures::Archer;
 	data[Creature::Archer].textureRect = sf::IntRect(0, 0, 35, 59);
 
