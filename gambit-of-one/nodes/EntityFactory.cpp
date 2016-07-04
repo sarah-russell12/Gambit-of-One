@@ -10,7 +10,7 @@ Defines all the methods declared in EntityFactory.h
 #include "Utility.hpp"
 
 EntityFactory::EntityFactory()
-	: textures(), fonts()
+	: mTextures(), mFonts()
 {
 	loadResources();
 }
@@ -21,7 +21,7 @@ std::vector<Creature*>	EntityFactory::getCreatures(std::vector<EnemySpawn> point
 {
 	std::vector<Creature*> creatures{};
 
-	for (int i = 0; i < points.size; i++)
+	for (std::size_t i = 0; i < points.size(); i++)
 	{
 		EnemySpawn point = points[i];
 		auto enemy = new Creature(point.type, mTextures, mFonts);
@@ -36,12 +36,15 @@ std::vector<Scenery*> EntityFactory::getScenery(std::vector<ScenerySpawn> points
 {
 	std::vector<Scenery*> props{};
 
-	for (int i = 0; i < points.size; i++)
+	for (std::size_t i = 0; i < points.size(); i++)
 	{
 		ScenerySpawn point = points[i];
 		Scenery* prop = new Scenery(point.type, mTextures);
 		prop->setPosition(point.x, point.y);
+		props.push_back(prop);
 	}
+
+	return props;
 }
 
 void EntityFactory::loadResources()

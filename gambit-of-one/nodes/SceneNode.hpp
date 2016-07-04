@@ -37,7 +37,8 @@ class CommandQueue;
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable
 {
 public:
-	typedef std::unique_ptr<SceneNode> Ptr;
+	// This might need this adjustment if I want to carry the PlayerCreature across areas
+	typedef std::shared_ptr<SceneNode> Ptr;
 	typedef std::pair<SceneNode*, SceneNode*> Pair;
 
 

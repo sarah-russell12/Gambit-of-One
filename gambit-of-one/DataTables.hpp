@@ -25,6 +25,7 @@ Updates:
 
 #include "ResourceIdentifiers.hpp"
 #include "Scenery.h"
+#include "Creature.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -33,9 +34,6 @@ Updates:
 #include <map>
 #include <vector>
 #include <functional>
-
-
-class Creature;
 
 struct Direction
 {

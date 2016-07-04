@@ -197,25 +197,62 @@ void World::handleCollisions()
 		}
 		else if (matchesCategories(pair, Category::Creature, Category::Scenery))
 		{
+			//// Creatures will be stopped from going in the direction that they are
+			//// colliding with the Scenery, but will not turn around
+			//auto& creature = static_cast<Creature&>(*pair.first);
+			//auto& scenery = static_cast<Scenery&>(*pair.second);
+			//
+			//sf::Vector2f vel = creature.getVelocity();
+			//sf::FloatRect creatureBounds = creature.getBoundingRect();
+			//sf::FloatRect objectBounds = scenery.getBoundingRect();
+
+			//// If a creature is moving up, it will collide halfway with any scenery.
+			//// Kind of looks like it is walking up to the scenery item.
+			//// Movement should be unrestricted until
+			//if (creatureBounds.top < (objectBounds.top + objectBounds.height)
+			//	&& (creatureBounds.top + creatureBounds.height) > (objectBounds.top + objectBounds.height))
+			//{
+			//	if (scenery.getBoundingRect().contains(creature.getPosition()))
+			//	{
+			//		creature.block();
+			//		creature.setVelocity(-vel.x, -vel.y);
+			//	}
+			//}
+			//else
+			//{
+			//	// Just block it normally
+			//	creature.block();
+			//	switch (creature.getCompass())
+			//	{
+			//	case Creature::North:
+			//	case Creature::South:
+			//		creature.setVelocity(vel.x, -vel.y);
+			//		break;
+			//	case Creature::East:
+			//	case Creature::West:
+			//		creature.setVelocity(-vel.x, vel.y);
+			//	}
+			//}
 			// Creatures will be stopped from going in the direction that they are
 			// colliding with the Scenery, but will not turn around
 			auto& creature = static_cast<Creature&>(*pair.first);
 			auto& scenery = static_cast<Scenery&>(*pair.second);
-			
-			sf::Vector2f vel = creature.getVelocity();
+
 			sf::FloatRect creatureBounds = creature.getBoundingRect();
 			sf::FloatRect objectBounds = scenery.getBoundingRect();
-
+			sf::Vector2f pos;
 			// If a creature is moving up, it will collide halfway with any scenery.
 			// Kind of looks like it is walking up to the scenery item.
 			// Movement should be unrestricted until
 			if (creatureBounds.top < (objectBounds.top + objectBounds.height)
-				&& (creatureBounds.top + creatureBounds.height) > (objectBounds.top + objectBounds.height))
+				&& (creatureBounds.top + creatureBounds.height) >(objectBounds.top + objectBounds.height))
 			{
 				if (scenery.getBoundingRect().contains(creature.getPosition()))
 				{
 					creature.block();
-					creature.setVelocity(-vel.x, -vel.y);
+					pos.x = creature.getPosition().x;
+					pos.y = objectBounds.top + objectBounds.height + 5.f;
+					creature.setPosition(pos);
 				}
 			}
 			else
@@ -225,12 +262,25 @@ void World::handleCollisions()
 				switch (creature.getCompass())
 				{
 				case Creature::North:
+					pos.x = creature.getPosition().x;
+					pos.y = objectBounds.top + objectBounds.height + 5.f;
+					creature.setPosition(pos);
+					break;
 				case Creature::South:
-					creature.setVelocity(vel.x, -vel.y);
+					pos.x = creature.getPosition().x;
+					pos.y = objectBounds.top - ((creatureBounds.top + creatureBounds.height) / 2.f) - 5.f;
+					creature.setPosition(pos);
 					break;
 				case Creature::East:
+					pos.x = objectBounds.left - 5.f;
+					pos.y = creature.getPosition().y;
+					creature.setPosition(pos);
+					break;
 				case Creature::West:
-					creature.setVelocity(-vel.x, vel.y);
+					pos.x = objectBounds.left + objectBounds.width + 5.f;
+					pos.y = creature.getPosition().y;
+					creature.setPosition(pos);
+					break;
 				}
 			}
 		}
