@@ -21,7 +21,7 @@ Defines all the methods declared in Area.h
 
 namespace
 {
-	const std::map<sf::Vector2f, AreaData> Map = initializeAreaData();
+	const std::vector<std::vector<AreaData>> Map = initializeAreaData();
 	EntityFactory Factory{};
 }
 
@@ -34,7 +34,7 @@ Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue
 	, mSceneLayers()
 	, mCommandQueue(queue)
 	, mPlayer(player)
-	, mData(Map.at(coords))
+	, mData(Map[coords.x][coords.y])
 	, mActiveEnemies()
 {
 	buildScene(textures);
@@ -102,7 +102,7 @@ void Area::buildScene(const TextureHolder & textures)
 	mSceneLayers[Ground]->attachChild(std::move(player));
 
 	std::vector<Creature*> enemies = Factory.getCreatures(mData.enemySpawns);
-	FOREACH(auto enemy, enemies)
+	for (Creature* enemy : enemies)
 	{
 		std::shared_ptr<Creature> nextEnemy(enemy);
 
@@ -110,7 +110,7 @@ void Area::buildScene(const TextureHolder & textures)
 	}
 
 	std::vector<Scenery*> props = Factory.getScenery(mData.scenerySpawns);
-	FOREACH(auto prop, props)
+	for (Scenery* prop : props)
 	{
 		std::shared_ptr<Scenery> nextProp(prop);
 
@@ -225,7 +225,7 @@ void Area::handleCollisions()
 	std::set<SceneNode::Pair> collisionPairs;
 	mSceneGraph.checkSceneCollision(mSceneGraph, collisionPairs);
 
-	FOREACH(SceneNode::Pair pair, collisionPairs)
+	for (SceneNode::Pair pair : collisionPairs)
 	{
 		if (matchesCategories(pair, Category::PlayerCreature, Category::EnemyCreature))
 		{
@@ -326,3 +326,4 @@ void Area::handleCollisions()
 		}
 	}
 }
+

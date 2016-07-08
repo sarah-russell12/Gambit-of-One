@@ -138,6 +138,6 @@ std::vector<ProjectileData>				initializeProjectileData();
 std::vector<PickupData>					initializePickupData();
 std::vector<SceneryData>				initializeSceneryData();
 std::vector<InteractiveSceneryData>		initializeInteractiveSceneryData();
-std::map<sf::Vector2f, AreaData>		initializeAreaData();
+std::vector<std::vector<AreaData>>		initializeAreaData();
 
 #endif // DATATABLES_HPP

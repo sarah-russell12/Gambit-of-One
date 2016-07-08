@@ -73,6 +73,8 @@ private:
 
 	void								sortSpawnPoints();
 
+	void								handleSceneryCollison(SceneNode::Pair pair);
+
 
 private:
 	enum Layer

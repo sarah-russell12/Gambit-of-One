@@ -59,8 +59,6 @@ private:
 	void			guideEntities();
 	void			destroyProjectilesOutsideView();
 	void			handleCollisions();
-	
-	void			sortSpawnPoints();
 
 private:
 	enum Layer

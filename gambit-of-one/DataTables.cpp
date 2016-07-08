@@ -109,3 +109,22 @@ std::vector<SceneryData> initializeSceneryData()
 
 	return data;
 }
+
+std::vector<std::vector<AreaData>> initializeAreaData()
+{
+	std::vector<std::vector<AreaData>> map{};
+	for (int i = 0; i < 2; i++)
+	{
+		std::vector<AreaData> row{};
+		for (int j = 0; j < 2; j++)
+		{
+			row.push_back(AreaData{});
+		}
+		map.push_back(row);
+	}
+
+	map[0][0].bgTexture = Textures::Road;
+	map[0][0].coordinates = sf::Vector2f{ 0,0 };
+
+	return map;
+}
