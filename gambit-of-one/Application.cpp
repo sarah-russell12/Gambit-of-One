@@ -42,6 +42,10 @@ Application::Application()
 	mTextures.load(Textures::ButtonNormal, "Media/Textures/ButtonNormal.png");
 	mTextures.load(Textures::ButtonSelected, "Media/Textures/ButtonSelected.png");
 	mTextures.load(Textures::ButtonPressed, "Media/Textures/ButtonPressed.png");
+	mTextures.load(Textures::Hero, "Media/Textures/HeroSpriteSheet.png");
+	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
+	mTextures.load(Textures::LeftEndDirtRoad, "Media/Textures/DirtRoadLeftEnd.png");
+	mTextures.load(Textures::RightEndDirtRoad, "Media/Textures/DirtRoadRightEnd.png");
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);

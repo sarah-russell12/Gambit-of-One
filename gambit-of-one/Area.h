@@ -60,6 +60,8 @@ private:
 	void			destroyProjectilesOutsideView();
 	void			handleCollisions();
 
+	void			handleSceneryCollision(SceneNode::Pair pair);
+
 private:
 	enum Layer
 	{

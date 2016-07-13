@@ -20,11 +20,12 @@ StateStack structure.
 #define GAMESTATE_HPP
 
 #include "State.hpp"
-#include "World.hpp"
+#include "Area.h"
 #include "Player.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 
 class GameState : public State
@@ -36,10 +37,20 @@ public:
 	virtual bool		update(sf::Time dt);
 	virtual bool		handleEvent(const sf::Event& event);
 
+private:
+	void				initializeWorld(Context context);
+	void				changeArea();
 
 private:
-	World				mWorld;
-	Player&				mPlayer;
+	std::vector<std::vector<Area*>>				mWorld;
+	sf::Vector2i								mCurrentArea;
+	Player&										mPlayer;
+	PlayerCreature								mPlayerCreature;
+	int											mRequiredKills;
+	sf::FloatRect								mAreaBounds;
+	CommandQueue								mQueue;
+
+	TextureHolder*								mTextures;
 };
 
 #endif // GAMESTATE_HPP

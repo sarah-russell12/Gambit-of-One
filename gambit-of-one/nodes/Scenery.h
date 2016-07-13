@@ -24,8 +24,8 @@ public:
 	enum Type
 	{
 		Rock,
-		Tree1,
-		Tree2,
+		BigTree1,
+		SmallTree1,
 		Fence,
 		Wheat,
 		House,

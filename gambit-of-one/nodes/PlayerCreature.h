@@ -22,9 +22,12 @@ public:
 	PlayerCreature(Type type, const TextureHolder& textures, const FontHolder& fonts);
 
 	virtual unsigned int			getCategory() const;
+	int								getKillCount() const;
 	bool							isAttacking(Player::Action) const;
 	
 	void							attack(Player::Action action);
+
+	void							incrementKillCount();
 
 private:
 	virtual void					drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -33,6 +36,7 @@ private:
 
 private:
 	PlayerCombatBehavior			mCombatBehavior;
+	int								mKillCount;
 };
 
 #endif // PLAYER_CREATURE_H

@@ -92,14 +92,11 @@ void Area::buildScene(const TextureHolder & textures)
 
 	auto texture = textures.get(mData.bgTexture);
 	sf::IntRect textureRect(mAreaBounds);
-	texture.setRepeated(true);
+	//texture.setRepeated(true);
 
 	std::shared_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
 	backgroundSprite->setPosition(mAreaBounds.left, mAreaBounds.top);
 	mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
-
-	std::shared_ptr<PlayerCreature> player(mPlayer);
-	mSceneLayers[Ground]->attachChild(std::move(player));
 
 	std::vector<Creature*> enemies = Factory.getCreatures(mData.enemySpawns);
 	for (Creature* enemy : enemies)
@@ -114,8 +111,11 @@ void Area::buildScene(const TextureHolder & textures)
 	{
 		std::shared_ptr<Scenery> nextProp(prop);
 
-		mSceneLayers[Ground]->attachChild(std::move(nextProp));
+		mSceneLayers[Objects]->attachChild(std::move(nextProp));
 	}
+
+	std::shared_ptr<PlayerCreature> player(mPlayer);
+	mSceneLayers[Ground]->attachChild(std::move(player));
 }
 
 void Area::adaptPlayerPosition()
@@ -124,10 +124,8 @@ void Area::adaptPlayerPosition()
 	const float borderDistance = 40.f;
 
 	sf::Vector2f position = mPlayer->getPosition();
-	position.x = std::max(position.x, viewBounds.left + borderDistance);
-	position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
-	position.y = std::max(position.y, viewBounds.top + borderDistance);
-	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+	/*position.y = std::max(position.y, viewBounds.top + borderDistance);
+	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);*/
 	mPlayer->setPosition(position);
 }
 
@@ -235,6 +233,10 @@ void Area::handleCollisions()
 			if (player.isAttacking(Player::Attack) && !enemy.isImmune())
 			{
 				enemy.damage(player.getDamage());
+				if (enemy.isDestroyed())
+				{
+					mPlayer->incrementKillCount();
+				}
 				return;
 			}
 			if (!player.isAttacking(Player::Attack) && !player.isImmune() && enemy.isAttacking())
@@ -254,8 +256,7 @@ void Area::handleCollisions()
 			return;
 		}
 
-		else if (matchesCategories(pair, Category::EnemyCreature, Category::AlliedProjectile)
-			|| matchesCategories(pair, Category::PlayerCreature, Category::EnemyProjectile))
+		else if (matchesCategories(pair, Category::PlayerCreature, Category::EnemyProjectile))
 		{
 			auto& creature = static_cast<Creature&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -263,58 +264,24 @@ void Area::handleCollisions()
 			creature.damage(projectile.getDamage());
 			projectile.destroy();
 		}
+		else if (matchesCategories(pair, Category::EnemyCreature, Category::AlliedProjectile))
+		{
+			auto& creature = static_cast<Creature&>(*pair.first);
+			auto& projectile = static_cast<Projectile&>(*pair.second);
+
+			creature.damage(projectile.getDamage());
+			projectile.destroy();
+
+			if (creature.isDestroyed())
+			{
+				mPlayer->incrementKillCount();
+			}
+		}
 		else if (matchesCategories(pair, Category::Creature, Category::Scenery))
 		{
-			// Creatures will be stopped from going in the direction that they are
-			// colliding with the Scenery, but will not turn around
-			auto& creature = static_cast<Creature&>(*pair.first);
-			auto& scenery = static_cast<Scenery&>(*pair.second);
-
-			sf::FloatRect creatureBounds = creature.getBoundingRect();
-			sf::FloatRect objectBounds = scenery.getBoundingRect();
-			sf::Vector2f pos;
-			// If a creature is moving up, it will collide halfway with any scenery.
-			// Kind of looks like it is walking up to the scenery item.
-			// Movement should be unrestricted until
-			if (creatureBounds.top < (objectBounds.top + objectBounds.height)
-				&& (creatureBounds.top + creatureBounds.height) >(objectBounds.top + objectBounds.height))
-			{
-				if (scenery.getBoundingRect().contains(creature.getPosition()))
-				{
-					creature.block();
-					pos.x = creature.getPosition().x;
-					pos.y = objectBounds.top + objectBounds.height + 5.f;
-					creature.setPosition(pos);
-				}
-			}
-			else
-			{
-				// Just block it normally
-				creature.block();
-				switch (creature.getCompass())
-				{
-				case Creature::North:
-					pos.x = creature.getPosition().x;
-					pos.y = objectBounds.top + objectBounds.height + 5.f;
-					creature.setPosition(pos);
-					break;
-				case Creature::South:
-					pos.x = creature.getPosition().x;
-					pos.y = objectBounds.top - ((creatureBounds.top + creatureBounds.height) / 2.f) - 5.f;
-					creature.setPosition(pos);
-					break;
-				case Creature::East:
-					pos.x = objectBounds.left - 5.f;
-					pos.y = creature.getPosition().y;
-					creature.setPosition(pos);
-					break;
-				case Creature::West:
-					pos.x = objectBounds.left + objectBounds.width + 5.f;
-					pos.y = creature.getPosition().y;
-					creature.setPosition(pos);
-					break;
-				}
-			}
+			// This got moved to its own function because it was just that 
+			// complicated
+			handleSceneryCollision(pair);
 		}
 		else if (matchesCategories(pair, Category::Projectile, Category::Scenery))
 		{
@@ -324,6 +291,70 @@ void Area::handleCollisions()
 
 			projectile.destroy();
 		}
+	}
+}
+
+void Area::handleSceneryCollision(SceneNode::Pair pair)
+{
+	auto& creature = static_cast<Creature&>(*pair.first);
+	auto& scenery = static_cast<Scenery&>(*pair.second);
+
+	// Variables simplify the look of the conditions
+	sf::FloatRect creatBounds = creature.getBoundingRect();
+	float creatBottom = creatBounds.top + creatBounds.height;
+	float creatRight = creatBounds.left + creatBounds.width;
+	sf::Vector2f creatPos = creature.getPosition();
+
+	sf::FloatRect propBounds = scenery.getBoundingRect();
+	float propBottom = propBounds.top + propBounds.height;
+	float propRight = propBounds.left + propBounds.width;
+	sf::Vector2f propPos = scenery.getPosition();
+
+	float margin = 2.f;
+
+	// New position of the creature
+	sf::Vector2f pos;
+
+
+	if ((creatBounds.top < propBottom) && (creatPos.y > propPos.y))
+	{
+		// If a creature is moving up, it will collide halfway with any scenery.
+		// Kind of looks like it is walking up to the scenery item.
+		if (propBounds.contains(creatPos))
+		{
+			// Movement should be unrestricted until the center (the position/origin)
+			// of the creature intersects the scenery
+			creature.block();
+			pos.x = creatPos.x;
+			pos.y = propBottom + margin;
+			creature.setPosition(pos);
+		}
+		return;
+	}
+	if (creatPos.y < propBottom && creatPos.y > propBounds.top)
+	{
+		// the creature is colliding from the prop's left or right
+		creature.block();
+		pos.y = creatPos.y;
+		if (creatRight > propBounds.left && !(creatPos.x > propBounds.left))
+		{
+			// Collision from the prop's left
+			pos.x = propBounds.left - margin - (creatBounds.width / 2.f);
+		}
+		else
+		{
+			pos.x = propRight + margin + (creatBounds.width / 2.f);
+		}
+		creature.setPosition(pos);
+		return;
+	}
+	if (creatBottom > propBounds.top)
+	{
+		creature.block();
+		pos.x = creatPos.x;
+		pos.y = propBounds.top - margin - (creatBounds.height / 2.f);
+		creature.setPosition(pos);
+		return;
 	}
 }
 

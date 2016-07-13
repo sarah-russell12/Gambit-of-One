@@ -56,6 +56,9 @@ void EntityFactory::loadResources()
 	mTextures.load(Textures::Rock, "Media/Textures/Rock.png");
 	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
 	mTextures.load(Textures::HealthRefill, "Media/Textures/HealthPotion.png");
+	mTextures.load(Textures::BigTree1, "Media/Textures/BigTree.png");
+	mTextures.load(Textures::SmallTree1, "Media/Textures/TinyTree.png");
+	mTextures.load(Textures::Fence, "Media/Textures/Fence.png");
 
 	mFonts.load(Fonts::Main, "Media/Sansation.ttf");
 }

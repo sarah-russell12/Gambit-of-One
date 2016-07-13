@@ -19,7 +19,7 @@ namespace
 }
 
 PlayerCreature::PlayerCreature(Type type, const TextureHolder& textures, const FontHolder& fonts)
-	: Creature(type, textures, fonts), mCombatBehavior(*this, textures)
+	: Creature(type, textures, fonts), mCombatBehavior(*this, textures), mKillCount(0)
 {
 
 }
@@ -27,6 +27,11 @@ PlayerCreature::PlayerCreature(Type type, const TextureHolder& textures, const F
 unsigned int PlayerCreature::getCategory() const
 {
 	return Category::PlayerCreature;
+}
+
+int PlayerCreature::getKillCount() const
+{
+	return mKillCount;
 }
 
 bool PlayerCreature::isAttacking(Player::Action action) const
@@ -96,4 +101,9 @@ void PlayerCreature::updateSprite()
 void PlayerCreature::attack(Player::Action action)
 {
 	mCombatBehavior.attack(action);
+}
+
+void PlayerCreature::incrementKillCount()
+{
+	mKillCount += 1;
 }

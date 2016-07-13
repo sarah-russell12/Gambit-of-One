@@ -57,6 +57,7 @@ public:
 	sf::Keyboard::Key		getAssignedKey(Action action) const;
 
 	void 					setMissionStatus(MissionStatus status);
+	void					checkMissionStatus();
 	MissionStatus 			getMissionStatus() const;
 
 private:
