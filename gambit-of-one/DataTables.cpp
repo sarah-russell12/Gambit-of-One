@@ -134,9 +134,9 @@ std::vector<std::vector<AreaData>> initializeAreaData()
 		map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, (40.f + (80.f * i)), 714.f });
 	}
 
-	for (int j = 0; j < 10; j++)
+	for (int j = 0; j < 5; j++)
 	{
-		map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::SmallTree1, 20.f, ( 134.f + (54.f * j))});
+		map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, 40.f, (162.f + (108.f * j))});
 	}
 
 	map[0][0].enemySpawns.push_back(EnemySpawn{ Creature::Rat, 500.f, 300.f });
@@ -153,9 +153,9 @@ std::vector<std::vector<AreaData>> initializeAreaData()
 		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, (40.f + (80.f * k)), 54.f });
 		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, (40.f + (80.f * k)), 714.f });
 	}
-	for (int m = 0; m < 10; m++)
+	for (int m = 0; m < 5; m++)
 	{
-		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::SmallTree1, 1004.f, (134.f + (54.f * m)) });
+		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, 984.f, (162.f + (108.f * m)) });
 	}
 	map[1][0].enemySpawns.push_back(EnemySpawn{ Creature::Rat, 200.f, 300.f });
 

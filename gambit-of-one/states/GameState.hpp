@@ -49,8 +49,6 @@ private:
 	int											mRequiredKills;
 	sf::FloatRect								mAreaBounds;
 	CommandQueue								mQueue;
-
-	TextureHolder*								mTextures;
 };
 
 #endif // GAMESTATE_HPP

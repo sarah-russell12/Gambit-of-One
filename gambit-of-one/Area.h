@@ -39,7 +39,7 @@ class Area : private sf::NonCopyable
 {
 public:
 	// Long, but hopefully worth it
-	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, sf::Vector2f coords, PlayerCreature* player);
+	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player);
 
 	void			update(sf::Time dt);
 	void			draw();
@@ -48,7 +48,7 @@ public:
 	bool			hasPlayerLeftArea() const;
 
 private:
-	void			buildScene(const TextureHolder& textures);
+	void			buildScene();
 
 	void			adaptPlayerPosition();
 	void			adaptPlayerVelocity();
@@ -72,7 +72,7 @@ private:
 	};
 
 private:
-	sf::Vector2f						mCoordinates;
+	sf::Vector2i						mCoordinates;
 	sf::RenderWindow&					mWindow;
 	sf::View							mView;
 	sf::FloatRect						mAreaBounds;
@@ -85,6 +85,8 @@ private:
 	AreaData							mData;
 
 	std::vector<Creature*>				mActiveEnemies;
+
+	sf::Texture							mBackground;
 };
 
 #endif //AREA_H

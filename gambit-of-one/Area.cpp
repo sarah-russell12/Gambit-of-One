@@ -25,8 +25,8 @@ namespace
 	EntityFactory Factory{};
 }
 
-Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, sf::Vector2f coords, PlayerCreature* player)
-	: mCoordinates(coords)
+Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player)
+	: mCoordinates(x, y)
 	, mWindow(window)
 	, mView(window.getDefaultView())
 	, mAreaBounds(0.f, 0.f, mView.getSize().x, mView.getSize().y)
@@ -34,10 +34,11 @@ Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue
 	, mSceneLayers()
 	, mCommandQueue(queue)
 	, mPlayer(player)
-	, mData(Map[coords.x][coords.y])
+	, mData(Map[x][y])
 	, mActiveEnemies()
+	, mBackground(textures.get(Map[x][y].bgTexture))
 {
-	buildScene(textures);
+	buildScene();
 }
 
 void Area::update(sf::Time dt)
@@ -77,7 +78,7 @@ bool Area::hasPlayerLeftArea() const
 	return !mAreaBounds.contains(mPlayer->getPosition());
 }
 
-void Area::buildScene(const TextureHolder & textures)
+void Area::buildScene()
 {
 	for (std::size_t i = 0; i < LayerCount; ++i)
 	{
@@ -90,11 +91,10 @@ void Area::buildScene(const TextureHolder & textures)
 		mSceneGraph.attachChild(std::move(layer));
 	}
 
-	auto texture = textures.get(mData.bgTexture);
 	sf::IntRect textureRect(mAreaBounds);
 	//texture.setRepeated(true);
 
-	std::shared_ptr<SpriteNode> backgroundSprite(new SpriteNode(texture, textureRect));
+	std::shared_ptr<SpriteNode> backgroundSprite(new SpriteNode(mBackground, textureRect));
 	backgroundSprite->setPosition(mAreaBounds.left, mAreaBounds.top);
 	mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
 

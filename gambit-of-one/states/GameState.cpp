@@ -19,7 +19,6 @@ GameState::GameState(StateStack& stack, Context context)
 	, mCurrentArea(0, 0)
 	, mAreaBounds()
 	, mQueue()
-	, mTextures(context.textures)
 	, mRequiredKills(2) 
 	// Will find some different win condition when non-combatant creatures are added 
 {
@@ -75,7 +74,7 @@ void GameState::initializeWorld(Context context)
 		mWorld.push_back(std::vector<Area*>());
 		for (int j = 0; j < 2; j++)
 		{
-			mWorld[i].push_back(new Area(*context.window, *mTextures, &mQueue, sf::Vector2f(i, j), &mPlayerCreature));
+			mWorld[i].push_back(new Area(*context.window, *context.textures, &mQueue, i, j, &mPlayerCreature));
 		}
 	}
 
