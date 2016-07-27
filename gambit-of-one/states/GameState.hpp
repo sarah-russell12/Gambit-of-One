@@ -22,6 +22,7 @@ StateStack structure.
 #include "State.hpp"
 #include "Area.h"
 #include "Player.hpp"
+#include "EntityFactory.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -49,6 +50,8 @@ private:
 	int											mRequiredKills;
 	sf::FloatRect								mAreaBounds;
 	CommandQueue								mQueue;
+
+	EntityFactory								mEntityFactory;
 };
 
 #endif // GAMESTATE_HPP

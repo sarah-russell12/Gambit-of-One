@@ -11,7 +11,6 @@ Defines all the methods declared in Area.h
 #include "Projectile.hpp"
 #include "Pickup.hpp"
 #include "Foreach.hpp"
-#include "EntityFactory.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -22,10 +21,9 @@ Defines all the methods declared in Area.h
 namespace
 {
 	const std::vector<std::vector<AreaData>> Map = initializeAreaData();
-	EntityFactory Factory{};
 }
 
-Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player)
+Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player, EntityFactory* factory)
 	: mCoordinates(x, y)
 	, mWindow(window)
 	, mView(window.getDefaultView())
@@ -38,7 +36,7 @@ Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue
 	, mActiveEnemies()
 	, mBackground(textures.get(Map[x][y].bgTexture))
 {
-	buildScene();
+	buildScene(factory);
 }
 
 void Area::update(sf::Time dt)
@@ -78,7 +76,7 @@ bool Area::hasPlayerLeftArea() const
 	return !mAreaBounds.contains(mPlayer->getPosition());
 }
 
-void Area::buildScene()
+void Area::buildScene(EntityFactory* factory)
 {
 	for (std::size_t i = 0; i < LayerCount; ++i)
 	{
@@ -98,7 +96,7 @@ void Area::buildScene()
 	backgroundSprite->setPosition(mAreaBounds.left, mAreaBounds.top);
 	mSceneLayers[Background]->attachChild(std::move(backgroundSprite));
 
-	std::vector<Creature*> enemies = Factory.getCreatures(mData.enemySpawns);
+	std::vector<Creature*> enemies = factory->getCreatures(mData.enemySpawns);
 	for (Creature* enemy : enemies)
 	{
 		std::shared_ptr<Creature> nextEnemy(enemy);
@@ -106,7 +104,7 @@ void Area::buildScene()
 		mSceneLayers[Ground]->attachChild(std::move(nextEnemy));
 	}
 
-	std::vector<Scenery*> props = Factory.getScenery(mData.scenerySpawns);
+	std::vector<Scenery*> props = factory->getScenery(mData.scenerySpawns);
 	for (Scenery* prop : props)
 	{
 		std::shared_ptr<Scenery> nextProp(prop);

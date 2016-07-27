@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table>
+  <creature id="0">
+    <name>Hero</name>
+    <hitpoints>100</hitpoints>
+    <speed>200</speed>
+    <attackDamage>20</attackDamage>
+    <aggroDistance>0</aggroDistance>
+    <attackInterval>0.5</attackInterval>
+    <textureRect>
+      <width>62</width>
+      <height>66</height>
+    </textureRect>
+  </creature>
+  <creature id="1">
+    <name>Rat</name>
+    <hitpoints>15</hitpoints>
+    <speed>120</speed>
+    <attackDamage>5</attackDamage>
+    <aggroDistance>300</aggroDistance>
+    <attackInterval>0.5</attackInterval>
+    <textureRect>
+      <width>34</width>
+      <height>16</height>
+    </textureRect>
+  </creature>
+  <creature id="2">
+    <name>Bandit</name>
+    <hitpoints>80</hitpoints>
+    <attackDamage>10</attackDamage>
+    <aggroDistance>300</aggroDistance>
+    <attackInterval>1</attackInterval>
+    <textureRect>
+      <width>48</width>
+      <height>67</height>
+    </textureRect>
+  </creature>
+  <creature id="3">
+    <name>Archer</name>
+    <hitpoints>60</hitpoints>
+    <speed>0</speed>
+    <attackDamage>0</attackDamage>
+    <aggroDistance>500</aggroDistance>
+    <attackInterval>2</attackInterval>
+    <textureRect>
+      <width>35</width>
+      <height>59</height>
+    </textureRect>
+  </creature>
+</table>

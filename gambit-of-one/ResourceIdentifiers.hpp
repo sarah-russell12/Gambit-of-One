@@ -25,26 +25,29 @@ namespace Textures
 {
 	enum ID
 	{
+		TitleScreen,
+		ButtonNormal,
+		ButtonSelected,
+		ButtonPressed,
 		Hero,
 		Rat,
 		Bandit,
 		Archer,
 		Arrow,
-		LeftEndDirtRoad,
-		RightEndDirtRoad,
 		HealthRefill,
 		FireSpread,
 		FireRate,
-		TitleScreen,
-		ButtonNormal,
-		ButtonSelected,
-		ButtonPressed,
 		Rock,
 		BigTree1,
 		SmallTree1,
+		TreeWallLong,
+		TreeWallLeftCorner,
+		TreeWallRightCorner,
 		Fence,
 		Wheat,
 		House,
+		LeftEndDirtRoad,
+		RightEndDirtRoad,
 	};
 }
 

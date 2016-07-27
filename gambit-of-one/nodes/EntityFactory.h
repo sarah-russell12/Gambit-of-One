@@ -21,19 +21,15 @@ the list of spawnpoints fed into it.
 class EntityFactory
 {
 public:
-	EntityFactory();
+	EntityFactory(TextureHolder& textures, FontHolder& fonts);
 	~EntityFactory();
 
 	std::vector<Creature*>	getCreatures(std::vector<EnemySpawn> points);
 	std::vector<Scenery*>	getScenery(std::vector<ScenerySpawn> points);
 
-
 private:
-	void					loadResources();
-
-private:
-	TextureHolder			mTextures;
-	FontHolder				mFonts;
+	TextureHolder*			mTextures;
+	FontHolder*				mFonts;
 };
 
 

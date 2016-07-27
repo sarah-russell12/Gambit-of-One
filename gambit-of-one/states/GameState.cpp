@@ -20,6 +20,7 @@ GameState::GameState(StateStack& stack, Context context)
 	, mAreaBounds()
 	, mQueue()
 	, mRequiredKills(2) 
+	, mEntityFactory(*context.textures, *context.fonts)
 	// Will find some different win condition when non-combatant creatures are added 
 {
 	mPlayer.setMissionStatus(Player::MissionRunning);
@@ -74,7 +75,7 @@ void GameState::initializeWorld(Context context)
 		mWorld.push_back(std::vector<Area*>());
 		for (int j = 0; j < 2; j++)
 		{
-			mWorld[i].push_back(new Area(*context.window, *context.textures, &mQueue, i, j, &mPlayerCreature));
+			mWorld[i].push_back(new Area(*context.window, *context.textures, &mQueue, i, j, &mPlayerCreature, &mEntityFactory));
 		}
 	}
 

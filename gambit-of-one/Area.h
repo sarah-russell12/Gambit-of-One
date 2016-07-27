@@ -21,6 +21,7 @@ exists for it.
 #include "PlayerCreature.h"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
+#include "EntityFactory.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -39,7 +40,7 @@ class Area : private sf::NonCopyable
 {
 public:
 	// Long, but hopefully worth it
-	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player);
+	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player, EntityFactory* factory);
 
 	void			update(sf::Time dt);
 	void			draw();
@@ -48,7 +49,7 @@ public:
 	bool			hasPlayerLeftArea() const;
 
 private:
-	void			buildScene();
+	void			buildScene(EntityFactory* factory);
 
 	void			adaptPlayerPosition();
 	void			adaptPlayerVelocity();

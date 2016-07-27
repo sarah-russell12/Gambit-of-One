@@ -106,6 +106,9 @@ std::vector<SceneryData> initializeSceneryData()
 	data[Scenery::Rock].texture = Textures::Rock;
 	data[Scenery::BigTree1].texture = Textures::BigTree1;
 	data[Scenery::SmallTree1].texture = Textures::SmallTree1;
+	data[Scenery::TreeWallLong].texture = Textures::TreeWallLong;
+	data[Scenery::TreeWallLeftCorner].texture = Textures::TreeWallLeftCorner;
+	data[Scenery::TreeWallRightCorner].texture = Textures::TreeWallRightCorner;
 	data[Scenery::Fence].texture = Textures::Fence;
 
 	return data;
@@ -128,15 +131,12 @@ std::vector<std::vector<AreaData>> initializeAreaData()
 	map[0][0].bgTexture = Textures::LeftEndDirtRoad;
 	map[0][0].coordinates = sf::Vector2f{ 0, 0 };
 
-	for (int i = 0; i < 13; i++)
-	{
-		map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, (40.f + (80.f * i)), 54.f });
-		map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, (40.f + (80.f * i)), 714.f });
-	}
+	map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::TreeWallLong, 512.f, 50.f });
+	map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::TreeWallLong, 512.f, 628.f });
 
-	for (int j = 0; j < 5; j++)
+	for (int j = 0; j < 7; j++)
 	{
-		map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, 40.f, (162.f + (108.f * j))});
+		map[0][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::SmallTree1, 20.f, (176.f + (54.f * j)) });
 	}
 
 	map[0][0].enemySpawns.push_back(EnemySpawn{ Creature::Rat, 500.f, 300.f });
@@ -148,14 +148,11 @@ std::vector<std::vector<AreaData>> initializeAreaData()
 	map[1][0].bgTexture = Textures::RightEndDirtRoad;
 	map[1][0].coordinates = sf::Vector2f{ 1, 0 };
 
-	for (int k = 0; k < 13; k++)
+	map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::TreeWallLong, 512.f, 50.f});
+	map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::TreeWallLong, 512.f, 628.f });
+	for (int m = 0; m < 7; m++)
 	{
-		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, (40.f + (80.f * k)), 54.f });
-		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, (40.f + (80.f * k)), 714.f });
-	}
-	for (int m = 0; m < 5; m++)
-	{
-		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::BigTree1, 984.f, (162.f + (108.f * m)) });
+		map[1][0].scenerySpawns.push_back(ScenerySpawn{ Scenery::SmallTree1, 1004.f, (176.f + (54.f * m)) });
 	}
 	map[1][0].enemySpawns.push_back(EnemySpawn{ Creature::Rat, 200.f, 300.f });
 
