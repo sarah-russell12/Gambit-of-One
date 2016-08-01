@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table>
+  <projectile id="0">
+    <name>Allied Arrow</name>
+    <speed>150</speed>
+    <damage>25</damage>
+    <textureID>8</textureID>
+  </projectile>
+  <projectile id="1">
+    <name>Enemy Arrow</name>
+    <speed>150</speed>
+    <damage>10</damage>
+    <textureID>8</textureID>
+  </projectile>
+</table>

@@ -1,0 +1,133 @@
+*************************************************
+------------SCHEMAS FOR XML DOCUMENTS------------
+*************************************************
+
+This document will be a work in progress as the game continues to be developed.
+- Created: July 29, 2016
+- Last Updated: July 29, 2016
+
+*************************************************
+
+File: TextureData.xml
+
+root: "textures", element content
+	element: "texture", element content, no limit, attribute "id" parsed as
+			 int
+		element: "file", text content, *the location of the file*
+
+example:
+
+<textures>
+	<texture id="0">
+		<file>Media/Textures/somepicture.png</file>
+	</texture>
+</textures>
+
+*************************************************
+
+File: FontData.xml
+
+root: "fonts", element content
+	element: "font", element content, no limit, attribute "id" parsed as int
+		element: "file", text content, *the location of the file*
+
+example:
+	
+<fonts>
+	<font id="0">
+		<file>Media/Fonts/somefont.ttf</file>
+	</font>
+</fonts>
+
+*************************************************
+
+File: CreatureData.xml
+
+root: "table", element content
+	element: "creature", element content, no limit, attribute "id" parsed as
+			  int
+		element: "name", text content
+		element: "hitpoints", text content parsed as int
+		element: "speed", text content parsed as float
+		element: "attackDamage", text content parsed as int
+		element: "aggroDistance", text content parsed as float
+		element: "attackInterval", text content parsed as float
+		element: "textureRect", element content
+			element: "width", text content parsed as int
+			element: "height", text content parsed as int
+		element: "textureID", text content parsed as as int
+		element: "fontID", text content parsed as int
+		element: "directions", element content, can be empty
+			element: "direction", element content, 0 or more
+				element: "angle", text content parsed as float
+				element: "distance", text content parsed as float
+				element: "sign", text content parsed as float
+		element: "teleports", element content, can be empty
+			element: "point", element content, 0 or more
+				element: "x", text content parsed as float
+				element: "y", text content parsed as float
+				element: "compass", text content
+
+example:
+
+<table>
+	<creature id="0">
+		<name>Hero</name>
+		<hitpoints>100</hitpoints>
+		<speed>200</speed>
+		<attackDamage>20</attackDamage>
+		<aggroDistance>0</aggroDistance>
+		<attackInterval>0.5</attackInterval>
+		<textureRect>
+			<width>62</width>
+			<height>66</height>
+		</textureRect>
+		<textureID>0</textureID>
+		<fontID>0</fontID>
+		<!--The Hero is free moving-->
+		<directions />
+		<teleports />
+	</creature>
+</table>
+
+*************************************************
+
+File: SceneryData.xml
+
+root: "table", element content
+	element: "scenery", element content, no limit, attribute "id" parsed as int
+		element: "name", text content
+		element: "textureID", text content parsed as int
+
+example:
+
+<table>
+	<scenery id="0">
+		<name>Rock</name>
+		<textureID>14</textureID>
+	</scenery>
+</table>
+
+*************************************************
+
+File: ProjectileData.xml
+
+root: "table", element content
+	element: "projectile", element content, attribute "id" parsed as int
+		element: "name", text content
+		element: "speed", text content parsed as float
+		element: "damage", text content parsed as int
+		element: "textureID", text content parsed as int
+
+example:
+
+<table>
+	<projectile id="0">
+		<name>Allied Arrow</name>
+		<speed>100</speed>
+		<damage>10</speed>
+		<textureID>10</textureID>
+	</projectile>
+</table>
+
+*************************************************

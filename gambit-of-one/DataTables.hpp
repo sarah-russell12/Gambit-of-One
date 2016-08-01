@@ -64,7 +64,7 @@ struct CreatureData
 	int								attackDamage;
 	float							aggroDistance;
 	Textures::ID					texture;
-	sf::IntRect						textureRect;;
+	sf::IntRect						textureRect;
 	sf::Time						attackInterval;
 	std::vector<Direction>			directions;
 	std::vector<TeleportPoint>		teleportPoints;

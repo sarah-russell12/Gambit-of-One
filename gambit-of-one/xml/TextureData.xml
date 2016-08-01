@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<textures>
+  <texture id="0">
+    <file>Media/Textures/TitleScreen.png</file>
+  </texture>
+  <texture id="1">
+    <file>Media/Textures/ButtonNormal.png</file>
+  </texture>
+  <texture id="2">
+    <file>Media/Textures/ButtonSelected.png</file>
+  </texture>
+  <texture id="3">
+    <file>Media/Textures/ButtonPressed.png</file>
+  </texture>
+  <texture id="4">
+    <file>Media/Textures/HeroSpriteSheet.png</file>
+  </texture>
+  <texture id="5">
+    <file>Media/Textures/RatSpriteSheet.png</file>
+  </texture>
+  <texture id="6">
+    <file>Media/Textures/BanditSpriteSheet.png</file>
+  </texture>
+  <texture id="7">
+    <file>Media/Textures/ArcherSpriteSheet.png</file>
+  </texture>
+  <texture id="8">
+    <file>Media/Textures/Arrow.png</file>
+  </texture>
+  <texture id="9">
+    <file>Media/Textures/HealthPotion.png</file>
+  </texture>
+  <texture id="10">
+    <file>Media/Textures/Rock.png</file>
+  </texture>
+  <texture id="11">
+    <file>Media/Textures/BigTree.png</file>
+  </texture>
+  <texture id="12">
+    <file>Media/Textures/TinyTree.png</file>
+  </texture>
+  <texture id="13">
+    <file>Media/Textures/TreeWallWhole.png</file>
+  </texture>
+  <texture id="14">
+    <file>Media/Textures/TreeWallLeftCorner.png</file>
+  </texture>
+  <texture id="15">
+    <file>Media/Textures/TreeWallRightCorner.png</file>
+  </texture>
+  <texture id="16">
+    <file>Media/Textures/Fence.png</file>
+  </texture>
+  <texture id="17">
+    <file>Media/Textures/DirtRoadLeftEnd.png</file>
+  </texture>
+  <texture id="18">
+    <file>Media/Textures/DirtRoadRightEnd.png</file>
+  </texture>
+</textures>

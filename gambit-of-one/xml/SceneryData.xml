@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table>
+  <scenery id="0">
+    <name>Rock</name>
+    <textureID>10</textureID>
+  </scenery>
+  <scenery id="1">
+    <name>Big Pine Tree</name>
+    <textureID>11</textureID>
+  </scenery>
+  <scenery id="2">
+    <name>Small Pine Tree</name>
+    <textureID>12</textureID>
+  </scenery>
+  <scenery id="3">
+    <name>Small Wood Fence</name>
+    <textureID>16</textureID>
+  </scenery>
+  <scenery id="4">
+    <name>Tree Wall Horizontal</name>
+    <textureID>13</textureID>
+  </scenery>
+  <scenery id="5">
+    <name>Tree Wall Left Corner</name>
+    <textureID>14</textureID>
+  </scenery>
+  <scenery id="6">
+    <name>Tree Wall Right Corner</name>
+    <textureID>15</textureID>
+  </scenery>
+</table>
