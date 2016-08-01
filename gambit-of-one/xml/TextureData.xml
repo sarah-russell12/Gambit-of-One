@@ -40,21 +40,24 @@
     <file>Media/Textures/TinyTree.png</file>
   </texture>
   <texture id="13">
-    <file>Media/Textures/TreeWallWhole.png</file>
+    <file>Media/Textures/TreeWallHorizontal.png</file>
   </texture>
   <texture id="14">
-    <file>Media/Textures/TreeWallLeftCorner.png</file>
+    <file>Media/Textures/TreeWallVertical.png</file>
   </texture>
   <texture id="15">
-    <file>Media/Textures/TreeWallRightCorner.png</file>
+    <file>Media/Textures/TreeWallLeftCorner.png</file>
   </texture>
   <texture id="16">
-    <file>Media/Textures/Fence.png</file>
+    <file>Media/Textures/TreeWallRightCorner.png</file>
   </texture>
   <texture id="17">
-    <file>Media/Textures/DirtRoadLeftEnd.png</file>
+    <file>Media/Textures/Fence.png</file>
   </texture>
   <texture id="18">
+    <file>Media/Textures/DirtRoadLeftEnd.png</file>
+  </texture>
+  <texture id="19">
     <file>Media/Textures/DirtRoadRightEnd.png</file>
   </texture>
 </textures>

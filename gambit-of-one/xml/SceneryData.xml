@@ -28,4 +28,8 @@
     <name>Tree Wall Right Corner</name>
     <textureID>15</textureID>
   </scenery>
+  <scenery id="7">
+    <name>Tree Wall Vertical</name>
+    <textureID>14</textureID>
+  </scenery>
 </table>
