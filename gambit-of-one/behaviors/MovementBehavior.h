@@ -12,13 +12,14 @@ from creature to creature.
 #define MOVEMENT_BEHAVIOR_H
 
 #include "ResourceIdentifiers.hpp"
+#include "DataStructures.h"
 #include "Creature.hpp"
 
 class MovementBehavior
 {
 public:
 	MovementBehavior();					// default constructor
-	MovementBehavior(Creature& node);
+	MovementBehavior(Creature& node, const CreatureData& data);
 	~MovementBehavior();
 
 	Compass				getCompass() const;
@@ -36,6 +37,7 @@ public:
 protected:
 	Creature*			mCreature;
 	Creature::Type		mType;
+	CreatureData		mData;
 
 	Compass				mCompass;
 	bool				mIsAggroed;

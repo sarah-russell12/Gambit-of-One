@@ -9,26 +9,21 @@ Defines all the methods declared in DirectionalMovementBehavior.h
 #include "DirectionalMovementBehavior.h"
 #include "Utility.hpp"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
-
-DirectionalMovementBehavior::DirectionalMovementBehavior(Creature& node)
-	: MovementBehavior(node), mDirections(Table[mType].directions), mDirectionIndex(0), mTravelledDistance(0.f) {}
+DirectionalMovementBehavior::DirectionalMovementBehavior(Creature& node, const CreatureData& data)
+	: MovementBehavior(node, data), mDirectionIndex(0), mTravelledDistance(0.f) {}
 
 DirectionalMovementBehavior::~DirectionalMovementBehavior() {}
 
 void DirectionalMovementBehavior::updateMovementPattern(sf::Time dt)
 {
 
-	if (mTravelledDistance > mDirections[mDirectionIndex].distance)
+	if (mTravelledDistance > mData.directions[mDirectionIndex].distance)
 	{
-		mDirectionIndex = (mDirectionIndex + 1) % mDirections.size();
+		mDirectionIndex = (mDirectionIndex + 1) % mData.directions.size();
 		mTravelledDistance = 0.f;
 	}
 
-	float radians = toRadian(mDirections[mDirectionIndex].angle + 90.f);
+	float radians = toRadian(mData.directions[mDirectionIndex].angle + 90.f);
 	float vx = mCreature->getMaxSpeed() * std::cos(radians);
 	float vy = mCreature->getMaxSpeed() * std::sin(radians);
 	mCreature->setVelocity(vx, vy);
@@ -44,7 +39,7 @@ void DirectionalMovementBehavior::checkAggro()
 {
 	sf::Vector2f myPosition = mCreature->getWorldPosition();
 	float distance = length(mTargetPosition - myPosition);
-	if (distance <= Table[mType].aggroDistance && !mCreature->isAllied())
+	if (distance <= mData.aggroDistance && !mCreature->isAllied())
 	{
 		mIsAggroed = true;
 	}

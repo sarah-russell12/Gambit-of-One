@@ -19,7 +19,7 @@ Melee is also very hard to spell correctly in one try...
 class MeleeCombatBehavior : public CombatBehavior
 {
 public:
-	MeleeCombatBehavior(Creature& node);
+	MeleeCombatBehavior(Creature& node, const CreatureData& data);
 	~MeleeCombatBehavior();
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);

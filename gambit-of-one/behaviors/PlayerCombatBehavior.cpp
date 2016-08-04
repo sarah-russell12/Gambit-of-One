@@ -8,8 +8,8 @@ Defines all the methods declared in PlayerCombatBehavior.h
 
 #include "PlayerCombatBehavior.h"
  
-PlayerCombatBehavior::PlayerCombatBehavior(Creature& node, const TextureHolder& textures)
-	: CombatBehavior(node), mMelee(node), mRanged(node, textures) {}
+PlayerCombatBehavior::PlayerCombatBehavior(Creature& node, const CreatureData& data)
+	: CombatBehavior(node, data), mMelee(node, data), mRanged(node, data) {}
 
 PlayerCombatBehavior::~PlayerCombatBehavior() {}
 

@@ -12,6 +12,7 @@ Will return different behaviors based upon the creature interacting with it.
 #define BEHAVIOR_FACTORY_H
 
 #include "CombatBehavior.h"
+#include "DataStructures.h"
 
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
@@ -22,14 +23,8 @@ public:
 	BehaviorFactory();
 	~BehaviorFactory();
 
-	CombatBehavior*		getCombatBehavior(Creature& node, const TextureHolder& textures);
-	MovementBehavior*	getMovementBehavior(Creature& node);
-
-private:
-	void				loadProjectileTextures();
-
-private:
-	TextureHolder		mProjectileTextures;
+	CombatBehavior*		getCombatBehavior(Creature& node, const CreatureData& data);
+	MovementBehavior*	getMovementBehavior(Creature& node, const CreatureData& data);
 };
 
 #endif //BEHAVIOR_FACTORY_H

@@ -18,6 +18,7 @@ interact with them.
 
 #include "Entity.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "DataStructures.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -35,7 +36,7 @@ public:
 
 
 public:
-	Projectile(Type type, const TextureHolder& textures, const Compass& direction);
+	Projectile(Type type, const TextureHolder& textures, const Compass& direction, const ProjectileData& data);
 
 	void					guideTowards(sf::Vector2f position);
 	bool					isGuided() const;
@@ -59,6 +60,7 @@ private:
 	sf::Sprite								OriginSprite;
 	sf::Vector2f							mTargetDirection;
 	Compass									mCDirection;
+	ProjectileData							mData;
 };
 
 #endif // PROJECTILE_HPP

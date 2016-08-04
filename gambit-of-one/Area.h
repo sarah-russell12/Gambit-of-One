@@ -22,6 +22,7 @@ exists for it.
 #include "CommandQueue.hpp"
 #include "Command.hpp"
 #include "EntityFactory.h"
+#include "DataStructures.h"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -40,7 +41,7 @@ class Area : private sf::NonCopyable
 {
 public:
 	// Long, but hopefully worth it
-	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player, EntityFactory* factory);
+	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, const AreaData& data, PlayerCreature* player, EntityFactory* factory);
 
 	void			update(sf::Time dt);
 	void			draw();

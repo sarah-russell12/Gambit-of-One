@@ -1,7 +1,7 @@
 /*
 Pickup.hpp
 
-Date Last Updated: August 16, 2015
+Date Last Updated: August 2, 2016
 
 This header file was made during the Spring 2015 SFML Game Development
 Tutorial at New College of Florida.  This code follows the code from the
@@ -14,6 +14,9 @@ gameplay can be a very unsatisfying experience.  This is where pickups come
 into play.  Pickups are entities that the player can obtain from enemy units
 in order to alter their stats and, in effect, alter strategies.  They also can
 restore the player's health so they can continue playing.
+
+Updates:
+	- August 2, 2016: Has a PickupData as a member
 */
 
 #ifndef PICKUP_HPP
@@ -22,6 +25,7 @@ restore the player's health so they can continue playing.
 #include "Entity.hpp"
 #include "Command.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "DataStructures.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -34,7 +38,6 @@ public:
 	enum Type
 	{
 		HealthRefill,
-		//MissileRefill,   //Holding off on this until melee combat is balanced
 		FireSpread,
 		FireRate,
 		TypeCount
@@ -42,7 +45,7 @@ public:
 
 
 public:
-	Pickup(Type type, const TextureHolder& textures);
+	Pickup(Type type, const TextureHolder& textures, const PickupData& data);
 
 	virtual unsigned int	getCategory() const;
 	virtual sf::FloatRect	getBoundingRect() const;
@@ -57,6 +60,7 @@ protected:
 private:
 	Type 					mType;
 	sf::Sprite				mSprite;
+	PickupData				mData;
 };
 
 #endif // PICKUP_HPP

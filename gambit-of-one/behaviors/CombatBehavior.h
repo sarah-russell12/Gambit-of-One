@@ -20,13 +20,13 @@ Updates:
 #include "Creature.hpp"
 #include "Command.hpp"
 #include "CommandQueue.hpp"
-#include "DataTables.hpp"
+#include "DataStructures.h"
 
 class CombatBehavior
 {
 public:
 	CombatBehavior();			// Default Constructor
-	CombatBehavior(Creature& node);
+	CombatBehavior(Creature& node, const CreatureData& data);
 	~CombatBehavior();
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
@@ -45,8 +45,9 @@ protected:
 	Creature*			mCreature;
 	Creature::Type		mType;
 
-	sf::Time			mAttackInterval;
+	CreatureData		mData;
 	sf::Time			mAttackCooldown;
+	sf::Time			mAttackInterval;
 	bool				mIsAttacking;
 };
 

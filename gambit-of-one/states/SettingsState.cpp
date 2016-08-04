@@ -20,7 +20,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 	: State(stack, context)
 	, mGUIContainer()
 {
-	mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));
+	mBackgroundSprite.setTexture(context.table->getTextures()->get(Textures::TitleScreen));
 
 	// Build key binding buttons and labels
 	addButtonLabel(Player::MoveLeft, 300.f, "Move Left", context);
@@ -32,7 +32,7 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 
 	updateLabels();
 
-	auto backButton = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
+	auto backButton = std::make_shared<GUI::Button>(*context.table->getFonts(), *context.table->getTextures());
 	backButton->setPosition(80.f, 620.f);
 	backButton->setText("Back");
 	backButton->setCallback(std::bind(&SettingsState::requestStackPop, this));
@@ -94,12 +94,12 @@ void SettingsState::updateLabels()
 
 void SettingsState::addButtonLabel(Player::Action action, float y, const std::string& text, Context context)
 {
-	mBindingButtons[action] = std::make_shared<GUI::Button>(*context.fonts, *context.textures);
+	mBindingButtons[action] = std::make_shared<GUI::Button>(*context.table->getFonts(), *context.table->getTextures());
 	mBindingButtons[action]->setPosition(80.f, y);
 	mBindingButtons[action]->setText(text);
 	mBindingButtons[action]->setToggle(true);
 
-	mBindingLabels[action] = std::make_shared<GUI::Label>("", *context.fonts);
+	mBindingLabels[action] = std::make_shared<GUI::Label>("", *context.table->getFonts());
 	mBindingLabels[action]->setPosition(300.f, y + 15.f);
 
 	mGUIContainer.pack(mBindingButtons[action]);

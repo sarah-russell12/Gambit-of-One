@@ -16,6 +16,7 @@ pugixml is Copyright (C) 2006-2015 Arseny Kapoulkine.
 #include "Projectile.hpp"
 #include "Pickup.hpp"
 #include "Scenery.h"
+#include "ResourceIdentifiers.hpp"
 
 #include "pugixml.hpp"
 
@@ -27,6 +28,8 @@ DataTable::DataTable()
 	, mPickupData(Pickup::TypeCount)
 	, mSceneryData(Scenery::TypeCount)
 	, mAreaData()
+	, mTextures()
+	, mFonts()
 {}
 
 DataTable::~DataTable() {}
@@ -67,22 +70,24 @@ std::vector<std::vector<AreaData>> DataTable::getAreaData() const
 	return mAreaData;
 }
 
-TextureHolder DataTable::getTextures() const
+TextureHolder* DataTable::getTextures() 
 {
-	return mTextures;
+	return &mTextures;
 }
 
-FontHolder DataTable::getFonts() const
+FontHolder* DataTable::getFonts() 
 {
-	return mFonts;
+	return &mFonts;
 }
 
 void DataTable::initializeCreatureData()
 {
-	pugi::xml_document creatureDoc;
-	creatureDoc.load_file("xml/CreatureData.xml");
+	pugi::xml_document doc;
+	pugi::xml_parse_result res = doc.load_file("xml/CreatureData.xml");
 
-	for (pugi::xml_node node : creatureDoc.children("creature"))
+	pugi::xml_node table = doc.child("table");
+
+	for (pugi::xml_node node = table.child("creature"); node; node = node.next_sibling("creature"))
 	{
 		int id = node.attribute("id").as_int();
 
@@ -91,7 +96,8 @@ void DataTable::initializeCreatureData()
 		mCreatureData[id].attackDamage = node.child("attackDamage").text().as_int();
 		mCreatureData[id].aggroDistance = node.child("aggroDistance").text().as_float();
 		mCreatureData[id].attackInterval = sf::seconds(node.child("attackInterval").text().as_float());
-		mCreatureData[id].texture = static_cast<Textures::ID>(node.child("TextureID").text().as_int());
+		int textureID = node.child("textureID").text().as_int();
+		mCreatureData[id].texture = static_cast<Textures::ID>(textureID);
 
 		int width = node.child("textureRect").child("width").text().as_int();
 		int height = node.child("textureRect").child("height").text().as_int();
@@ -128,7 +134,9 @@ void DataTable::initializeProjectileData()
 	pugi::xml_document doc;
 	doc.load_file("xml/ProjectileData.xml");
 
-	for (pugi::xml_node node : doc.children("projectile"))
+	pugi::xml_node table = doc.child("table");
+
+	for (pugi::xml_node node = table.child("projectile"); node; node = node.next_sibling("projectile"))
 	{
 		int id = node.attribute("id").as_int();
 
@@ -151,7 +159,9 @@ void DataTable::initializeSceneryData()
 	pugi::xml_document doc;
 	doc.load_file("xml/SceneryData.xml");
 
-	for (pugi::xml_node node : doc.children("scenery"))
+	pugi::xml_node table = doc.child("table");
+
+	for (pugi::xml_node node = table.child("scenery"); node; node = node.next_sibling("scenery"))
 	{
 		int id = node.attribute("id").as_int();
 
@@ -162,17 +172,19 @@ void DataTable::initializeSceneryData()
 void DataTable::initializeAreaData()
 {
 	pugi::xml_document doc;
-	doc.load_file("xml/AreaData.xml");
+	pugi::xml_parse_result result = doc.load_file("xml/AreaData.xml");
 	
 	int currentWidth = 0;
 	int currentHeight = 0;
 	
-	for (pugi::xml_node node : doc.children("area"))
+	pugi::xml_node map = doc.child("map");
+
+	for (pugi::xml_node node = map.child("area"); node; node = node.next_sibling("area"))
 	{
 		int x = node.child("coordinates").child("x").text().as_int();
-		int y = node.child("coordinates").child("x").text().as_int();
+		int y = node.child("coordinates").child("y").text().as_int();
 
-		if (x >= currentWidth)
+		if (x >= currentWidth && x != 0)
 		{
 			for (int i = 0; i < (x - currentWidth); i++)
 			{
@@ -185,7 +197,12 @@ void DataTable::initializeAreaData()
 			}
 			currentWidth = x + 1;
 		}
-		if (y >= currentHeight)
+		else
+		{
+			mAreaData.push_back(std::vector<AreaData>());
+		}
+		
+		if (y >= currentHeight && y != 0)
 		{
 			for (int i = 0; i < (y - currentHeight); i++)
 			{
@@ -193,30 +210,50 @@ void DataTable::initializeAreaData()
 			}
 			currentHeight = y + 1;
 		}
+		else
+		{
+			mAreaData[x].push_back(AreaData());
+		}
 
 		mAreaData[x][y].coordinates = sf::Vector2i(x, y);
 		mAreaData[x][y].bgTexture = static_cast<Textures::ID>(node.child("bgTextureID").text().as_int());
 
-		if (node.child("enemies").first_child())
+		pugi::xml_node enemies = node.child("enemies");
+
+		for (pugi::xml_node spawn = enemies.child("point"); spawn; spawn = spawn.next_sibling("point"))
 		{
-			for (pugi::xml_node spawn : node.child("enemies").children("spawnpoint"))
-			{
-				Creature::Type type = static_cast<Creature::Type>(spawn.child("creatureID").text().as_int());
-				float spawnX = spawn.child("spawnX").text().as_float();
-				float spawnY = spawn.child("spawnY").text().as_float();
-				mAreaData[x][y].enemySpawns.push_back(EnemySpawn(type, x, y));
-			}
+			int creatureID = spawn.child("creatureID").text().as_int();
+			Creature::Type type = static_cast<Creature::Type>(creatureID);
+			float spawnX = spawn.child("x").text().as_float();
+			float spawnY = spawn.child("y").text().as_float();
+			mAreaData[x][y].enemySpawns.push_back(EnemySpawn(type, spawnX, spawnY));
 		}
 
-		if (node.child("props").first_child())
+		pugi::xml_node props = node.child("props");
+
+		for (pugi::xml_node spawn = props.child("point"); spawn; spawn = spawn.next_sibling("point"))
 		{
-			for (pugi::xml_node spawn : node.child("props").children("spawnpoint"))
-			{
-				Scenery::Type type = static_cast<Scenery::Type>(spawn.child("sceneryID").text().as_int());
-				float spawnX = spawn.child("spawnX").text().as_float();
-				float spawnY = spawn.child("spawnY").text().as_float();
-				mAreaData[x][y].scenerySpawns.push_back(ScenerySpawn(type, x, y));
-			}
+			int sceneryID = spawn.child("sceneryID").text().as_int();
+			Scenery::Type type = static_cast<Scenery::Type>(sceneryID);
+			float spawnX = spawn.child("x").text().as_float();
+			float spawnY = spawn.child("y").text().as_float();
+			mAreaData[x][y].scenerySpawns.push_back(ScenerySpawn(type, spawnX, spawnY));
 		}
 	}
+}
+
+void DataTable::loadResources()
+{
+	pugi::xml_document doc;
+	doc.load_file("xml/TextureData.xml");
+
+	pugi::xml_node table = doc.child("textures");
+
+	for (pugi::xml_node node = table.child("texture"); node; node = node.next_sibling("texture"))
+	{
+		Textures::ID id = static_cast<Textures::ID>(node.attribute("id").as_int());
+		mTextures.load(id, node.child("file").text().as_string());
+	}
+
+	mFonts.load(Fonts::ID::Main, "Media/Sansation.ttf");
 }

@@ -18,7 +18,7 @@ player's face.
 class NoCombatBehavior : public CombatBehavior
 {
 public:
-	NoCombatBehavior(Creature& node);
+	NoCombatBehavior(Creature& node, const CreatureData& data);
 	~NoCombatBehavior();
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);

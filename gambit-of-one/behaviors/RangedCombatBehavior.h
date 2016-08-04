@@ -19,14 +19,14 @@ Updates:
 #include "CombatBehavior.h"
 #include "Command.hpp"
 #include "CommandQueue.hpp"
-#include "DataTables.hpp"
+#include "DataStructures.h"
 #include "Projectile.hpp"
 #include "ResourceHolder.hpp"
 
 class RangedCombatBehavior : public CombatBehavior
 {
 public:
-	RangedCombatBehavior(Creature& node, const TextureHolder& textures);
+	RangedCombatBehavior(Creature& node, const CreatureData& data);
 	~RangedCombatBehavior();
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
@@ -37,10 +37,8 @@ private:
 	virtual void		checkInterval(sf::Time dt, CommandQueue& commands);
 
 	void				attack(CommandQueue& commands);
-	void				createArrow(SceneNode& node, const TextureHolder& textures) const;
 	
 private:
-	Command			mFireCommand;
 	bool			mIsFiring;
 };
 

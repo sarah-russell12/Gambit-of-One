@@ -9,16 +9,11 @@ Defines all the functions declared in MeleeCombatBehavior.h
 #include "MeleeCombatBehavior.h"
 #include "Utility.hpp"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
-
-MeleeCombatBehavior::MeleeCombatBehavior(Creature& node)
-	: CombatBehavior(node)
+MeleeCombatBehavior::MeleeCombatBehavior(Creature& node, const CreatureData& data)
+	: CombatBehavior(node, data)
 {
 	mAttackInterval = sf::Time::Zero;
-	mAttackCooldown = 2.f * Table[mType].attackInterval;
+	mAttackCooldown = 2.f * mData.attackInterval;
 }
 
 MeleeCombatBehavior::~MeleeCombatBehavior() {}
@@ -58,14 +53,14 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 		{
 			// Auto-attacking enemy
 			attack(playerPos);
-			mAttackInterval = Table[mType].attackInterval;
+			mAttackInterval = mData.attackInterval;
 			mAttackCooldown = 2.f * mAttackInterval;
 			return;
 		}
 		if (mIsAttacking)
 		{
 			// The player
-			mAttackInterval = Table[mType].attackInterval;
+			mAttackInterval = mData.attackInterval;
 			mAttackCooldown = 2.f * mAttackInterval;
 			return;
 		}
@@ -97,7 +92,7 @@ void MeleeCombatBehavior::attack(sf::Vector2f playerPos)
 	// for it to attack
 
 	float distance = length(mCreature->getPosition() - playerPos);
-	if (distance <= (Table[mType].aggroDistance / 10.f))
+	if (distance <= (mData.aggroDistance / 10.f))
 	{
 		mIsAttacking = true;
 	}

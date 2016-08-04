@@ -15,12 +15,12 @@ Hansson, and Jan Haller.
 GameState::GameState(StateStack& stack, Context context)
 	: State(stack, context)
 	, mPlayer(*context.player)
-	, mPlayerCreature(Creature::Hero, *context.textures, *context.fonts)
+	, mPlayerCreature(Creature::Hero, context.table->getCreatureData()[Creature::Hero], context.table)
 	, mCurrentArea(0, 0)
 	, mAreaBounds()
 	, mQueue()
 	, mRequiredKills(2) 
-	, mEntityFactory(*context.textures, *context.fonts)
+	, mEntityFactory(context.table)
 	// Will find some different win condition when non-combatant creatures are added 
 {
 	mPlayer.setMissionStatus(Player::MissionRunning);
@@ -70,12 +70,13 @@ bool GameState::handleEvent(const sf::Event& event)
 
 void GameState::initializeWorld(Context context)
 {
-	for (int i = 0; i < 2; i++)
+	auto areaTable = context.table->getAreaData();
+	for (int i = 0; i < areaTable.size(); i++)
 	{
 		mWorld.push_back(std::vector<Area*>());
-		for (int j = 0; j < 2; j++)
+		for (int j = 0; j < areaTable[i].size(); j++)
 		{
-			mWorld[i].push_back(new Area(*context.window, *context.textures, &mQueue, i, j, &mPlayerCreature, &mEntityFactory));
+			mWorld[i].push_back(new Area(*context.window, *context.table->getTextures(), &mQueue, areaTable[i][j], &mPlayerCreature, &mEntityFactory));
 		}
 	}
 

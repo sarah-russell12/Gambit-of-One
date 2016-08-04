@@ -18,6 +18,7 @@ functions independent of each other in the right order.
 
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "DataTable.h"
 #include "Player.hpp"
 #include "StateStack.hpp"
 
@@ -46,8 +47,10 @@ private:
 	static const sf::Time	TimePerFrame;
 
 	sf::RenderWindow		mWindow;
-	TextureHolder			mTextures;
-	FontHolder				mFonts;
+//	TextureHolder			mTextures;
+//	FontHolder				mFonts;
+	
+	DataTable				mTable;
 	Player					mPlayer;
 
 	StateStack				mStateStack;

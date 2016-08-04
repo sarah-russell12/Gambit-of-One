@@ -10,7 +10,6 @@ Hansson, and Jan Haller.
 */
 
 #include "Pickup.hpp"
-#include "DataTables.hpp"
 #include "Category.hpp"
 #include "CommandQueue.hpp"
 #include "Utility.hpp"
@@ -19,15 +18,11 @@ Hansson, and Jan Haller.
 #include <SFML/Graphics/RenderTarget.hpp>
 
 
-namespace
-{
-	const std::vector<PickupData> Table = initializePickupData();
-}
-
-Pickup::Pickup(Type type, const TextureHolder& textures)
+Pickup::Pickup(Type type, const TextureHolder& textures, const PickupData& data)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(Table[type].texture))
+	, mSprite(textures.get(data.texture))
+	, mData(data)
 {
 	centerOrigin(mSprite);
 }
@@ -44,7 +39,7 @@ sf::FloatRect Pickup::getBoundingRect() const
 
 void Pickup::apply(Creature& player) const
 {
-	Table[mType].action(player);
+	mData.action(player);
 }
 
 void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

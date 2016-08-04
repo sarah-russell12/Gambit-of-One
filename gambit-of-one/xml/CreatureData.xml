@@ -35,7 +35,8 @@
   <creature id="2">
     <name>Bandit</name>
     <hitpoints>80</hitpoints>
-    <attackDamage>10</attackDamage>
+    <speed>100</speed>
+    <attackDamage>15</attackDamage>
     <aggroDistance>300</aggroDistance>
     <attackInterval>1</attackInterval>
     <textureRect>

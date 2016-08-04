@@ -9,8 +9,8 @@ Defines all the methods declared in TurningMovementBehavior.h
 #include "TurningMovementBehavior.h"
 #include "Utility.hpp"
 
-TurningMovementBehavior::TurningMovementBehavior(Creature& node)
-	: MovementBehavior(node)
+TurningMovementBehavior::TurningMovementBehavior(Creature& node, const CreatureData& data)
+	: MovementBehavior(node, data)
 {
 	// A creature with a turning behavior will always turn towards the player
 	mIsAggroed = true;

@@ -5,30 +5,30 @@
       <x>0</x>
       <y>0</y>
     </coordinates>
-    <bgTextureID>17</coordinates>
+    <bgTextureID>18</bgTextureID>
     <enemies>
-      <spawnpoint>
+      <point>
         <creatureID>1</creatureID>
-        <spawnX>700</spawnX>
-        <spawnY>300</spawnY>
-      </spawnpoint>
+        <x>700</x>
+        <y>300</y>
+      </point>
     </enemies>
     <props>
-      <spawnpoint>
+      <point>
         <sceneryID>4</sceneryID>
-        <spawnX>512</spawnX>
-        <spawnY>50</spawnY>
-      </spawnPoint>
-      <spawnpoint>
+        <x>512</x>
+        <y>50</y>
+      </point>
+      <point>
         <sceneryID>7</sceneryID>
-        <spawnX>50</spawnX>
-        <spawnY>339</spawnY>
-      </spawnpoint>
-      <spawnPoint>
+        <x>50</x>
+        <y>339</y>
+      </point>
+      <point>
         <sceneryID>4</sceneryID>
-        <spawnX>512</spawnX>
-        <spawnY>628</spawnY>
-      </spawnpoint>
+        <x>512</x>
+        <y>628</y>
+      </point>
     </props>
   </area>
   <area>
@@ -36,30 +36,30 @@
       <x>1</x>
       <y>0</y>
     </coordinates>
-    <bgTextureID>17</coordinates>
+    <bgTextureID>19</bgTextureID>
     <enemies>
-      <spawnpoint>
+      <point>
         <creatureID>2</creatureID>
-        <spawnX>700</spawnX>
-        <spawnY>300</spawnY>
-      </spawnpoint>
+        <x>700</x>
+        <y>300</y>
+      </point>
     </enemies>
     <props>
-      <spawnpoint>
+      <point>
         <sceneryID>4</sceneryID>
-        <spawnX>512</spawnX>
-        <spawnY>50</spawnY>
-      </spawnPoint>
-      <spawnpoint>
+        <x>512</x>
+        <y>50</y>
+      </point>
+      <point>
         <sceneryID>7</sceneryID>
-        <spawnX>974</spawnX>
-        <spawnY>339</spawnY>
-      </spawnpoint>
-      <spawnpoint>
+        <x>974</x>
+        <y>339</y>
+      </point>
+      <point>
         <sceneryID>4</sceneryID>
-        <spawnX>512</spawnX>
-        <spawnY>628</spawnY>
-      </spawnpoint>
+        <x>512</x>
+        <y>628</y>
+      </point>
     </props>
   </area>
 </map>

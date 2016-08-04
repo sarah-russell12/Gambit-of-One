@@ -7,18 +7,16 @@ Date Last Updated: March 5, 2015
 #include "Scenery.h"
 
 #include "Category.hpp"
-#include "DataTables.hpp"
 #include "Utility.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
-std::vector<SceneryData> Table = initializeSceneryData();
 
-Scenery::Scenery(Type type, const TextureHolder& textures)
+Scenery::Scenery(Type type, const TextureHolder& textures, const SceneryData& data)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(Table[type].texture))
+	, mSprite(textures.get(data.texture))
 {
 	centerOrigin(mSprite);
 }

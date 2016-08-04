@@ -20,6 +20,7 @@ actual gameplay, are the states of the program that runs the game.
 
 #include "StateIdentifiers.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "DataTable.h"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Window/Event.hpp>
@@ -42,12 +43,11 @@ public:
 
 	struct Context
 	{
-		Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts, Player& player)
-			: window(&window), textures(&textures), fonts(&fonts), player(&player) {}
+		Context(sf::RenderWindow& window, DataTable& table, Player& player)
+			: window(&window), table(&table), player(&player) {}
 
 		sf::RenderWindow*	window;
-		TextureHolder*		textures;
-		FontHolder*			fonts;
+		DataTable*			table;
 		Player*				player;
 	};
 

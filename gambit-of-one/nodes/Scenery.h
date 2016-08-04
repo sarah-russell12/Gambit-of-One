@@ -14,6 +14,7 @@ Scenery is a type of Entity that can block the path of Creatures and Projectiles
 #include "Entity.hpp"
 #include "ResourceHolder.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "DataStructures.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -37,7 +38,7 @@ public:
 
 
 public:
-	Scenery(Type type, const TextureHolder& textures);
+	Scenery(Type type, const TextureHolder& textures, const SceneryData& data);
 	~Scenery();
 
 	virtual unsigned int		getCategory() const;
@@ -51,6 +52,18 @@ private:
 private:
 	Type			mType;
 	sf::Sprite		mSprite;
+};
+
+struct ScenerySpawn
+{
+	ScenerySpawn(Scenery::Type type, float x, float y)
+		: type(type), x(x), y(y) {}
+	ScenerySpawn(Scenery::Type type, sf::Vector2f pos)
+		: type(type), x(pos.x), y(pos.y) {}
+
+	Scenery::Type	type;
+	float			x;
+	float			y;
 };
 
 #endif //SCENERY_H

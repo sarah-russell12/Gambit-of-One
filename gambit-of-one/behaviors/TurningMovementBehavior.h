@@ -16,7 +16,7 @@ turn towards the player's position.
 class TurningMovementBehavior : public MovementBehavior
 {
 public:
-	TurningMovementBehavior(Creature& node);
+	TurningMovementBehavior(Creature& node, const CreatureData& data);
 	~TurningMovementBehavior();
 
 	virtual void	updateMovementPattern(sf::Time dt);

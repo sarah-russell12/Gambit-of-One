@@ -17,13 +17,12 @@ the player if they are.
 #ifndef DIRECTIONAL_MOVEMENT_BEHAVIOR_H
 #define DIRECTIONAL_MOVEMENT_BEHAVIOR_H
 
-#include "DataTables.hpp"
 #include "MovementBehavior.h"
 
 class DirectionalMovementBehavior : public MovementBehavior
 {
 public:
-	DirectionalMovementBehavior(Creature& node);
+	DirectionalMovementBehavior(Creature& node, const CreatureData& data);
 	~DirectionalMovementBehavior();
 
 	virtual void	updateMovementPattern(sf::Time dt);
@@ -32,7 +31,6 @@ public:
 	virtual void	checkAggro();
 
 private:
-	std::vector<Direction>		mDirections;
 	std::size_t					mDirectionIndex;
 	float						mTravelledDistance;
 };

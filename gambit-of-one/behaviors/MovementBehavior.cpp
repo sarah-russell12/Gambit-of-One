@@ -11,13 +11,14 @@ Defines all the methods declared in MovementBehavior.h
 MovementBehavior::MovementBehavior()
 	: mType(), mCreature(), mIsAggroed(false), mIsBlocked(false), mTargetDirection(), mTargetPosition() {}
 
-MovementBehavior::MovementBehavior(Creature& node)
+MovementBehavior::MovementBehavior(Creature& node, const CreatureData& data)
 	: mType(node.getType())
 	, mCreature(&node)
 	, mIsAggroed(false)
 	, mIsBlocked(false)
 	, mTargetDirection() 
-	, mTargetPosition() {}
+	, mTargetPosition()
+	, mData(data) {}
 
 MovementBehavior::~MovementBehavior() {}
 

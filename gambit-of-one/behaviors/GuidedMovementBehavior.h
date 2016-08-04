@@ -16,7 +16,7 @@ player's position on screen.
 class GuidedMovementBehavior : public MovementBehavior
 {
 public:
-	GuidedMovementBehavior(Creature& node);
+	GuidedMovementBehavior(Creature& node, const CreatureData& data);
 	~GuidedMovementBehavior();
 
 	virtual void		updateMovementPattern(sf::Time dt);

@@ -26,39 +26,18 @@ const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
 	: mWindow(sf::VideoMode(1024, 768), "Gambit of One", sf::Style::Close, sf::ContextSettings())
-	, mTextures()
-	, mFonts()
+	, mTable()
 	, mPlayer()
-	, mStateStack(State::Context(mWindow, mTextures, mFonts, mPlayer))
+	, mStateStack(State::Context(mWindow, mTable, mPlayer))
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
 	, mStatisticsNumFrames(0)
 {
 	mWindow.setKeyRepeatEnabled(false);
 
-	mFonts.load(Fonts::Main, "Media/Sansation.ttf");
+	mTable.initializeData();
 
-	mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
-	mTextures.load(Textures::ButtonNormal, "Media/Textures/ButtonNormal.png");
-	mTextures.load(Textures::ButtonSelected, "Media/Textures/ButtonSelected.png");
-	mTextures.load(Textures::ButtonPressed, "Media/Textures/ButtonPressed.png");
-	mTextures.load(Textures::Hero, "Media/Textures/HeroSpriteSheet.png");
-	mTextures.load(Textures::Rat, "Media/Textures/RatSpriteSheet.png");
-	mTextures.load(Textures::Bandit, "Media/Textures/BanditSpriteSheet.png");
-	mTextures.load(Textures::Archer, "Media/Textures/ArcherSpriteSheet.png");
-	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
-	mTextures.load(Textures::HealthRefill, "Media/Textures/HealthPotion.png");
-	mTextures.load(Textures::Rock, "Media/Textures/Rock.png");
-	mTextures.load(Textures::BigTree1, "Media/Textures/BigTree.png");
-	mTextures.load(Textures::SmallTree1, "Media/Textures/TinyTree.png");
-	mTextures.load(Textures::TreeWallLong, "Media/Textures/TreeWallWhole.png");
-	mTextures.load(Textures::TreeWallLeftCorner, "Media/Textures/TreeWallLeftCorner.png");
-	mTextures.load(Textures::TreeWallRightCorner, "Media/Textures/TreeWallRightCorner.png");
-	mTextures.load(Textures::Fence, "Media/Textures/Fence.png");
-	mTextures.load(Textures::LeftEndDirtRoad, "Media/Textures/DirtRoadLeftEnd.png");
-	mTextures.load(Textures::RightEndDirtRoad, "Media/Textures/DirtRoadRightEnd.png");
-
-	mStatisticsText.setFont(mFonts.get(Fonts::Main));
+	mStatisticsText.setFont(mTable.getFonts()->get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(10u);
 

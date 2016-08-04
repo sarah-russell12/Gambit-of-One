@@ -13,12 +13,11 @@ really, really, *really* fast.
 #define TELEPORT_MOVEMENT_BEHAVIOR_H
 
 #include "MovementBehavior.h"
-#include "DataTables.hpp"
 
 class TeleportMovementBehavior : public MovementBehavior
 {
 public:
-	TeleportMovementBehavior(Creature& node);
+	TeleportMovementBehavior(Creature& node, const CreatureData& data);
 	~TeleportMovementBehavior();
 
 	virtual void		updateMovementPattern(sf::Time dt);

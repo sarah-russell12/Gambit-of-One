@@ -14,14 +14,14 @@ the list of spawnpoints fed into it.
 
 #include "Creature.hpp"
 #include "Scenery.h"
-#include "DataTables.hpp"
+#include "DataTable.h"
 
 #include <vector>
 
 class EntityFactory
 {
 public:
-	EntityFactory(TextureHolder& textures, FontHolder& fonts);
+	EntityFactory(DataTable* table);
 	~EntityFactory();
 
 	std::vector<Creature*>	getCreatures(std::vector<EnemySpawn> points);
@@ -30,6 +30,7 @@ public:
 private:
 	TextureHolder*			mTextures;
 	FontHolder*				mFonts;
+	DataTable*				mTable;
 };
 
 

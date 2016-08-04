@@ -8,8 +8,8 @@ Defines all the functions declared in NoCombatBehavior.h
 
 #include "NoCombatBehavior.h"
 
-NoCombatBehavior::NoCombatBehavior(Creature& node)
-	: CombatBehavior(node)
+NoCombatBehavior::NoCombatBehavior(Creature& node, const CreatureData& data)
+	: CombatBehavior(node, data)
 {
 
 }

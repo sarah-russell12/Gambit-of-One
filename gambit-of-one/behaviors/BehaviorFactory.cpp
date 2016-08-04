@@ -19,50 +19,40 @@ Defines all the methods declared in BehaviorFactory.h
 #include "TeleportMovementBehavior.h"
 #include "TurningMovementBehavior.h"
 
-BehaviorFactory::BehaviorFactory()
-	: mProjectileTextures()
-{
-	mProjectileTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
-}
+BehaviorFactory::BehaviorFactory() {}
 
 BehaviorFactory::~BehaviorFactory() {}
 
-CombatBehavior* BehaviorFactory::getCombatBehavior(Creature& node, const TextureHolder& textures)
+CombatBehavior* BehaviorFactory::getCombatBehavior(Creature& node, const CreatureData& data)
 {
 	switch (node.getType())
 	{
 	case Creature::Rat:
 	case Creature::Bandit:
-		return new MeleeCombatBehavior(node);
+		return new MeleeCombatBehavior(node, data);
 	case Creature::Archer:
-		return new RangedCombatBehavior(node, textures);
+		return new RangedCombatBehavior(node, data);
 	case Creature::Hero:
-		// TODO: Add instantiation of PlayerCombatBehavior
-		return new PlayerCombatBehavior(node, textures);
+		return new PlayerCombatBehavior(node, data);
 	default:
-		return new NoCombatBehavior(node);
+		return new NoCombatBehavior(node, data);
 	}
 }
 
-MovementBehavior* BehaviorFactory::getMovementBehavior(Creature& node)
+MovementBehavior* BehaviorFactory::getMovementBehavior(Creature& node, const CreatureData& data)
 {
 	switch (node.getType())
 	{
 	case Creature::Rat:
 	case Creature::Bandit:
-		return new GuidedMovementBehavior(node);
+		return new GuidedMovementBehavior(node, data);
 	case Creature::Archer:
-		return new TurningMovementBehavior(node);
+		return new TurningMovementBehavior(node, data);
 	case Creature::Hero:
-		return new MovementBehavior(node);
+		return new MovementBehavior(node, data);
 	default:
 		// the player's character is moved differently thus it requires no 
 		// automated movement
 		return new MovementBehavior();
 	}
-}
-
-void BehaviorFactory::loadProjectileTextures()
-{
-	mProjectileTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
 }

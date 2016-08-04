@@ -8,13 +8,8 @@ Defines all the methods declared in TeleportMovementBehavior.h
 
 #include "TeleportMovementBehavior.h"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
-
-TeleportMovementBehavior::TeleportMovementBehavior(Creature& creature)
-	: MovementBehavior(creature), mPointIndex(0), mTeleportCooldown(Table[mType].attackInterval) {}
+TeleportMovementBehavior::TeleportMovementBehavior(Creature& creature, const CreatureData& data)
+	: MovementBehavior(creature, data), mPointIndex(0), mTeleportCooldown(data.attackInterval) {}
 // The idea with the teleport cooldown being the attack interval is that the 
 // creature will attack after a teleport... hopefully
 
@@ -25,12 +20,12 @@ void TeleportMovementBehavior::updateMovementPattern(sf::Time dt)
 	mTeleportCooldown -= dt;
 	if (mTeleportCooldown <= sf::Time::Zero)
 	{
-		auto& points = Table[mType].teleportPoints;
+		auto& points = mData.teleportPoints;
 		mPointIndex = (mPointIndex + 1) % points.size();
 		auto point = points[mPointIndex];
 		mCreature->setPosition(point.pos);
 		mCompass = point.compass;
-		mTeleportCooldown = Table[mType].attackInterval;
+		mTeleportCooldown = mData.attackInterval;
 	}
 }
 
@@ -44,5 +39,5 @@ void TeleportMovementBehavior::checkAggro()
 
 void TeleportMovementBehavior::checkCompass()
 {
-	mCompass = Table[mType].teleportPoints[mPointIndex].compass;
+	mCompass = mData.teleportPoints[mPointIndex].compass;
 }

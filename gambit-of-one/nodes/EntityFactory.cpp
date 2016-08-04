@@ -8,9 +8,10 @@ Defines all the methods declared in EntityFactory.h
 
 #include "EntityFactory.h"
 #include "Utility.hpp"
+#include "DataStructures.h"
 
-EntityFactory::EntityFactory(TextureHolder& textures, FontHolder& fonts)
-	: mTextures(&textures), mFonts(&fonts)
+EntityFactory::EntityFactory(DataTable* table)
+	: mTextures(table->getTextures()), mFonts(table->getFonts()), mTable(table)
 {}
 
 EntityFactory::~EntityFactory() {}
@@ -22,7 +23,7 @@ std::vector<Creature*>	EntityFactory::getCreatures(std::vector<EnemySpawn> point
 	for (std::size_t i = 0; i < points.size(); i++)
 	{
 		EnemySpawn point = points[i];
-		auto enemy = new Creature(point.type, *mTextures, *mFonts);
+		auto enemy = new Creature(point.type, mTable->getCreatureData()[point.type], mTable);
 		enemy->setPosition(point.x, point.y);
 		creatures.push_back(enemy);
 	}
@@ -37,7 +38,7 @@ std::vector<Scenery*> EntityFactory::getScenery(std::vector<ScenerySpawn> points
 	for (std::size_t i = 0; i < points.size(); i++)
 	{
 		ScenerySpawn point = points[i];
-		Scenery* prop = new Scenery(point.type, *mTextures);
+		Scenery* prop = new Scenery(point.type, *mTextures, mTable->getSceneryData()[point.type]);
 		prop->setPosition(point.x, point.y);
 		props.push_back(prop);
 	}

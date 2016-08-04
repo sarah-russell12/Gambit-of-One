@@ -10,7 +10,6 @@ Hansson, and Jan Haller.
 */
 
 #include "Projectile.hpp"
-#include "DataTables.hpp"
 #include "Utility.hpp"
 #include "ResourceHolder.hpp"
 
@@ -21,17 +20,13 @@ Hansson, and Jan Haller.
 #include <cassert>
 
 
-namespace
-{
-	const std::vector<ProjectileData> Table = initializeProjectileData();
-}
-
-Projectile::Projectile(Type type, const TextureHolder& textures, const Compass& direction)
+Projectile::Projectile(Type type, const TextureHolder& textures, const Compass& direction, const ProjectileData& data)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(Table[type].texture))
+	, mSprite(textures.get(data.texture))
 	, mTargetDirection()
 	, mCDirection(direction)
+	, mData(data)
 {
 	switch (direction)
 	{
@@ -52,12 +47,6 @@ Projectile::Projectile(Type type, const TextureHolder& textures, const Compass& 
 
 	centerOrigin(mSprite);
 }
-
-//void Projectile::guideTowards(sf::Vector2f position)
-//{
-//	assert(isGuided());
-//	mTargetDirection = unitVector(position - getWorldPosition());
-//}
 
 bool Projectile::isGuided() const
 {
@@ -102,27 +91,12 @@ sf::FloatRect Projectile::getBoundingRect() const
 
 float Projectile::getMaxSpeed() const
 {
-	return Table[mType].speed;
+	return mData.speed;
 }
 
 int Projectile::getDamage() const
 {
-	return Table[mType].damage;
+	return mData.damage;
 }
 
-void Projectile::updateSprite()
-{
-	//switch (mCDirection)
-	//{
-	//case North:
-	//	rot
-	//case East:
-	//	mSprite = rightArrow;
-	//case South:
-	//	mSprite = downArrow;
-	//case West:
-	//	mSprite = leftArrow;
-	//default:
-	//	break;
-	//}
-}
+void Projectile::updateSprite() {}

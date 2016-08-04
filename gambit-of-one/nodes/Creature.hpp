@@ -1,7 +1,7 @@
 /*
 Creature.hpp
 
-Date Last Updated: July 4, 2016
+Date Last Updated: August 2, 2016
 
 This header file was made during the Spring 2015 SFML Game Development
 Tutorial at New College of Florida.  This code follows the code from the
@@ -20,6 +20,8 @@ Updates:
 					 reordered methods and members so comments were easy to find
 	- July 4, 2016: Updated isMelee() and isRanged() to reflect changes in
 					CreatureData
+	- August 2, 2016: CreatureData is now a member, and there is a slight dependency
+					  on DataTable's pointer
 */
 
 #ifndef CREATURE_HPP
@@ -30,6 +32,8 @@ Updates:
 #include "ResourceIdentifiers.hpp"
 #include "Projectile.hpp"
 #include "TextNode.hpp"
+#include "DataStructures.h"
+#include "DataTable.h"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -42,16 +46,15 @@ public:
 	enum Type
 	{
 		Hero,
-		Guide,
 		Rat,
-		Archer,
 		Bandit,
+		Archer,
 		TypeCount
 	};
 
 
 public:
-	Creature(Type type, const TextureHolder& textures, const FontHolder& fonts);
+	Creature(Type type, const CreatureData& data, DataTable* table);
 
 	Type							getType() const;
 	virtual unsigned int			getCategory() const;
@@ -74,8 +77,6 @@ public:
 	void					block();
 	void					fire(CommandQueue& commands);
 
-//	void					attack();
-//	void 					fire();
 protected:
 	void					updateTexts();
 
@@ -83,18 +84,9 @@ private:
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	virtual void 			updateCurrent(sf::Time dt, CommandQueue& commands);
 	void					checkPickupDrop(CommandQueue& commands);
-	void					createPickup(SceneNode& node, const TextureHolder& textures) const;
-	void					createArrow(SceneNode& node, const TextureHolder& textures);
+	void					createPickup(SceneNode& node, DataTable* table) const;
+	void					createArrow(SceneNode& node, DataTable* table);
 	virtual void			updateSprite();
-
-	//void					updateMovementPattern(sf::Time dt);
-	//void					checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
-	//void					checkAttacks(sf::Time dt, CommandQueue& commands);
-	//Entity::cDirection		checkCompass() const;
-	//void					createArrows(SceneNode& node, const TextureHolder& textures) const;
-	//void					createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const;
-	//void					updateCompass();
-	//void					updateCreatureDirection();
 
 protected:
 	sf::Sprite				mSprite;
@@ -104,7 +96,8 @@ protected:
 
 private:
 	Type					mType;
-	
+	CreatureData			mData;
+
 	CombatBehavior*			mCombatBehavior;
 	Command 				mDropPickupCommand;
 	sf::Vector2f			mTargetDirection;
@@ -112,21 +105,18 @@ private:
 	float					mAggroDistance;
 
 	Command 				mFireCommand;
-	//sf::Time				mFireCountdown;
-	//sf::Time				mAttackCountdown;
-	//bool 					mIsFiring;
-	//bool					mIsAttacking;
-	//bool					mIsAggroed;
-	//bool					mIsBlocked;					// Attempt to fix movement
-	//cDirection				mCompass;
-	//TextureHolder			mHeroTextures;
-	//int						mFireRateLevel;
-	//int						mSpreadLevel;
-	//float					mTravelledDistance;
-	//std::size_t				mDirectionIndex;
-	//sf::Texture				mNormalTexture;
-	//sf::Texture				mAttackTexture;
-	//sf::Texture				mFiringTexture;
+};
+
+struct EnemySpawn
+{
+	EnemySpawn(Creature::Type type, float x, float y)
+		: type(type), x(x), y(y) {}
+	EnemySpawn(Creature::Type type, sf::Vector2f pos)
+		: type(type), x(pos.x), y(pos.y) {}
+
+	Creature::Type	type;
+	float			x;
+	float			y;
 };
 
 #endif // CREATURE_HPP

@@ -15,11 +15,12 @@ distinct from other Creatures, it should have its own class.
 #include "Creature.hpp"
 #include "PlayerCombatBehavior.h"
 #include "Player.hpp"
+#include "DataTable.h"
 
 class PlayerCreature : public Creature
 {
 public:
-	PlayerCreature(Type type, const TextureHolder& textures, const FontHolder& fonts);
+	PlayerCreature(Type type, const CreatureData& data, DataTable* table);
 
 	virtual unsigned int			getCategory() const;
 	int								getKillCount() const;

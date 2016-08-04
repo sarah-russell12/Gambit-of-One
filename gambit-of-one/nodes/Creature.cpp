@@ -12,13 +12,13 @@ Hansson, and Jan Haller.
 
 #include "Creature.hpp"
 #include "BehaviorFactory.h"
-#include "DataTables.hpp"
 #include "Utility.hpp"
 #include "Pickup.hpp"
 #include "CommandQueue.hpp"
 #include "ResourceHolder.hpp"
 #include "CombatBehavior.h"
 #include "MovementBehavior.h"
+#include "DataTable.h"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -27,36 +27,36 @@ Hansson, and Jan Haller.
 
 namespace
 {
-	const std::vector<CreatureData> Table = initializeCreatureData();
 	BehaviorFactory Factory = BehaviorFactory();
 }
 
-Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& fonts)
-	: Entity(Table[type].hitpoints)
+Creature::Creature(Type type, const CreatureData& data, DataTable* table)
+	: Entity(data.hitpoints)
 	, mType(type)
-	, mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+	, mSprite(table->getTextures()->get(data.texture), data.textureRect)
 	, mIsMarkedForRemoval(false)
 	, mDropPickupCommand()
 	, mHealthDisplay(nullptr)
 	, mTargetDirection()
+	, mData(data)
 {
-	mCombatBehavior = Factory.getCombatBehavior(*this, textures);
-	mMoveBehavior = Factory.getMovementBehavior(*this);
+	mCombatBehavior = Factory.getCombatBehavior(*this, data);
+	mMoveBehavior = Factory.getMovementBehavior(*this, data);
 	centerOrigin(mSprite);
 
 	mFireCommand.category = Category::SceneGroundLayer;
-	mFireCommand.action = [this, &textures](SceneNode& node, sf::Time)
+	mFireCommand.action = [this, table](SceneNode& node, sf::Time)
 	{
-		createArrow(node, textures);
+		createArrow(node, table);
 	};
 
 	mDropPickupCommand.category = Category::SceneGroundLayer;
-	mDropPickupCommand.action = [this, &textures](SceneNode& node, sf::Time)
+	mDropPickupCommand.action = [this, table](SceneNode& node, sf::Time)
 	{
-		createPickup(node, textures);
+		createPickup(node, table);
 	};
 
-	std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
+	std::unique_ptr<TextNode> healthDisplay(new TextNode(*table->getFonts(), ""));
 	mHealthDisplay = healthDisplay.get();
 	attachChild(std::move(healthDisplay));
 
@@ -131,18 +131,18 @@ bool Creature::isAggroed() const
 
 bool Creature::isGuided() const
 {
-	return Table[mType].aggroDistance != 0.f;
+	return mData.aggroDistance != 0.f;
 }
 
 bool Creature::isRanged() const
 {
 	// Ranged creatures do not have a physical attack, so they do not do melee damage
-	return Table[mType].attackDamage == 0.f;
+	return mData.attackDamage == 0.f;
 }
 
 bool Creature::isMelee() const
 {
-	return Table[mType].attackDamage != 0.f;
+	return mData.attackDamage != 0.f;
 }
 
 bool Creature::isAttacking() const
@@ -157,17 +157,17 @@ bool Creature::isBlocked() const
 
 float Creature::getMaxSpeed() const
 {
-	return Table[mType].speed;
+	return mData.speed;
 }
 
 int Creature::getDamage() const
 {
-	return Table[mType].attackDamage;
+	return mData.attackDamage;
 }
 
 float Creature::getAggroDistance() const
 {
-	return Table[mType].aggroDistance;
+	return mData.aggroDistance;
 }
 
 void Creature::block()
@@ -192,23 +192,22 @@ void Creature::checkAggro(sf::Vector2f position)
 	mMoveBehavior->checkAggro();
 }
 
-void Creature::createPickup(SceneNode& node, const TextureHolder& textures) const
+void Creature::createPickup(SceneNode& node, DataTable* table) const
 {
-	// Not increasing archery stats at the time
-	//auto type = static_cast<Pickup::Type>(randomInt(Pickup::TypeCount));
-
-	std::unique_ptr<Pickup> pickup(new Pickup(Pickup::HealthRefill, textures));
+	auto data = table->getPickupData()[Pickup::HealthRefill];
+	std::unique_ptr<Pickup> pickup(new Pickup(Pickup::HealthRefill, *table->getTextures(), data));
 	pickup->setPosition(getWorldPosition());
 	pickup->setVelocity(0.f, 1.f);
 	node.attachChild(std::move(pickup));
 }
 
-void Creature::createArrow(SceneNode& node, const TextureHolder& textures)
+void Creature::createArrow(SceneNode& node, DataTable* table)
 {
 	auto& creature = static_cast<Creature&>(node);
 	sf::FloatRect bounds = mSprite.getGlobalBounds();
 	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
-	std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getCompass()));
+	auto data = table->getProjectileData()[type];
+	std::unique_ptr<Projectile> projectile(new Projectile(type, *table->getTextures(), getCompass(), data));
 
 	sf::Vector2f velocity;
 	sf::Vector2f offset(0, 0);

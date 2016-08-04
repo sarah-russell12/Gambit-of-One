@@ -13,13 +13,9 @@ Defines all the methods declared in PlayerCreature.h
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
 
-PlayerCreature::PlayerCreature(Type type, const TextureHolder& textures, const FontHolder& fonts)
-	: Creature(type, textures, fonts), mCombatBehavior(*this, textures), mKillCount(0)
+PlayerCreature::PlayerCreature(Type type, const CreatureData& data, DataTable* table)
+	: Creature(type, data, table), mCombatBehavior(*this, data), mKillCount(0)
 {
 
 }
