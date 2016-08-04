@@ -1,7 +1,7 @@
 /*
 Application.hpp
 
-Date Last Updated: August 16, 2015
+Date Last Updated: August 4, 2016
 
 This header file was made during the Spring 2015 SFML Game Development
 Tutorial at New College of Florida.  This code follows the code from the
@@ -11,6 +11,13 @@ Hansson, and Jan Haller.
 The application has control of a StateStack that handles the States of the
 game, and handles the game loop in terms of conducting its parts to do thier
 functions independent of each other in the right order.
+
+This class uses the pugixml library (http://pugixml.org) to parse xml documents.
+pugixml is Copyright (C) 2006-2015 Arseny Kapoulkine.
+
+Updates:
+	- August 4, 2016: Added loadResouces method once again, and added pugixml parsing
+					  capabilities to it
 */
 
 #ifndef APPLICATION_HPP
@@ -41,6 +48,7 @@ private:
 	void					updateStatistics(sf::Time dt);
 	void					registerStates();
 
+	void					loadResources();
 
 private:
 	static const sf::Time	TimePerFrame;

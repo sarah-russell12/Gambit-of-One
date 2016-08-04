@@ -22,14 +22,8 @@ public:
 	BehaviorFactory();
 	~BehaviorFactory();
 
-	CombatBehavior*		getCombatBehavior(Creature& node, const TextureHolder& textures);
+	CombatBehavior*		getCombatBehavior(Creature& node);
 	MovementBehavior*	getMovementBehavior(Creature& node);
-
-private:
-	void				loadProjectileTextures();
-
-private:
-	TextureHolder		mProjectileTextures;
 };
 
 #endif //BEHAVIOR_FACTORY_H

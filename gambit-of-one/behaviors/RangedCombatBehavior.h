@@ -26,7 +26,7 @@ Updates:
 class RangedCombatBehavior : public CombatBehavior
 {
 public:
-	RangedCombatBehavior(Creature& node, const TextureHolder& textures);
+	RangedCombatBehavior(Creature& node);
 	~RangedCombatBehavior();
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
@@ -40,7 +40,6 @@ private:
 	void				createArrow(SceneNode& node, const TextureHolder& textures) const;
 	
 private:
-	Command			mFireCommand;
 	bool			mIsFiring;
 };
 

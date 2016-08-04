@@ -40,7 +40,7 @@ class Area : private sf::NonCopyable
 {
 public:
 	// Long, but hopefully worth it
-	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player, EntityFactory* factory);
+	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, const AreaData& data, PlayerCreature* player, EntityFactory* factory);
 
 	void			update(sf::Time dt);
 	void			draw();
@@ -73,7 +73,6 @@ private:
 	};
 
 private:
-	sf::Vector2i						mCoordinates;
 	sf::RenderWindow&					mWindow;
 	sf::View							mView;
 	sf::FloatRect						mAreaBounds;

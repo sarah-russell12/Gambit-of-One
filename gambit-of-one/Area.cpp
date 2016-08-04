@@ -18,23 +18,17 @@ Defines all the methods declared in Area.h
 #include <cmath>
 #include <limits>
 
-namespace
-{
-	const std::vector<std::vector<AreaData>> Map = initializeAreaData();
-}
-
-Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, int x, int y, PlayerCreature* player, EntityFactory* factory)
-	: mCoordinates(x, y)
-	, mWindow(window)
+Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, const AreaData& data, PlayerCreature* player, EntityFactory* factory)
+	: mWindow(window)
 	, mView(window.getDefaultView())
 	, mAreaBounds(0.f, 0.f, mView.getSize().x, mView.getSize().y)
 	, mSceneGraph()
 	, mSceneLayers()
 	, mCommandQueue(queue)
 	, mPlayer(player)
-	, mData(Map[x][y])
+	, mData(data)
 	, mActiveEnemies()
-	, mBackground(textures.get(Map[x][y].bgTexture))
+	, mBackground(textures.get(data.bgTexture))
 {
 	buildScene(factory);
 }

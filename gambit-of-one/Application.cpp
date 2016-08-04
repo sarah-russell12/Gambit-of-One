@@ -1,12 +1,15 @@
 /*
 Application.cpp
 
-Date Last Updated: August 16, 2015
+Date Last Updated: August 4, 2016
 
 This source file was made during the Spring 2015 SFML Game Development
 Tutorial at New College of Florida.  This code follows the code from the
 textbook "SFML Game Development" by Artur Moreira, Henrick Vogelius
 Hansson, and Jan Haller.
+
+This class uses the pugixml library (http://pugixml.org) to parse xml documents.
+pugixml is Copyright (C) 2006-2015 Arseny Kapoulkine.
 */
 
 #include "Application.hpp"
@@ -20,6 +23,7 @@ Hansson, and Jan Haller.
 #include "SettingsState.hpp"
 #include "GameOverState.hpp"
 
+#include "pugixml.hpp"
 
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -36,27 +40,7 @@ Application::Application()
 {
 	mWindow.setKeyRepeatEnabled(false);
 
-	mFonts.load(Fonts::Main, "Media/Sansation.ttf");
-
-	mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
-	mTextures.load(Textures::ButtonNormal, "Media/Textures/ButtonNormal.png");
-	mTextures.load(Textures::ButtonSelected, "Media/Textures/ButtonSelected.png");
-	mTextures.load(Textures::ButtonPressed, "Media/Textures/ButtonPressed.png");
-	mTextures.load(Textures::Hero, "Media/Textures/HeroSpriteSheet.png");
-	mTextures.load(Textures::Rat, "Media/Textures/RatSpriteSheet.png");
-	mTextures.load(Textures::Bandit, "Media/Textures/BanditSpriteSheet.png");
-	mTextures.load(Textures::Archer, "Media/Textures/ArcherSpriteSheet.png");
-	mTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
-	mTextures.load(Textures::HealthRefill, "Media/Textures/HealthPotion.png");
-	mTextures.load(Textures::Rock, "Media/Textures/Rock.png");
-	mTextures.load(Textures::BigTree1, "Media/Textures/BigTree.png");
-	mTextures.load(Textures::SmallTree1, "Media/Textures/TinyTree.png");
-	mTextures.load(Textures::TreeWallLong, "Media/Textures/TreeWallWhole.png");
-	mTextures.load(Textures::TreeWallLeftCorner, "Media/Textures/TreeWallLeftCorner.png");
-	mTextures.load(Textures::TreeWallRightCorner, "Media/Textures/TreeWallRightCorner.png");
-	mTextures.load(Textures::Fence, "Media/Textures/Fence.png");
-	mTextures.load(Textures::LeftEndDirtRoad, "Media/Textures/DirtRoadLeftEnd.png");
-	mTextures.load(Textures::RightEndDirtRoad, "Media/Textures/DirtRoadRightEnd.png");
+	loadResources();
 
 	mStatisticsText.setFont(mFonts.get(Fonts::Main));
 	mStatisticsText.setPosition(5.f, 5.f);
@@ -141,4 +125,20 @@ void Application::registerStates()
 	mStateStack.registerState<PauseState>(States::Pause);
 	mStateStack.registerState<SettingsState>(States::Settings);
 	mStateStack.registerState<GameOverState>(States::GameOver);
+}
+
+void Application::loadResources()
+{
+	pugi::xml_document doc;
+	doc.load_file("xml/TextureData.xml");
+
+	pugi::xml_node table = doc.child("textures");
+
+	for (pugi::xml_node node = table.child("texture"); node; node = node.next_sibling("texture"))
+	{
+		Textures::ID id = static_cast<Textures::ID>(node.attribute("id").as_int());
+		mTextures.load(id, node.child("file").text().as_string());
+	}
+
+	mFonts.load(Fonts::ID::Main, "Media/Sansation.ttf");
 }

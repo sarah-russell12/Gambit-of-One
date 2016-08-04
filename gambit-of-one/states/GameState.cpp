@@ -10,6 +10,12 @@ Hansson, and Jan Haller.
 */
 
 #include "GameState.hpp"
+#include "DataTables.hpp"
+
+namespace
+{
+	const std::vector<std::vector<AreaData>> Map = initializeAreaData();
+}
 
 
 GameState::GameState(StateStack& stack, Context context)
@@ -70,12 +76,13 @@ bool GameState::handleEvent(const sf::Event& event)
 
 void GameState::initializeWorld(Context context)
 {
-	for (int i = 0; i < 2; i++)
+	
+	for (int i = 0; i < Map.size(); i++)
 	{
 		mWorld.push_back(std::vector<Area*>());
-		for (int j = 0; j < 2; j++)
+		for (int j = 0; j < Map[i].size(); j++)
 		{
-			mWorld[i].push_back(new Area(*context.window, *context.textures, &mQueue, i, j, &mPlayerCreature, &mEntityFactory));
+			mWorld[i].push_back(new Area(*context.window, *context.textures, &mQueue, Map[i][j], &mPlayerCreature, &mEntityFactory));
 		}
 	}
 

@@ -20,7 +20,7 @@ have no clue if there is a more efficient way of going about this.
 class PlayerCombatBehavior : public CombatBehavior
 {
 public:
-	PlayerCombatBehavior(Creature& node, const TextureHolder& textures);
+	PlayerCombatBehavior(Creature& node);
 	~PlayerCombatBehavior();
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);

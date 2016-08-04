@@ -19,7 +19,7 @@ namespace
 }
 
 PlayerCreature::PlayerCreature(Type type, const TextureHolder& textures, const FontHolder& fonts)
-	: Creature(type, textures, fonts), mCombatBehavior(*this, textures), mKillCount(0)
+	: Creature(type, textures, fonts), mCombatBehavior(*this), mKillCount(0)
 {
 
 }

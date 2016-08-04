@@ -42,10 +42,9 @@ public:
 	enum Type
 	{
 		Hero,
-		Guide,
 		Rat,
-		Archer,
 		Bandit,
+		Archer,
 		TypeCount
 	};
 

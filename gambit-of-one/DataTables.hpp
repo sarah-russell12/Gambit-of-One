@@ -1,7 +1,7 @@
 /*
 DataTables.hpp
 
-Date Last Updated: July 4, 2016
+Date Last Updated: August 4, 2016
 
 This header file was made during the Spring 2015 SFML Game Development
 Tutorial at New College of Florida.  This code follows the code from the
@@ -14,10 +14,15 @@ need all this data to be organized in one place so that we can just grab it
 when we need it and not have to worry about consistency or unnecessary logic
 blocks messing with the readability of our code.
 
+These methods use the pugixml library (http://pugixml.org) to parse xml documents.
+pugixml is Copyright (C) 2006-2015 Arseny Kapoulkine.
+
 Updates:
 	- July 4, 2016: Updated CreatureData to remove redundant stats.  Added 
 					three new structs: EnemySpawn, ScenerySpawn, and
 					AreaData. New global function InitializeAreaData()
+	- August 4, 2016: Updated global methods to implement the pugixml library
+					  to parse xml files
 */
 
 #ifndef DATATABLES_HPP
@@ -127,7 +132,7 @@ struct AreaData
 	// enemySpawns: The enemies in the area
 	// scenerySpawns: The scenery in the area, some of which is useful for 
 	//                blocking the path to non-existant areas
-	sf::Vector2f				coordinates;
+	sf::Vector2i				coordinates;
 	Textures::ID				bgTexture;
 	std::vector<EnemySpawn>		enemySpawns;
 	std::vector<ScenerySpawn>	scenerySpawns;

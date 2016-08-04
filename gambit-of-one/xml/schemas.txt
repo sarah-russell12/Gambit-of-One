@@ -66,7 +66,7 @@ root: "table", element content
 			element: "point", element content, 0 or more
 				element: "x", text content parsed as float
 				element: "y", text content parsed as float
-				element: "compass", text content
+				element: "compass", text content parsed as int
 
 example:
 
@@ -150,6 +150,6 @@ root: "map", element content
 				element: "sceneryID", text content parsed as int
 				element: "spawnX", text content parsed as float
 				elment: "spawnY", text content parsed as float
-				
+
+note: Please, order your Areas first by x coordinate, and then by y
 *************************************************
-			

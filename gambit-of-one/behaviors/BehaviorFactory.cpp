@@ -19,15 +19,10 @@ Defines all the methods declared in BehaviorFactory.h
 #include "TeleportMovementBehavior.h"
 #include "TurningMovementBehavior.h"
 
-BehaviorFactory::BehaviorFactory()
-	: mProjectileTextures()
-{
-	mProjectileTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
-}
-
+BehaviorFactory::BehaviorFactory() {}
 BehaviorFactory::~BehaviorFactory() {}
 
-CombatBehavior* BehaviorFactory::getCombatBehavior(Creature& node, const TextureHolder& textures)
+CombatBehavior* BehaviorFactory::getCombatBehavior(Creature& node)
 {
 	switch (node.getType())
 	{
@@ -35,10 +30,10 @@ CombatBehavior* BehaviorFactory::getCombatBehavior(Creature& node, const Texture
 	case Creature::Bandit:
 		return new MeleeCombatBehavior(node);
 	case Creature::Archer:
-		return new RangedCombatBehavior(node, textures);
+		return new RangedCombatBehavior(node);
 	case Creature::Hero:
 		// TODO: Add instantiation of PlayerCombatBehavior
-		return new PlayerCombatBehavior(node, textures);
+		return new PlayerCombatBehavior(node);
 	default:
 		return new NoCombatBehavior(node);
 	}
@@ -60,9 +55,4 @@ MovementBehavior* BehaviorFactory::getMovementBehavior(Creature& node)
 		// automated movement
 		return new MovementBehavior();
 	}
-}
-
-void BehaviorFactory::loadProjectileTextures()
-{
-	mProjectileTextures.load(Textures::Arrow, "Media/Textures/Arrow.png");
 }

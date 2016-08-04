@@ -40,7 +40,7 @@ Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& f
 	, mHealthDisplay(nullptr)
 	, mTargetDirection()
 {
-	mCombatBehavior = Factory.getCombatBehavior(*this, textures);
+	mCombatBehavior = Factory.getCombatBehavior(*this);
 	mMoveBehavior = Factory.getMovementBehavior(*this);
 	centerOrigin(mSprite);
 
