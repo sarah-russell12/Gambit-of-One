@@ -43,8 +43,21 @@ namespace Textures
 		TreeWallLeftCorner,
 		TreeWallRightCorner,
 		Fence,
-		LeftEndDirtRoad,
-		RightEndDirtRoad,
+		DirtRoadEndW,
+		DirtRoadEndE,
+		DirtRoadEndN,
+		DirtRoadEndS,
+		DirtRoadHoriz,
+		DirtRoadVert,
+		DirtRoadCross,
+		DirtRoadForkW,
+		DirtRoadForkE,
+		DirtRoadForkN,
+		DirtRoadForkS,
+		DirtRoadCornerNW,
+		DirtRoadCornerNE,
+		DirtRoadCornerSW,
+		DirtRoadCornerSE,
 	};
 }
 

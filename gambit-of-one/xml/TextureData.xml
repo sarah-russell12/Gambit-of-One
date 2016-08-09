@@ -43,7 +43,7 @@
     <file>Media/Textures/TreeWallHorizontal.png</file>
   </texture>
   <texture id="14">
-    <file>Media/Textures/TreeWallVertical.png</file>
+    <file>Media/Textures/TreeWallVertLong.png</file>
   </texture>
   <texture id="15">
     <file>Media/Textures/TreeWallLeftCorner.png</file>
@@ -55,9 +55,48 @@
     <file>Media/Textures/Fence.png</file>
   </texture>
   <texture id="18">
-    <file>Media/Textures/DirtRoadLeftEnd.png</file>
+    <file>Media/Textures/DirtRoadEndW.png</file>
   </texture>
   <texture id="19">
-    <file>Media/Textures/DirtRoadRightEnd.png</file>
+    <file>Media/Textures/DirtRoadEndE.png</file>
+  </texture>
+  <texture id="20">
+    <file>Media/Textures/DirtRoadEndN.png</file>
+  </texture>
+  <texture id="21">
+    <file>Media/Textures/DirtRoadEndS.png</file>
+  </texture>
+  <texture id="22">
+    <file>Media/Textures/DirtRoadHorizontal.png</file>
+  </texture>
+  <texture id="23">
+    <file>Media/Textures/DirtRoadVertical.png</file>
+  </texture>
+  <texture id="24">
+    <file>Media/Textures/DirtRoadCrossroad.png</file>
+  </texture>
+  <texture id="25">
+    <file>Media/Textures/DirtRoadForkW.png</file>
+  </texture>
+  <texture id="26">
+    <file>Media/Textures/DirtRoadForkE.png</file>
+  </texture>
+  <texture id="27">
+    <file>Media/Textures/DirtRoadForkN.png</file>
+  </texture>
+  <texture id="28">
+    <file>Media/Textures/DirtRoadForkS.png</file>
+  </texture>
+  <texture id="29">
+    <file>Media/Textures/DirtRoadCornerNW.png</file>
+  </texture>
+  <texture id="30">
+    <file>Media/Textures/DirtRoadCornerNE.png</file>
+  </texture>
+  <texture id="31">
+    <file>Media/Textures/DirtRoadCornerSW.png</file>
+  </texture>
+  <texture id="32">
+    <file>Media/Textures/DirtRoadCornerSE.png</file>
   </texture>
 </textures>

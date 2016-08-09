@@ -144,35 +144,21 @@ std::vector<std::vector<AreaData>> initializeAreaData()
 		int x = node.child("coordinates").child("x").text().as_int();
 		int y = node.child("coordinates").child("y").text().as_int();
 
-		if (x >= currentWidth && x != 0)
+		if (x == currentWidth)
 		{
-			for (int i = 0; i < (x - currentWidth); i++)
+			std::vector<AreaData> newRow;
+			for (int j = 0; j < currentHeight; j++)
 			{
-				std::vector<AreaData> newRow;
-				for (int j = 0; j < currentHeight; j++)
-				{
-					newRow.push_back(AreaData());
-				}
-				map.push_back(newRow);
+				newRow.push_back(AreaData());
 			}
+			map.push_back(newRow);
 			currentWidth = x + 1;
 		}
-		else
-		{
-			map.push_back(std::vector<AreaData>());
-		}
 
-		if (y >= currentHeight && y != 0)
-		{
-			for (int i = 0; i < (y - currentHeight); i++)
-			{
-				map[x].push_back(AreaData());
-			}
-			currentHeight = y + 1;
-		}
-		else
+		if (y == currentHeight)
 		{
 			map[x].push_back(AreaData());
+			currentHeight = y + 1;
 		}
 
 		map[x][y].coordinates = sf::Vector2i(x, y);

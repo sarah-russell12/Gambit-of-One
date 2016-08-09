@@ -26,12 +26,11 @@ public:
 		Rock,
 		BigTree1,
 		SmallTree1,
-		TreeWallLong,
+		Fence,
+		TreeWallHoriz,
+		TreeWallVert,
 		TreeWallLeftCorner,
 		TreeWallRightCorner,
-		Fence,
-		Wheat,
-		House,
 		TypeCount
 	};
 

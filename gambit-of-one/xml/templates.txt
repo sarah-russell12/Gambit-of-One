@@ -1,0 +1,427 @@
+<!-- area base -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID></bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+  </props>
+</area>
+
+<!-- area with road end W -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>18</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>663</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>50</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>663</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road end E -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>19</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>361</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>974</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>361</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road end N -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>20</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>512</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>50</x>
+      <y>535</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>974</x>
+      <y>535</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road end S -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>21</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>50</x>
+      <y>233</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>974</x>
+      <y>233</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>512</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with horizontal road -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>22</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>512</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>512</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with vertical road -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>23</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>50</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>974</x>
+      <y>384</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with a crossroad -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>24</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>718</y>
+    </point>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road fork W -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>25</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>50</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road fork E -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>26</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>718</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>974</x>
+      <y>384</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road fork N -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>27</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>512</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>718</y>
+    </point>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road fork S -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>28</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>512</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road corner NW -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>29</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>50</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>663</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road corner NE -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>30</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>361</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>974</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road corner SW -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>31</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>6</sceneryID>
+      <x>853.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>50</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>663</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
+
+<!-- area with road corner SE -->
+<area>
+  <coordinates>
+    <x></x>
+    <y></y>
+  </coordinates>
+  <bgTextureID>32</bgTextureID>
+  <enemies>
+  </enemies>
+  <props>
+    <point>
+      <sceneryID>5</sceneryID>
+      <x>170.5</x>
+      <y>50</y>
+    </point>
+    <point>
+      <sceneryID>7</sceneryID>
+      <x>974</x>
+      <y>384</y>
+    </point>
+    <point>
+      <sceneryID>4</sceneryID>
+      <x>361</x>
+      <y>718</y>
+    </point>
+  </props>
+</area>
