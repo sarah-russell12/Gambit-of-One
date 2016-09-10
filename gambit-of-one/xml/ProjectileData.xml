@@ -2,14 +2,14 @@
 <table>
   <projectile id="0">
     <name>Allied Arrow</name>
-    <speed>150</speed>
-    <damage>25</damage>
+    <speed>250</speed>
+    <damage>15</damage>
     <textureID>8</textureID>
   </projectile>
   <projectile id="1">
     <name>Enemy Arrow</name>
-    <speed>150</speed>
-    <damage>10</damage>
+    <speed>300</speed>
+    <damage>20</damage>
     <textureID>8</textureID>
   </projectile>
 </table>
