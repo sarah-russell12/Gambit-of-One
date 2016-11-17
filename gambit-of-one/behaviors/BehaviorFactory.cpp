@@ -22,37 +22,34 @@ Defines all the methods declared in BehaviorFactory.h
 BehaviorFactory::BehaviorFactory() {}
 BehaviorFactory::~BehaviorFactory() {}
 
-CombatBehavior* BehaviorFactory::getCombatBehavior(Creature& node)
+CombatBehavior* BehaviorFactory::getCombatBehavior(Creature& node, CombatStyle combat)
 {
-	switch (node.getType())
+	switch (combat)
 	{
-	case Creature::Rat:
-	case Creature::Bandit:
+	case Melee:
 		return new MeleeCombatBehavior(node);
-	case Creature::Archer:
+	case Ranged:
 		return new RangedCombatBehavior(node);
-	case Creature::Hero:
-		// TODO: Add instantiation of PlayerCombatBehavior
+	case Player:
 		return new PlayerCombatBehavior(node);
 	default:
 		return new NoCombatBehavior(node);
 	}
 }
 
-MovementBehavior* BehaviorFactory::getMovementBehavior(Creature& node)
+MovementBehavior* BehaviorFactory::getMovementBehavior(Creature& node, Movement move)
 {
-	switch (node.getType())
+	switch (move)
 	{
-	case Creature::Rat:
-	case Creature::Bandit:
+	case Directional:
+		return new DirectionalMovementBehavior(node);
+	case Guided:
 		return new GuidedMovementBehavior(node);
-	case Creature::Archer:
+	case Teleporting:
+		return new TeleportMovementBehavior(node);
+	case Turning:
 		return new TurningMovementBehavior(node);
-	case Creature::Hero:
-		return new MovementBehavior(node);
-	default:
-		// the player's character is moved differently thus it requires no 
-		// automated movement
-		return new MovementBehavior();
+	case DontMove:
+		return new MovementBehavior(node);	
 	}
 }

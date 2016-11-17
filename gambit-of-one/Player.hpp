@@ -17,10 +17,12 @@ completing the level.
 #define PLAYER_HPP
 
 #include "Command.hpp"
+#include "DataTables.hpp"
 
 #include <SFML/Window/Event.hpp>
 
 #include <map>
+#include <vector>
 
 
 class CommandQueue;
@@ -60,6 +62,10 @@ public:
 	void					checkMissionStatus();
 	MissionStatus 			getMissionStatus() const;
 
+	CreatureData			getPlayerStats() const;
+	void					setPlayerStats(std::vector<unsigned int> stats);
+	void					setPlayerStats(CreatureData data);
+
 private:
 	void					initializeActions();
 	static bool				isRealtimeAction(Action action);
@@ -69,6 +75,8 @@ private:
 	std::map<sf::Keyboard::Key, Action>		mKeyBinding;
 	std::map<Action, Command>				mActionBinding;
 	MissionStatus 							mCurrentMissionStatus;
+
+	CreatureData							mPlayerStats;
 };
 
 #endif // PLAYER_HPP

@@ -25,8 +25,11 @@ public:
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
 
-	virtual bool		isAttacking(Player::Action action) const;
-	void				attack(Player::Action action);
+	virtual bool		isAttacking() const;
+	void				attack();
+
+	virtual int			getTileMultiplier() const;
+	virtual void		setStats();
 
 private:
 	MeleeCombatBehavior		mMelee;

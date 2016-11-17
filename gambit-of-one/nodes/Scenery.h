@@ -21,35 +21,20 @@ Scenery is a type of Entity that can block the path of Creatures and Projectiles
 class Scenery : public Entity
 {
 public:
-	enum Type
-	{
-		Rock,
-		BigTree1,
-		SmallTree1,
-		Fence,
-		TreeWallHoriz,
-		TreeWallVert,
-		TreeWallLeftCorner,
-		TreeWallRightCorner,
-		TypeCount
-	};
-
-
-public:
-	Scenery(Type type, const TextureHolder& textures);
+	Scenery(unsigned int type, const TextureHolder& textures);
 	~Scenery();
 
 	virtual unsigned int		getCategory() const;
 	virtual sf::FloatRect		getBoundingRect() const;
 
-	Type						getType() const;
+	unsigned int				getType() const;
 
 private:
 	virtual void				drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
-	Type			mType;
-	sf::Sprite		mSprite;
+	unsigned int				mType;
+	sf::Sprite					mSprite;
 };
 
 #endif //SCENERY_H

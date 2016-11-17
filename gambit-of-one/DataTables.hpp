@@ -30,7 +30,6 @@ Updates:
 
 #include "ResourceIdentifiers.hpp"
 #include "Scenery.h"
-#include "Creature.hpp"
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Color.hpp>
@@ -64,38 +63,47 @@ struct TeleportPoint
 
 struct CreatureData
 {
-	int								hitpoints;
-	float							speed;
-	int								attackDamage;
+	unsigned int					type;
+	unsigned int					constitution;
+	unsigned int					strength;
+	unsigned int					dexterity;
+	unsigned int					intelligence;
+	unsigned int					charisma;
+	unsigned int					combatID;
+	unsigned int					movementID;
+	unsigned int					texture;
 	float							aggroDistance;
-	Textures::ID					texture;
+	float							speed;
 	sf::IntRect						textureRect;
-	sf::Time						attackInterval;
 	std::vector<Direction>			directions;
 	std::vector<TeleportPoint>		teleportPoints;
 };
 
 struct ProjectileData
 {
-	int								damage;
-	float							speed;
-	Textures::ID					texture;
+	unsigned int					type;
+	unsigned int					texture;
 };
 
+
+class Creature;
 struct PickupData
 {
+	unsigned int					type;
 	std::function<void(Creature&)>	action;
-	Textures::ID					texture;
+	unsigned int					texture;
 };
 
 struct SceneryData
 {
-	Textures::ID					texture;
+	unsigned int					type;
+	unsigned int					texture;
 };
 
 struct InteractiveSceneryData
 {
-	Textures::ID					texture;
+	unsigned int					type;
+	unsigned int					texture;
 	sf::IntRect						textureRect;
 	bool							isSwitch;
 	bool							isMoveable;
@@ -103,24 +111,24 @@ struct InteractiveSceneryData
 
 struct EnemySpawn
 {
-	EnemySpawn(Creature::Type type, float x, float y)
+	EnemySpawn(unsigned int type, float x, float y)
 		: type(type), x(x), y(y) {}
-	EnemySpawn(Creature::Type type, sf::Vector2f pos)
+	EnemySpawn(unsigned int type, sf::Vector2f pos)
 		: type(type), x(pos.x), y(pos.y) {}
 
-	Creature::Type	type;
+	unsigned int	type;
 	float			x;
 	float			y;
 };
 
 struct ScenerySpawn
 {
-	ScenerySpawn(Scenery::Type type, float x, float y)
+	ScenerySpawn(unsigned int type, float x, float y)
 		: type(type), x(x), y(y) {}
-	ScenerySpawn(Scenery::Type type, sf::Vector2f pos)
+	ScenerySpawn(unsigned int type, sf::Vector2f pos)
 		: type(type), x(pos.x), y(pos.y) {}
 
-	Scenery::Type	type;
+	unsigned int	type;
 	float			x;
 	float			y;
 };
@@ -133,16 +141,27 @@ struct AreaData
 	// scenerySpawns: The scenery in the area, some of which is useful for 
 	//                blocking the path to non-existant areas
 	sf::Vector2i				coordinates;
-	Textures::ID				bgTexture;
+	unsigned int				bgTexture;
 	std::vector<EnemySpawn>		enemySpawns;
 	std::vector<ScenerySpawn>	scenerySpawns;
 };
 
-std::vector<CreatureData>				initializeCreatureData();
-std::vector<ProjectileData>				initializeProjectileData();
-std::vector<PickupData>					initializePickupData();
-std::vector<SceneryData>				initializeSceneryData();
-std::vector<InteractiveSceneryData>		initializeInteractiveSceneryData();
-std::vector<std::vector<AreaData>>		initializeAreaData();
+// Forward declaration of the constant global tables.  I found I'm calling some of these
+// methods global methods multiple times
+namespace Tables
+{
+	std::vector<CreatureData>				initializeCreatureData();
+	std::vector<ProjectileData>				initializeProjectileData();
+	std::vector<PickupData>					initializePickupData();
+	std::vector<SceneryData>				initializeSceneryData();
+	std::vector<InteractiveSceneryData>		initializeInteractiveSceneryData();
+	std::vector<std::vector<AreaData>>		initializeAreaData();
+
+	extern const std::vector<CreatureData>				Creatures;
+	extern const std::vector<ProjectileData>			Projectiles;
+	extern const std::vector<PickupData>				Pickups;
+	extern const std::vector<SceneryData>				Props;
+	extern const std::vector<std::vector<AreaData>>		Areas;
+};
 
 #endif // DATATABLES_HPP

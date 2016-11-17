@@ -26,6 +26,8 @@ public:
 	virtual void		checkCooldown(sf::Time dt, sf::Vector2f playerPos);
 	virtual void		attack();
 
+	virtual void		setStats();
+
 private:
 	virtual void		checkInterval(sf::Time dt, CommandQueue& commands);
 	virtual void		attack(sf::Vector2f playerPos);

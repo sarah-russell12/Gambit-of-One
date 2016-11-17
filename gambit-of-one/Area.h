@@ -18,10 +18,10 @@ exists for it.
 #include "ResourceIdentifiers.hpp"
 #include "SceneNode.hpp"
 #include "SpriteNode.hpp"
-#include "PlayerCreature.h"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
 #include "EntityFactory.h"
+#include "DataTables.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -40,7 +40,7 @@ class Area : private sf::NonCopyable
 {
 public:
 	// Long, but hopefully worth it
-	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, const AreaData& data, PlayerCreature* player, EntityFactory* factory);
+	Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, AreaData data, Creature* player, EntityFactory* factory);
 
 	void			update(sf::Time dt);
 	void			draw();
@@ -81,12 +81,15 @@ private:
 	std::array<SceneNode*, LayerCount>	mSceneLayers;
 	CommandQueue*						mCommandQueue;
 
-	PlayerCreature*						mPlayer;
+	Creature*							mPlayer;
 	AreaData							mData;
 
 	std::vector<Creature*>				mActiveEnemies;
 
 	sf::Texture							mBackground;
+
+	unsigned int						mX;
+	unsigned int						mY;
 };
 
 #endif //AREA_H

@@ -11,8 +11,9 @@ Hansson, and Jan Haller.
 
 #include "Player.hpp"
 #include "CommandQueue.hpp"
-#include "PlayerCreature.h"
+#include "Creature.hpp"
 #include "Foreach.hpp"
+#include "DataTables.hpp"
 
 #include <map>
 #include <string>
@@ -29,28 +30,9 @@ struct CreatureMover
 	{
 	}
 
-	void operator() (PlayerCreature& creature, sf::Time) const
+	void operator() (Creature& creature, sf::Time) const
 	{
-		if (creature.isBlocked())
-		{
-			sf::Vector2f newVel;
-			switch (creature.getCompass())
-			{
-			case Creature::North:
-			case Creature::South:
-				newVel = sf::Vector2f{ velocity.x, 0.f };
-				break;
-			case Creature::East:
-			case Creature::West:
-				newVel = sf::Vector2f{ 0.f, velocity.y };
-				break;
-			}
-			creature.accelerate(newVel * creature.getMaxSpeed());
-		}
-		else
-		{
-			creature.accelerate(velocity * creature.getMaxSpeed());
-		}
+		creature.accelerate(velocity * creature.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
@@ -133,14 +115,33 @@ Player::MissionStatus Player::getMissionStatus() const
 	return mCurrentMissionStatus;
 }
 
+CreatureData Player::getPlayerStats() const
+{
+	return mPlayerStats;
+}
+
+void Player::setPlayerStats(std::vector<unsigned int> stats)
+{
+	mPlayerStats.constitution = stats[0];
+	mPlayerStats.strength = stats[1];
+	mPlayerStats.dexterity = stats[2];
+	mPlayerStats.intelligence = stats[3];
+	mPlayerStats.charisma = stats[4];
+}
+
+void Player::setPlayerStats(CreatureData data)
+{
+	mPlayerStats = data;
+}
+
 void Player::initializeActions()
 {
-	mActionBinding[MoveLeft].action = derivedAction<PlayerCreature>(CreatureMover(-1, 0));
-	mActionBinding[MoveRight].action = derivedAction<PlayerCreature>(CreatureMover(+1, 0));
-	mActionBinding[MoveUp].action = derivedAction<PlayerCreature>(CreatureMover(0, -1));
-	mActionBinding[MoveDown].action = derivedAction<PlayerCreature>(CreatureMover(0, +1));
-	mActionBinding[Attack].action = derivedAction<PlayerCreature>([](PlayerCreature& a, sf::Time){ a.attack(Attack); });
-	mActionBinding[Fire].action = derivedAction<PlayerCreature>([](PlayerCreature& a, sf::Time){ a.attack(Fire); });
+	mActionBinding[MoveLeft].action = derivedAction<Creature>(CreatureMover(-1, 0));
+	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
+	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
+	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
+	mActionBinding[Attack].action = derivedAction<Creature>([](Creature& a, sf::Time) { a.setAction(Attack); a.attack(); });
+	mActionBinding[Fire].action = derivedAction<Creature>([](Creature& a, sf::Time) { a.setAction(Fire);  a.attack(); });
 }
 
 bool Player::isRealtimeAction(Action action)
@@ -151,7 +152,6 @@ bool Player::isRealtimeAction(Action action)
 	case MoveRight:
 	case MoveDown:
 	case MoveUp:
-	case Attack:
 		return true;
 
 	default:

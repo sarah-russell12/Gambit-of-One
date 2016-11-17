@@ -9,10 +9,10 @@ Defines the non pure virtual functions declared in CombatBehavior.h
 #include "CombatBehavior.h"
 
 CombatBehavior::CombatBehavior()
-	: mType(), mCreature(), mIsAttacking(false), mAttackInterval(), mAttackCooldown() {}
+	: mCreature(), mIsAttacking(false), mAttackInterval(), mAttackCooldown() {}
 
 CombatBehavior::CombatBehavior(Creature& node)
-	: mType(node.getType()), mCreature(&node), mIsAttacking(false), mAttackInterval(), mAttackCooldown() {}
+	: mCreature(&node), mIsAttacking(false), mAttackInterval(), mAttackCooldown() {}
 
 CombatBehavior::~CombatBehavior() {}
 
@@ -41,3 +41,11 @@ void CombatBehavior::attack() { mIsAttacking = true; }
 void CombatBehavior::attack(sf::Vector2f playerPos) {}
 
 Command CombatBehavior::getCommand() { return Command{}; }
+
+void CombatBehavior::setAction(Player::Action action) { mAction = action; }
+
+Player::Action CombatBehavior::getAction() const { return mAction; }
+
+int CombatBehavior::getTileMultiplier() const { return 1; }
+
+void CombatBehavior::setStats() {}

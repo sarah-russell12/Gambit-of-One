@@ -19,19 +19,19 @@ Hansson, and Jan Haller.
 
 #include <cmath>
 #include <cassert>
+#include <random>
 
 
-namespace
-{
-	const std::vector<ProjectileData> Table = initializeProjectileData();
-}
+using namespace Tables;
 
 Projectile::Projectile(Type type, const TextureHolder& textures, const Compass& direction)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(Table[type].texture))
+	, mSprite(textures.get(Projectiles[type].texture))
 	, mTargetDirection()
 	, mCDirection(direction)
+	, mMain(0)
+	, mLimiter(0)
 {
 	switch (direction)
 	{
@@ -53,15 +53,15 @@ Projectile::Projectile(Type type, const TextureHolder& textures, const Compass& 
 	centerOrigin(mSprite);
 }
 
-//void Projectile::guideTowards(sf::Vector2f position)
-//{
-//	assert(isGuided());
-//	mTargetDirection = unitVector(position - getWorldPosition());
-//}
+void Projectile::guideTowards(sf::Vector2f position)
+{
+	assert(isGuided());
+	mTargetDirection = unitVector(position - getWorldPosition());
+}
 
 bool Projectile::isGuided() const
 {
-	return mType == Missile;
+	return mType == Magic;
 }
 
 void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
@@ -102,12 +102,32 @@ sf::FloatRect Projectile::getBoundingRect() const
 
 float Projectile::getMaxSpeed() const
 {
-	return Table[mType].speed;
+	return mMain * 20.f;		// A poor marksman or magician should not have fast projectiles
 }
 
 int Projectile::getDamage() const
 {
-	return Table[mType].damage;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> dist6(1, 6);
+	std::uniform_int_distribution<int> dist4(1, 4);
+	auto roll_d6 = std::bind(dist6, generator);
+	auto roll_d4 = std::bind(dist4, generator);
+
+	int damage = 0;
+	for (int i = 0; i < mMain; i++)
+	{
+		damage += roll_d6();
+	}
+	// If dexterity is too low, then your damage output is less
+	if (mLimiter < (0.5f * mMain))
+	{
+		int diff = int((0.5f * mMain - mLimiter) + 1);
+		for (int j = 0; j < diff; j++)
+		{
+			damage -= roll_d4();
+		}
+	}
+	return damage;
 }
 
 void Projectile::updateSprite()
@@ -125,4 +145,10 @@ void Projectile::updateSprite()
 	//default:
 	//	break;
 	//}
+}
+
+void Projectile::setStats(unsigned int main, unsigned int limiter)
+{
+	mMain = main;
+	mLimiter = limiter;
 }

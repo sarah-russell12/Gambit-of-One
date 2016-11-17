@@ -19,15 +19,12 @@ Hansson, and Jan Haller.
 #include <SFML/Graphics/RenderTarget.hpp>
 
 
-namespace
-{
-	const std::vector<PickupData> Table = initializePickupData();
-}
+using namespace Tables;
 
 Pickup::Pickup(Type type, const TextureHolder& textures)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(Table[type].texture))
+	, mSprite(textures.get(Pickups[type].texture))
 {
 	centerOrigin(mSprite);
 }
@@ -44,7 +41,7 @@ sf::FloatRect Pickup::getBoundingRect() const
 
 void Pickup::apply(Creature& player) const
 {
-	Table[mType].action(player);
+	Pickups[mType].action(player);
 }
 
 void Pickup::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const

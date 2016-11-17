@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <textures>
   <texture id="0">
-    <file>Media/Textures/TitleScreen.png</file>
+    <file>Media/Textures/HealthPotion.png</file>
   </texture>
   <texture id="1">
-    <file>Media/Textures/ButtonNormal.png</file>
+    <file>Media/Textures/TitleScreen.png</file>
   </texture>
   <texture id="2">
-    <file>Media/Textures/ButtonSelected.png</file>
+    <file>Media/Textures/ButtonNormal.png</file>
   </texture>
   <texture id="3">
-    <file>Media/Textures/ButtonPressed.png</file>
+    <file>Media/Textures/ButtonSelected.png</file>
   </texture>
   <texture id="4">
-    <file>Media/Textures/HeroSpriteSheet.png</file>
+    <file>Media/Textures/ButtonPressed.png</file>
   </texture>
   <texture id="5">
-    <file>Media/Textures/RatSpriteSheet.png</file>
+    <file>Media/Textures/HeroSpriteSheet.png</file>
   </texture>
   <texture id="6">
-    <file>Media/Textures/BanditSpriteSheet.png</file>
+    <file>Media/Textures/RatSpriteSheet.png</file>
   </texture>
   <texture id="7">
-    <file>Media/Textures/ArcherSpriteSheet.png</file>
+    <file>Media/Textures/BanditSpriteSheet.png</file>
   </texture>
   <texture id="8">
-    <file>Media/Textures/Arrow.png</file>
+    <file>Media/Textures/ArcherSpriteSheet.png</file>
   </texture>
   <texture id="9">
-    <file>Media/Textures/HealthPotion.png</file>
+    <file>Media/Textures/Arrow.png</file>
   </texture>
   <texture id="10">
     <file>Media/Textures/Rock.png</file>
@@ -43,60 +43,57 @@
     <file>Media/Textures/TreeWallHorizontal.png</file>
   </texture>
   <texture id="14">
-    <file>Media/Textures/TreeWallVertLong.png</file>
+    <file>Media/Textures/TreeWallVertical.png</file>
   </texture>
   <texture id="15">
-    <file>Media/Textures/TreeWallLeftCorner.png</file>
+    <file>Media/Textures/TreeWallCorner.png</file>
   </texture>
   <texture id="16">
-    <file>Media/Textures/TreeWallRightCorner.png</file>
-  </texture>
-  <texture id="17">
     <file>Media/Textures/Fence.png</file>
   </texture>
-  <texture id="18">
+  <texture id="17">
     <file>Media/Textures/DirtRoadEndW.png</file>
   </texture>
-  <texture id="19">
+  <texture id="18">
     <file>Media/Textures/DirtRoadEndE.png</file>
   </texture>
-  <texture id="20">
+  <texture id="19">
     <file>Media/Textures/DirtRoadEndN.png</file>
   </texture>
-  <texture id="21">
+  <texture id="20">
     <file>Media/Textures/DirtRoadEndS.png</file>
   </texture>
-  <texture id="22">
+  <texture id="21">
     <file>Media/Textures/DirtRoadHorizontal.png</file>
   </texture>
-  <texture id="23">
+  <texture id="22">
     <file>Media/Textures/DirtRoadVertical.png</file>
   </texture>
-  <texture id="24">
+  <texture id="23">
     <file>Media/Textures/DirtRoadCrossroad.png</file>
   </texture>
-  <texture id="25">
+  <texture id="24">
     <file>Media/Textures/DirtRoadForkW.png</file>
   </texture>
-  <texture id="26">
+  <texture id="25">
     <file>Media/Textures/DirtRoadForkE.png</file>
   </texture>
-  <texture id="27">
+  <texture id="26">
     <file>Media/Textures/DirtRoadForkN.png</file>
   </texture>
-  <texture id="28">
+  <texture id="27">
     <file>Media/Textures/DirtRoadForkS.png</file>
   </texture>
-  <texture id="29">
+  <texture id="28">
     <file>Media/Textures/DirtRoadCornerNW.png</file>
   </texture>
-  <texture id="30">
+  <texture id="29">
     <file>Media/Textures/DirtRoadCornerNE.png</file>
   </texture>
-  <texture id="31">
+  <texture id="30">
     <file>Media/Textures/DirtRoadCornerSW.png</file>
   </texture>
-  <texture id="32">
+  <texture id="31">
     <file>Media/Textures/DirtRoadCornerSE.png</file>
   </texture>
 </textures>

@@ -5,252 +5,50 @@
       <x>0</x>
       <y>0</y>
     </coordinates>
-    <bgTextureID>29</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>663</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>0</x>
-      <y>1</y>
-    </coordinates>
-    <bgTextureID>21</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>2</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>233</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>233</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>0</x>
-      <y>2</y>
-    </coordinates>
-    <bgTextureID>18</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>1</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>663</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>663</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>0</x>
-      <y>3</y>
-    </coordinates>
-    <bgTextureID>20</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>2</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>535</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>535</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>0</x>
-      <y>4</y>
-    </coordinates>
-    <bgTextureID>25</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>0</x>
-      <y>5</y>
-    </coordinates>
-    <bgTextureID>31</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>663</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>1</x>
-      <y>0</y>
-    </coordinates>
-    <bgTextureID>22</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>3</creatureID>
-        <x>300</x>
-        <y>225</y>
-      </point>
-      <point>
-        <creatureID>3</creatureID>
-        <x>724</x>
-        <y>543</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>1</x>
-      <y>1</y>
-    </coordinates>
-    <bgTextureID>20</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>1</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>535</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>535</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>1</x>
-      <y>2</y>
-    </coordinates>
     <bgTextureID>28</bgTextureID>
     <enemies>
     </enemies>
     <props>
       <point>
         <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <x>50</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>663</x>
         <y>50</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>50</y>
+        <x>974</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>0</x>
+      <y>1</y>
+    </coordinates>
+    <bgTextureID>20</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>2</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>233</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>233</y>
       </point>
       <point>
         <sceneryID>4</sceneryID>
@@ -261,10 +59,10 @@
   </area>
   <area>
     <coordinates>
-      <x>1</x>
-      <y>3</y>
+      <x>0</x>
+      <y>2</y>
     </coordinates>
-    <bgTextureID>18</bgTextureID>
+    <bgTextureID>17</bgTextureID>
     <enemies>
       <point>
         <creatureID>1</creatureID>
@@ -279,7 +77,209 @@
         <y>50</y>
       </point>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>663</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>0</x>
+      <y>3</y>
+    </coordinates>
+    <bgTextureID>19</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>2</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>535</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>535</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>0</x>
+      <y>4</y>
+    </coordinates>
+    <bgTextureID>24</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>0</x>
+      <y>5</y>
+    </coordinates>
+    <bgTextureID>30</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>663</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>1</x>
+      <y>0</y>
+    </coordinates>
+    <bgTextureID>21</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>3</creatureID>
+        <x>300</x>
+        <y>225</y>
+      </point>
+      <point>
+        <creatureID>3</creatureID>
+        <x>724</x>
+        <y>543</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>1</x>
+      <y>1</y>
+    </coordinates>
+    <bgTextureID>19</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>1</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>535</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>535</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>1</x>
+      <y>2</y>
+    </coordinates>
+    <bgTextureID>27</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>1</x>
+      <y>3</y>
+    </coordinates>
+    <bgTextureID>17</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>1</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>663</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
         <x>50</x>
         <y>384</y>
       </point>
@@ -295,7 +295,7 @@
       <x>1</x>
       <y>4</y>
     </coordinates>
-    <bgTextureID>22</bgTextureID>
+    <bgTextureID>21</bgTextureID>
     <enemies>
     </enemies>
     <props>
@@ -316,7 +316,7 @@
       <x>1</x>
       <y>5</y>
     </coordinates>
-    <bgTextureID>22</bgTextureID>
+    <bgTextureID>21</bgTextureID>
     <enemies>
       <point>
         <creatureID>3</creatureID>
@@ -347,7 +347,7 @@
       <x>2</x>
       <y>0</y>
     </coordinates>
-    <bgTextureID>27</bgTextureID>
+    <bgTextureID>26</bgTextureID>
     <enemies>
     </enemies>
     <props>
@@ -357,13 +357,13 @@
         <y>50</y>
       </point>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>718</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>718</y>
       </point>
     </props>
@@ -373,7 +373,7 @@
       <x>2</x>
       <y>1</y>
     </coordinates>
-    <bgTextureID>23</bgTextureID>
+    <bgTextureID>22</bgTextureID>
     <enemies>
       <point>
         <creatureID>3</creatureID>
@@ -388,12 +388,12 @@
     </enemies>
     <props>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>50</x>
         <y>384</y>
       </point>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>974</x>
         <y>384</y>
       </point>
@@ -409,7 +409,7 @@
       <x>2</x>
       <y>2</y>
     </coordinates>
-    <bgTextureID>24</bgTextureID>
+    <bgTextureID>23</bgTextureID>
     <enemies>
       <point>
         <creatureID>2</creatureID>
@@ -419,23 +419,23 @@
     </enemies>
     <props>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>50</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>50</y>
       </point>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>718</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>718</y>
       </point>
     </props>
@@ -445,22 +445,22 @@
       <x>2</x>
       <y>3</y>
     </coordinates>
-    <bgTextureID>26</bgTextureID>
+    <bgTextureID>25</bgTextureID>
     <enemies>
     </enemies>
     <props>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>50</y>
       </point>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>718</y>
       </point>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>974</x>
         <y>384</y>
       </point>
@@ -471,7 +471,7 @@
       <x>2</x>
       <y>4</y>
     </coordinates>
-    <bgTextureID>28</bgTextureID>
+    <bgTextureID>27</bgTextureID>
     <enemies>
       <point>
         <creatureID>3</creatureID>
@@ -486,13 +486,13 @@
     </enemies>
     <props>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>50</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>50</y>
       </point>
       <point>
@@ -507,7 +507,7 @@
       <x>2</x>
       <y>5</y>
     </coordinates>
-    <bgTextureID>22</bgTextureID>
+    <bgTextureID>21</bgTextureID>
     <enemies>
     </enemies>
     <props>
@@ -528,7 +528,7 @@
       <x>3</x>
       <y>0</y>
     </coordinates>
-    <bgTextureID>19</bgTextureID>
+    <bgTextureID>18</bgTextureID>
     <enemies>
       <point>
         <creatureID>2</creatureID>
@@ -543,7 +543,7 @@
         <y>50</y>
       </point>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>974</x>
         <y>384</y>
       </point>
@@ -558,6 +558,68 @@
     <coordinates>
       <x>3</x>
       <y>1</y>
+    </coordinates>
+    <bgTextureID>19</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>1</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>535</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>535</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>3</x>
+      <y>2</y>
+    </coordinates>
+    <bgTextureID>23</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
+        <y>718</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>3</x>
+      <y>3</y>
     </coordinates>
     <bgTextureID>20</bgTextureID>
     <enemies>
@@ -569,74 +631,12 @@
     </enemies>
     <props>
       <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>535</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>535</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>3</x>
-      <y>2</y>
-    </coordinates>
-    <bgTextureID>24</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
         <sceneryID>5</sceneryID>
-        <x>170.5</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
-        <y>718</y>
-      </point>
-      <point>
-        <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>3</x>
-      <y>3</y>
-    </coordinates>
-    <bgTextureID>21</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>1</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
         <x>50</x>
         <y>233</y>
       </point>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>974</x>
         <y>233</y>
       </point>
@@ -651,101 +651,101 @@
     <coordinates>
       <x>3</x>
       <y>4</y>
+    </coordinates>
+    <bgTextureID>21</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>3</x>
+      <y>5</y>
+    </coordinates>
+    <bgTextureID>18</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>2</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>361</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>361</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>4</x>
+      <y>0</y>
+    </coordinates>
+    <bgTextureID>28</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>1</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>663</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>4</x>
+      <y>1</y>
     </coordinates>
     <bgTextureID>22</bgTextureID>
     <enemies>
     </enemies>
     <props>
       <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>3</x>
-      <y>5</y>
-    </coordinates>
-    <bgTextureID>19</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>2</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>361</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>361</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>4</x>
-      <y>0</y>
-    </coordinates>
-    <bgTextureID>29</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>1</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>50</x>
         <y>384</y>
       </point>
       <point>
-        <sceneryID>4</sceneryID>
-        <x>663</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>4</x>
-      <y>1</y>
-    </coordinates>
-    <bgTextureID>23</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>974</x>
         <y>384</y>
       </point>
@@ -756,7 +756,7 @@
       <x>4</x>
       <y>2</y>
     </coordinates>
-    <bgTextureID>26</bgTextureID>
+    <bgTextureID>25</bgTextureID>
     <enemies>
       <point>
         <creatureID>1</creatureID>
@@ -766,17 +766,17 @@
     </enemies>
     <props>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>50</y>
       </point>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>718</y>
       </point>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>974</x>
         <y>384</y>
       </point>
@@ -787,23 +787,23 @@
       <x>4</x>
       <y>3</y>
     </coordinates>
-    <bgTextureID>25</bgTextureID>
+    <bgTextureID>24</bgTextureID>
     <enemies>
     </enemies>
     <props>
       <point>
-        <sceneryID>7</sceneryID>
+        <sceneryID>5</sceneryID>
         <x>50</x>
         <y>384</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>50</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>718</y>
       </point>
     </props>
@@ -813,7 +813,7 @@
       <x>4</x>
       <y>4</y>
     </coordinates>
-    <bgTextureID>24</bgTextureID>
+    <bgTextureID>23</bgTextureID>
     <enemies>
       <point>
         <creatureID>3</creatureID>
@@ -838,23 +838,23 @@
     </enemies>
     <props>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>50</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>50</y>
       </point>
       <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
         <y>718</y>
       </point>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
+        <x>974</x>
         <y>718</y>
       </point>
       <point>
@@ -882,185 +882,185 @@
   <area>
     <coordinates>
       <x>4</x>
+      <y>5</y>
+    </coordinates>
+    <bgTextureID>30</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>974</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>663</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>5</x>
+      <y>0</y>
+    </coordinates>
+    <bgTextureID>30</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>361</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>5</x>
+      <y>1</y>
+    </coordinates>
+    <bgTextureID>22</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>384</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>5</x>
+      <y>2</y>
+    </coordinates>
+    <bgTextureID>20</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>2</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>50</x>
+        <y>233</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>233</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>512</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>5</x>
+      <y>3</y>
+    </coordinates>
+    <bgTextureID>18</bgTextureID>
+    <enemies>
+      <point>
+        <creatureID>1</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>361</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>361</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>5</x>
+      <y>4</y>
+    </coordinates>
+    <bgTextureID>29</bgTextureID>
+    <enemies>
+    </enemies>
+    <props>
+      <point>
+        <sceneryID>4</sceneryID>
+        <x>361</x>
+        <y>50</y>
+      </point>
+      <point>
+        <sceneryID>5</sceneryID>
+        <x>974</x>
+        <y>384</y>
+      </point>
+      <point>
+        <sceneryID>6</sceneryID>
+        <x>50</x>
+        <y>718</y>
+      </point>
+    </props>
+  </area>
+  <area>
+    <coordinates>
+      <x>5</x>
       <y>5</y>
     </coordinates>
     <bgTextureID>31</bgTextureID>
     <enemies>
+      <point>
+        <creatureID>2</creatureID>
+        <x>512</x>
+        <y>384</y>
+      </point>
     </enemies>
     <props>
       <point>
         <sceneryID>6</sceneryID>
-        <x>853.5</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
         <x>50</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>663</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>5</x>
-      <y>0</y>
-    </coordinates>
-    <bgTextureID>30</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>361</x>
         <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>384</y>
       </point>
       <point>
         <sceneryID>5</sceneryID>
-        <x>170.5</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>5</x>
-      <y>1</y>
-    </coordinates>
-    <bgTextureID>23</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>384</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>5</x>
-      <y>2</y>
-    </coordinates>
-    <bgTextureID>21</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>2</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>50</x>
-        <y>233</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>233</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>512</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>5</x>
-      <y>3</y>
-    </coordinates>
-    <bgTextureID>19</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>1</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>361</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>361</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>5</x>
-      <y>4</y>
-    </coordinates>
-    <bgTextureID>30</bgTextureID>
-    <enemies>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>4</sceneryID>
-        <x>361</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
-        <x>974</x>
-        <y>384</y>
-      </point>
-      <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
-        <y>718</y>
-      </point>
-    </props>
-  </area>
-  <area>
-    <coordinates>
-      <x>5</x>
-      <y>5</y>
-    </coordinates>
-    <bgTextureID>32</bgTextureID>
-    <enemies>
-      <point>
-        <creatureID>2</creatureID>
-        <x>512</x>
-        <y>384</y>
-      </point>
-    </enemies>
-    <props>
-      <point>
-        <sceneryID>5</sceneryID>
-        <x>170.5</x>
-        <y>50</y>
-      </point>
-      <point>
-        <sceneryID>7</sceneryID>
         <x>974</x>
         <y>384</y>
       </point>

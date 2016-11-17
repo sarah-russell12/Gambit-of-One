@@ -25,7 +25,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 	, mPausedText()
 	, mGUIContainer()
 {
-	sf::Font& font = context.fonts->get(Fonts::Main);
+	sf::Font& font = context.fonts->get(0);
 	sf::Vector2f windowSize(context.window->getSize());
 
 	mPausedText.setFont(font);

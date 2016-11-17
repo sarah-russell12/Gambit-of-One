@@ -13,12 +13,15 @@ Date Last Updated: March 5, 2015
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
-std::vector<SceneryData> Table = initializeSceneryData();
+namespace
+{
+	const std::vector<SceneryData> Props = Tables::initializeSceneryData();
+};
 
-Scenery::Scenery(Type type, const TextureHolder& textures)
+Scenery::Scenery(unsigned int type, const TextureHolder& textures)
 	: Entity(1)
 	, mType(type)
-	, mSprite(textures.get(Table[type].texture))
+	, mSprite(textures.get(Props[type].texture))
 {
 	centerOrigin(mSprite);
 }
@@ -38,7 +41,7 @@ sf::FloatRect Scenery::getBoundingRect() const
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
-Scenery::Type Scenery::getType() const
+unsigned int Scenery::getType() const
 {
 	return mType;
 }

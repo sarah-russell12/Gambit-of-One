@@ -33,14 +33,16 @@ public:
 	virtual void		checkCooldown(sf::Time dt, sf::Vector2f playerPos);
 	virtual void		attack();
 
+	virtual void		setStats();
+
+
 private:
 	virtual void		checkInterval(sf::Time dt, CommandQueue& commands);
 
 	void				attack(CommandQueue& commands);
-	void				createArrow(SceneNode& node, const TextureHolder& textures) const;
 	
 private:
-	bool			mIsFiring;
+	bool				mIsFiring;
 };
 
 #endif //RANGED_COMBAT_BEHAVIOR_H

@@ -21,15 +21,11 @@
     <textureID>13</textureID>
   </scenery>
   <scenery id="5">
-    <name>Tree Wall Left Corner</name>
-    <textureID>15</textureID>
-  </scenery>
-  <scenery id="6">
-    <name>Tree Wall Right Corner</name>
-    <textureID>16</textureID>
-  </scenery>
-  <scenery id="7">
     <name>Long Vertical Tree Wall</name>
     <textureID>14</textureID>
+  </scenery>
+  <scenery id="6">
+    <name>Tree Wall Corner</name>
+    <textureID>15</textureID>
   </scenery>
 </table>

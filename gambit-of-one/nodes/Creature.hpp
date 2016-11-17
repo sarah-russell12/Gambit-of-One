@@ -28,8 +28,10 @@ Updates:
 #include "Entity.hpp"
 #include "Command.hpp"
 #include "ResourceIdentifiers.hpp"
+#include "Player.hpp"
 #include "Projectile.hpp"
 #include "TextNode.hpp"
+#include "DataTables.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -39,20 +41,9 @@ class CombatBehavior;
 class Creature : public Entity
 {
 public:
-	enum Type
-	{
-		Hero,
-		Rat,
-		Bandit,
-		Archer,
-		TypeCount
-	};
+	Creature(unsigned int id, const TextureHolder& textures, const FontHolder& fonts);
 
-
-public:
-	Creature(Type type, const TextureHolder& textures, const FontHolder& fonts);
-
-	Type							getType() const;
+	unsigned int					getID() const;
 	virtual unsigned int			getCategory() const;
 	virtual sf::FloatRect			getBoundingRect() const;
 	int								getDamage() const;
@@ -67,14 +58,23 @@ public:
 	float							getMaxSpeed() const;
 	Compass							getCompass() const;
 	float							getAggroDistance() const;
+	unsigned int					getAction() const;
 
 	void					checkAggro(sf::Vector2f position);
 	void					guideTowards(sf::Vector2f position);
 	void					block();
 	void					fire(CommandQueue& commands);
 
-//	void					attack();
-//	void 					fire();
+	// Things specifically for the player, I know, I shouldn't be doing it this way.
+	void					setAction(Player::Action action);
+	void					attack();
+	
+	void					incrementKillCount();
+	int						getKillCount();
+
+	CreatureData			getData() const;
+	void					updataData(CreatureData stats);
+
 protected:
 	void					updateTexts();
 
@@ -86,15 +86,6 @@ private:
 	void					createArrow(SceneNode& node, const TextureHolder& textures);
 	virtual void			updateSprite();
 
-	//void					updateMovementPattern(sf::Time dt);
-	//void					checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
-	//void					checkAttacks(sf::Time dt, CommandQueue& commands);
-	//Entity::cDirection		checkCompass() const;
-	//void					createArrows(SceneNode& node, const TextureHolder& textures) const;
-	//void					createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const;
-	//void					updateCompass();
-	//void					updateCreatureDirection();
-
 protected:
 	sf::Sprite				mSprite;
 	MovementBehavior*		mMoveBehavior;
@@ -102,7 +93,7 @@ protected:
 	TextNode*				mHealthDisplay;
 
 private:
-	Type					mType;
+	unsigned int			mID;
 	
 	CombatBehavior*			mCombatBehavior;
 	Command 				mDropPickupCommand;
@@ -111,21 +102,9 @@ private:
 	float					mAggroDistance;
 
 	Command 				mFireCommand;
-	//sf::Time				mFireCountdown;
-	//sf::Time				mAttackCountdown;
-	//bool 					mIsFiring;
-	//bool					mIsAttacking;
-	//bool					mIsAggroed;
-	//bool					mIsBlocked;					// Attempt to fix movement
-	//cDirection				mCompass;
-	//TextureHolder			mHeroTextures;
-	//int						mFireRateLevel;
-	//int						mSpreadLevel;
-	//float					mTravelledDistance;
-	//std::size_t				mDirectionIndex;
-	//sf::Texture				mNormalTexture;
-	//sf::Texture				mAttackTexture;
-	//sf::Texture				mFiringTexture;
+	int						mKillCount;
+
+	CreatureData			mData;				// A leveling creature is subject to having their data change
 };
 
 #endif // CREATURE_HPP

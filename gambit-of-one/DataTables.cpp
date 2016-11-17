@@ -24,9 +24,9 @@ pugixml is Copyright (C) 2006-2015 Arseny Kapoulkine.
 // For std::bind() placeholders _1, _2, ...
 using namespace std::placeholders;
 
-std::vector<CreatureData> initializeCreatureData()
+std::vector<CreatureData> Tables::initializeCreatureData()
 {
-	std::vector<CreatureData> data(Creature::TypeCount);
+	std::vector<CreatureData> data = std::vector<CreatureData>();
 
 	pugi::xml_document doc;
 	pugi::xml_parse_result res = doc.load_file("xml/CreatureData.xml");
@@ -35,20 +35,24 @@ std::vector<CreatureData> initializeCreatureData()
 
 	for (pugi::xml_node node = table.child("creature"); node; node = node.next_sibling("creature"))
 	{
-		int id = node.attribute("id").as_int();
-
-		data[id].hitpoints = node.child("hitpoints").text().as_int();
-		data[id].speed = node.child("speed").text().as_float();
-		data[id].attackDamage = node.child("attackDamage").text().as_int();
-		data[id].aggroDistance = node.child("aggroDistance").text().as_float();
-		data[id].attackInterval = sf::seconds(node.child("attackInterval").text().as_float());
-		int textureID = node.child("textureID").text().as_int();
-		data[id].texture = static_cast<Textures::ID>(textureID);
+		CreatureData newdata = CreatureData();
+		
+		newdata.type = node.attribute("id").as_uint();
+		newdata.constitution = node.child("con").text().as_uint();
+		newdata.strength = node.child("str").text().as_uint();
+		newdata.dexterity = node.child("dex").text().as_uint();
+		newdata.intelligence = node.child("int").text().as_uint();
+		newdata.charisma = node.child("cha").text().as_uint();
+		newdata.combatID = node.child("cID").text().as_uint();
+		newdata.movementID = node.child("mID").text().as_uint();
+		newdata.speed = node.child("speed").text().as_float();
+		newdata.aggroDistance = node.child("aggroDistance").text().as_float();
+		newdata.texture = node.child("textureID").text().as_uint();
 
 		int width = node.child("textureRect").child("width").text().as_int();
 		int height = node.child("textureRect").child("height").text().as_int();
 
-		data[id].textureRect = sf::IntRect(0, 0, width, height);
+		newdata.textureRect = sf::IntRect(0, 0, width, height);
 
 		if (node.child("directions").first_child())
 		{
@@ -58,7 +62,7 @@ std::vector<CreatureData> initializeCreatureData()
 				float distance = direction.child("distance").text().as_float();
 				float sign = direction.child("sign").text().as_float();
 
-				data[id].directions.push_back(Direction(angle, distance, sign));
+				newdata.directions.push_back(Direction(angle, distance, sign));
 			}
 		}
 
@@ -69,18 +73,20 @@ std::vector<CreatureData> initializeCreatureData()
 				float x = point.child("x").text().as_float();
 				float y = point.child("y").text().as_float();
 				Compass comp = static_cast<Compass>(point.child("compass").text().as_int());
-				data[id].teleportPoints.push_back(TeleportPoint(x, y, comp));
+				newdata.teleportPoints.push_back(TeleportPoint(x, y, comp));
 			}
 		}
+
+		data.push_back(newdata);
 	}
 
 
 	return data;
 }
 
-std::vector<ProjectileData> initializeProjectileData()
+std::vector<ProjectileData> Tables::initializeProjectileData()
 {
-	std::vector<ProjectileData> data(Projectile::TypeCount);
+	std::vector<ProjectileData> data = std::vector<ProjectileData>();
 
 	pugi::xml_document doc;
 	doc.load_file("xml/ProjectileData.xml");
@@ -89,17 +95,18 @@ std::vector<ProjectileData> initializeProjectileData()
 
 	for (pugi::xml_node node = table.child("projectile"); node; node = node.next_sibling("projectile"))
 	{
-		int id = node.attribute("id").as_int();
+		ProjectileData newdata = ProjectileData();
 
-		data[id].speed = node.child("speed").text().as_float();
-		data[id].damage = node.child("damage").text().as_int();
-		data[id].texture = static_cast<Textures::ID>(node.child("textureID").text().as_int());
+		newdata.type = node.attribute("id").as_uint();
+		newdata.texture = node.child("textureID").text().as_uint();
+
+		data.push_back(newdata);
 	}
 
 	return data;
 }
 
-std::vector<PickupData> initializePickupData()
+std::vector<PickupData> Tables::initializePickupData()
 {
 	std::vector<PickupData> data(Pickup::TypeCount);
 
@@ -109,9 +116,9 @@ std::vector<PickupData> initializePickupData()
 	return data;
 }
 
-std::vector<SceneryData> initializeSceneryData()
+std::vector<SceneryData> Tables::initializeSceneryData()
 {
-	std::vector<SceneryData> data(Scenery::TypeCount);
+	std::vector<SceneryData> data = std::vector<SceneryData>();
 
 	pugi::xml_document doc;
 	doc.load_file("xml/SceneryData.xml");
@@ -120,15 +127,18 @@ std::vector<SceneryData> initializeSceneryData()
 
 	for (pugi::xml_node node = table.child("scenery"); node; node = node.next_sibling("scenery"))
 	{
-		int id = node.attribute("id").as_int();
+		SceneryData newdata = SceneryData();
 
-		data[id].texture = static_cast<Textures::ID>(node.child("textureID").text().as_int());
+		newdata.type = node.attribute("id").as_uint();
+		newdata.texture = node.child("textureID").text().as_uint();
+
+		data.push_back(newdata);
 	}
 
 	return data;
 }
 
-std::vector<std::vector<AreaData>> initializeAreaData()
+std::vector<std::vector<AreaData>> Tables::initializeAreaData()
 {
 	std::vector<std::vector<AreaData>> map{};
 	pugi::xml_document doc;
@@ -162,32 +172,38 @@ std::vector<std::vector<AreaData>> initializeAreaData()
 		}
 
 		map[x][y].coordinates = sf::Vector2i(x, y);
-		map[x][y].bgTexture = static_cast<Textures::ID>(node.child("bgTextureID").text().as_int());
+		map[x][y].bgTexture = node.child("bgTextureID").text().as_uint();
 
 		pugi::xml_node enemies = node.child("enemies");
 
 		for (pugi::xml_node spawn = enemies.child("point"); spawn; spawn = spawn.next_sibling("point"))
 		{
-			int creatureID = spawn.child("creatureID").text().as_int();
-			Creature::Type type = static_cast<Creature::Type>(creatureID);
+			unsigned int creatureType = spawn.child("creatureID").text().as_uint();
 			float spawnX = spawn.child("x").text().as_float();
 			float spawnY = spawn.child("y").text().as_float();
-			map[x][y].enemySpawns.push_back(EnemySpawn(type, spawnX, spawnY));
+			map[x][y].enemySpawns.push_back(EnemySpawn(creatureType, spawnX, spawnY));
 		}
 
 		pugi::xml_node props = node.child("props");
 
 		for (pugi::xml_node spawn = props.child("point"); spawn; spawn = spawn.next_sibling("point"))
 		{
-			int sceneryID = spawn.child("sceneryID").text().as_int();
-			Scenery::Type type = static_cast<Scenery::Type>(sceneryID);
+			unsigned int sceneryType = spawn.child("sceneryID").text().as_uint();
 			float spawnX = spawn.child("x").text().as_float();
 			float spawnY = spawn.child("y").text().as_float();
-			map[x][y].scenerySpawns.push_back(ScenerySpawn(type, spawnX, spawnY));
+			map[x][y].scenerySpawns.push_back(ScenerySpawn(sceneryType, spawnX, spawnY));
 		}
 	}
 
-
-
 	return map;
+}
+
+namespace Tables
+{
+	// Putting this here so that the global methods are only called once, hopefully
+	extern const std::vector<CreatureData> Creatures = initializeCreatureData();
+	extern const std::vector<ProjectileData> Projectiles = initializeProjectileData();
+	extern const std::vector<PickupData> Pickups = initializePickupData();
+	extern const std::vector<SceneryData> Props = initializeSceneryData();
+	extern const std::vector<std::vector<AreaData>> Areas = initializeAreaData();
 }

@@ -17,7 +17,7 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>18</bgTextureID>
+  <bgTextureID>17</bgTextureID>
   <enemies>
   </enemies>
   <props>
@@ -27,7 +27,7 @@
       <y>50</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>50</x>
       <y>384</y>
     </point>
@@ -45,7 +45,7 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>19</bgTextureID>
+  <bgTextureID>18</bgTextureID>
   <enemies>
   </enemies>
   <props>
@@ -55,7 +55,7 @@
       <y>50</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>974</x>
       <y>384</y>
     </point>
@@ -73,7 +73,7 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>20</bgTextureID>
+  <bgTextureID>19</bgTextureID>
   <enemies>
   </enemies>
   <props>
@@ -83,12 +83,12 @@
       <y>50</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>50</x>
       <y>535</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>974</x>
       <y>535</y>
     </point>
@@ -101,17 +101,17 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>21</bgTextureID>
+  <bgTextureID>20</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>50</x>
       <y>233</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>974</x>
       <y>233</y>
     </point>
@@ -129,7 +129,7 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>22</bgTextureID>
+  <bgTextureID>21</bgTextureID>
   <enemies>
   </enemies>
   <props>
@@ -152,17 +152,17 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>23</bgTextureID>
+  <bgTextureID>22</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>50</x>
       <y>384</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>974</x>
       <y>384</y>
     </point>
@@ -175,28 +175,28 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>24</bgTextureID>
+  <bgTextureID>23</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>50</y>
     </point>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>50</y>
     </point>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>718</y>
     </point>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>718</y>
     </point>
   </props>
@@ -208,23 +208,23 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>25</bgTextureID>
+  <bgTextureID>24</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>50</x>
       <y>384</y>
     </point>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>50</y>
     </point>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>718</y>
     </point>
   </props>
@@ -236,22 +236,22 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>26</bgTextureID>
+  <bgTextureID>25</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>50</y>
     </point>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>718</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>974</x>
       <y>384</y>
     </point>
@@ -264,7 +264,7 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>27</bgTextureID>
+  <bgTextureID>26</bgTextureID>
   <enemies>
   </enemies>
   <props>
@@ -274,13 +274,13 @@
       <y>50</y>
     </point>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>718</y>
     </point>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>718</y>
     </point>
   </props>
@@ -292,18 +292,18 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>28</bgTextureID>
+  <bgTextureID>27</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>50</y>
     </point>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>50</y>
     </point>
     <point>
@@ -320,12 +320,12 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>29</bgTextureID>
+  <bgTextureID>28</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>50</x>
       <y>384</y>
     </point>
@@ -336,7 +336,7 @@
     </point>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>718</y>
     </point>
   </props>
@@ -348,7 +348,7 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>30</bgTextureID>
+  <bgTextureID>29</bgTextureID>
   <enemies>
   </enemies>
   <props>
@@ -358,13 +358,13 @@
       <y>50</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>974</x>
       <y>384</y>
     </point>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>718</y>
     </point>
   </props>
@@ -376,17 +376,17 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>31</bgTextureID>
+  <bgTextureID>30</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
       <sceneryID>6</sceneryID>
-      <x>853.5</x>
+      <x>974</x>
       <y>50</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>50</x>
       <y>384</y>
     </point>
@@ -404,17 +404,17 @@
     <x></x>
     <y></y>
   </coordinates>
-  <bgTextureID>32</bgTextureID>
+  <bgTextureID>31</bgTextureID>
   <enemies>
   </enemies>
   <props>
     <point>
-      <sceneryID>5</sceneryID>
-      <x>170.5</x>
+      <sceneryID>6</sceneryID>
+      <x>50</x>
       <y>50</y>
     </point>
     <point>
-      <sceneryID>7</sceneryID>
+      <sceneryID>5</sceneryID>
       <x>974</x>
       <y>384</y>
     </point>

@@ -24,24 +24,31 @@ Hansson, and Jan Haller.
 #include <SFML/Graphics/RenderStates.hpp>
 
 #include <cmath>
+#include <random>
 
 namespace
 {
-	const std::vector<CreatureData> Table = initializeCreatureData();
 	BehaviorFactory Factory = BehaviorFactory();
+	const std::vector<CreatureData> Creatures = Tables::initializeCreatureData();
 }
 
-Creature::Creature(Type type, const TextureHolder& textures, const FontHolder& fonts)
-	: Entity(Table[type].hitpoints)
-	, mType(type)
-	, mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+Creature::Creature(unsigned int id, const TextureHolder& textures, const FontHolder& fonts)
+	: Entity(Creatures[id].constitution * 10)
+	, mID(id)
+	, mSprite(textures.get(Creatures[id].texture), Creatures[id].textureRect)
 	, mIsMarkedForRemoval(false)
 	, mDropPickupCommand()
 	, mHealthDisplay(nullptr)
 	, mTargetDirection()
+	, mKillCount(0)
+	, mData()
 {
-	mCombatBehavior = Factory.getCombatBehavior(*this);
-	mMoveBehavior = Factory.getMovementBehavior(*this);
+	mData = Creatures[id];
+
+	BehaviorFactory::CombatStyle combat = static_cast<BehaviorFactory::CombatStyle>(Creatures[id].combatID);
+	BehaviorFactory::Movement move = static_cast<BehaviorFactory::Movement>(Creatures[id].movementID);
+	mCombatBehavior = Factory.getCombatBehavior(*this, combat);
+	mMoveBehavior = Factory.getMovementBehavior(*this, move);
 	centerOrigin(mSprite);
 
 	mFireCommand.category = Category::SceneGroundLayer;
@@ -96,15 +103,15 @@ void Creature::updateCurrent(sf::Time dt, CommandQueue& commands)
 	updateTexts();
 }
 
-Creature::Type Creature::getType() const
+unsigned int Creature::getID() const
 {
-	return mType;
+	return mID;
 }
 
 unsigned int Creature::getCategory() const
 {
-	if (isAllied())
-		return Category::AlliedCreature;
+	if (mID == 0)
+		return Category::PlayerCreature;
 	else
 		return Category::EnemyCreature;
 }
@@ -121,7 +128,7 @@ bool Creature::isMarkedForRemoval() const
 
 bool Creature::isAllied() const
 {
-	return mType == Hero;
+	return mID == 0;
 }
 
 bool Creature::isAggroed() const
@@ -131,18 +138,20 @@ bool Creature::isAggroed() const
 
 bool Creature::isGuided() const
 {
-	return Table[mType].aggroDistance != 0.f;
+	return Creatures[mID].aggroDistance != 0.f;
 }
 
 bool Creature::isRanged() const
 {
 	// Ranged creatures do not have a physical attack, so they do not do melee damage
-	return Table[mType].attackDamage == 0.f;
+	BehaviorFactory::CombatStyle combat = static_cast<BehaviorFactory::CombatStyle>(Creatures[mID].combatID);
+	return combat == BehaviorFactory::Ranged || combat == BehaviorFactory::Player;
 }
 
 bool Creature::isMelee() const
 {
-	return Table[mType].attackDamage != 0.f;
+	BehaviorFactory::CombatStyle combat = static_cast<BehaviorFactory::CombatStyle>(Creatures[mID].combatID);
+	return combat == BehaviorFactory::Melee || combat == BehaviorFactory::Player;
 }
 
 bool Creature::isAttacking() const
@@ -157,17 +166,51 @@ bool Creature::isBlocked() const
 
 float Creature::getMaxSpeed() const
 {
-	return Table[mType].speed;
+	return Creatures[mID].speed;
 }
 
 int Creature::getDamage() const
 {
-	return Table[mType].attackDamage;
+	if (isMelee())
+	{
+		unsigned int str = mData.strength;
+		unsigned int dex = mData.dexterity;
+		std::default_random_engine generator;
+		std::uniform_int_distribution<int> dist6(1, 6);
+		std::uniform_int_distribution<int> dist4(1, 4);
+		auto roll_d6 = std::bind(dist6, generator);
+		auto roll_d4 = std::bind(dist4, generator);
+
+		int damage = 0;
+		for (int i = 0; i < str; i++)
+		{
+			damage += roll_d6();
+		}
+		// If dexterity is too low, then your damage output is less
+		if (dex < (0.5f * str))
+		{
+			int diff = int((0.5f * str - dex) + 1);
+			for (int j = 0; j < diff; j++)
+			{
+				damage -= roll_d4();
+			}
+		}
+		return damage;
+	}
+	else
+	{
+		return 0;
+	}
 }
 
 float Creature::getAggroDistance() const
 {
-	return Table[mType].aggroDistance;
+	return Creatures[mID].aggroDistance;
+}
+
+unsigned int Creature::getAction() const
+{
+	return mCombatBehavior->getAction();
 }
 
 void Creature::block()
@@ -181,10 +224,45 @@ void Creature::fire(CommandQueue& commands)
 	commands.push(mFireCommand);
 }
 
+void Creature::setAction(Player::Action action)
+{
+	mCombatBehavior->setAction(action);
+}
+
+void Creature::attack() 
+{
+	mCombatBehavior->attack();
+}
+
 void Creature::checkPickupDrop(CommandQueue& commands)
 {
 	if (!isAllied() && randomInt(3) == 0)
 		commands.push(mDropPickupCommand);
+}
+
+void Creature::incrementKillCount()
+{
+	mKillCount += 1;
+}
+
+int Creature::getKillCount()
+{
+	return mKillCount;
+}
+
+CreatureData Creature::getData() const
+{
+	return mData;
+}
+
+void Creature::updataData(CreatureData stats)
+{
+	mData.constitution = stats.constitution;
+	mData.strength = stats.strength;
+	mData.dexterity = stats.dexterity;
+	mData.intelligence = stats.intelligence;
+	mData.charisma = stats.charisma;
+	mCombatBehavior->setStats();
 }
 
 void Creature::checkAggro(sf::Vector2f position)
@@ -209,6 +287,7 @@ void Creature::createArrow(SceneNode& node, const TextureHolder& textures)
 	sf::FloatRect bounds = mSprite.getGlobalBounds();
 	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
 	std::unique_ptr<Projectile> projectile(new Projectile(type, textures, getCompass()));
+	projectile->setStats(mData.dexterity, mData.strength);
 
 	sf::Vector2f velocity;
 	sf::Vector2f offset(0, 0);
@@ -277,7 +356,7 @@ void Creature::updateSprite()
 	}
 
 	if (mCombatBehavior->isAttacking())
-		textureRect.top += textureRect.height;
+		textureRect.top += mCombatBehavior->getTileMultiplier() * textureRect.height;
 
 	mSprite.setTextureRect(textureRect);
 }

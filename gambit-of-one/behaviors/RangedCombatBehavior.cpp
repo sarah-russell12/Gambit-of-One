@@ -13,16 +13,11 @@ Defines all the methods declared in RangedCombatBehavior.h
 #include "ResourceIdentifiers.hpp"
 #include "Utility.hpp"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
-
 RangedCombatBehavior::RangedCombatBehavior(Creature& node)
 	: CombatBehavior(node), mIsFiring(false)
 {
+	setStats();
 	mAttackInterval = sf::Time::Zero;
-	mAttackCooldown = 3.f * Table[mType].attackInterval;
 }
 
 RangedCombatBehavior::~RangedCombatBehavior() {}
@@ -64,8 +59,7 @@ void RangedCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 		{
 			mIsFiring = true;
 			mIsAttacking = true;
-			mAttackInterval = Table[mType].attackInterval;
-			mAttackCooldown = 3.f * mAttackInterval;
+			setStats();
 			return;
 		}
 	}
@@ -74,6 +68,26 @@ void RangedCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 void RangedCombatBehavior::attack()
 {
 	mIsAttacking = true;
+}
+
+void RangedCombatBehavior::setStats()
+{
+	CreatureData stats = mCreature->getData();
+	float time = (stats.dexterity * 0.25f) + (stats.strength * 0.125f);
+	mAttackInterval = sf::seconds(time);
+	float offtime;
+	if (stats.dexterity < 5) {
+		// having a harder time getting the arrow ready
+		offtime = (5 - stats.dexterity) * 3.f;
+	}
+	else {
+		offtime = 4.f;
+	}
+	if (stats.strength >= (stats.dexterity / 2.f)) {
+		// someone who is strong can pull back on the bow faster
+		offtime -= stats.strength * 0.125f;
+	}
+	mAttackCooldown = mAttackInterval + sf::seconds(offtime);
 }
 
 void RangedCombatBehavior::checkInterval(sf::Time dt, CommandQueue& commands)

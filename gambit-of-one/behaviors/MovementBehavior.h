@@ -35,7 +35,6 @@ public:
 
 protected:
 	Creature*			mCreature;
-	Creature::Type		mType;
 
 	Compass				mCompass;
 	bool				mIsAggroed;

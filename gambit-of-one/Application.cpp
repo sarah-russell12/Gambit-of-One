@@ -22,6 +22,7 @@ pugixml is Copyright (C) 2006-2015 Arseny Kapoulkine.
 #include "PauseState.hpp"
 #include "SettingsState.hpp"
 #include "GameOverState.hpp"
+#include "CharacterState.h"
 
 #include "pugixml.hpp"
 
@@ -42,7 +43,7 @@ Application::Application()
 
 	loadResources();
 
-	mStatisticsText.setFont(mFonts.get(Fonts::Main));
+	mStatisticsText.setFont(mFonts.get(Fonts::Display));
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(10u);
 
@@ -125,6 +126,7 @@ void Application::registerStates()
 	mStateStack.registerState<PauseState>(States::Pause);
 	mStateStack.registerState<SettingsState>(States::Settings);
 	mStateStack.registerState<GameOverState>(States::GameOver);
+	mStateStack.registerState<CharacterState>(States::Character);
 }
 
 void Application::loadResources()
@@ -136,9 +138,17 @@ void Application::loadResources()
 
 	for (pugi::xml_node node = table.child("texture"); node; node = node.next_sibling("texture"))
 	{
-		Textures::ID id = static_cast<Textures::ID>(node.attribute("id").as_int());
+		unsigned int id = node.attribute("id").as_uint();
 		mTextures.load(id, node.child("file").text().as_string());
 	}
 
-	mFonts.load(Fonts::ID::Main, "Media/Sansation.ttf");
+	pugi::xml_document fontDoc;
+
+	fontDoc.load_file("xml/FontData.xml");
+	pugi::xml_node fonts = fontDoc.child("fonts");
+	for (pugi::xml_node node = fonts.child("font"); node; node = node.next_sibling("font"))
+	{
+		unsigned int id = node.attribute("id").as_uint();
+		mFonts.load(id, node.child("file").text().as_string());
+	}
 }

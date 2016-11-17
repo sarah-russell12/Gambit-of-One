@@ -9,16 +9,13 @@ Defines all the functions declared in MeleeCombatBehavior.h
 #include "MeleeCombatBehavior.h"
 #include "Utility.hpp"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
+using namespace Tables;
 
 MeleeCombatBehavior::MeleeCombatBehavior(Creature& node)
 	: CombatBehavior(node)
 {
+	setStats();
 	mAttackInterval = sf::Time::Zero;
-	mAttackCooldown = 2.f * Table[mType].attackInterval;
 }
 
 MeleeCombatBehavior::~MeleeCombatBehavior() {}
@@ -39,6 +36,7 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 	if (mAttackInterval >= sf::Time::Zero)
 	{
 		mIsAttacking = true;
+		setAction(Player::Attack);
 		return;
 	}
 
@@ -47,6 +45,7 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 	if (mIsAttacking && mAttackCooldown >= sf::Time::Zero)
 	{
 		mIsAttacking = false;
+		setAction(Player::ActionCount);
 		return;
 	}
 
@@ -58,15 +57,13 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 		{
 			// Auto-attacking enemy
 			attack(playerPos);
-			mAttackInterval = Table[mType].attackInterval;
-			mAttackCooldown = 2.f * mAttackInterval;
+			setStats();
 			return;
 		}
 		if (mIsAttacking)
 		{
 			// The player
-			mAttackInterval = Table[mType].attackInterval;
-			mAttackCooldown = 2.f * mAttackInterval;
+			setStats();
 			return;
 		}
 	}
@@ -75,6 +72,7 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 void MeleeCombatBehavior::attack()
 {
 	mIsAttacking = true;
+	setAction(Player::Attack);
 }
 
 void MeleeCombatBehavior::checkInterval(sf::Time dt, CommandQueue& commands)
@@ -88,6 +86,7 @@ void MeleeCombatBehavior::checkInterval(sf::Time dt, CommandQueue& commands)
 	if (mAttackInterval <= sf::Time::Zero)
 	{
 		mIsAttacking = false;
+		setAction(Player::ActionCount);
 	}
 }
 
@@ -97,8 +96,29 @@ void MeleeCombatBehavior::attack(sf::Vector2f playerPos)
 	// for it to attack
 
 	float distance = length(mCreature->getPosition() - playerPos);
-	if (distance <= (Table[mType].aggroDistance / 10.f))
+	if (distance <= (Creatures[mCreature->getID()].aggroDistance / 10.f))
 	{
 		mIsAttacking = true;
 	}
+}
+
+void MeleeCombatBehavior::setStats()
+{
+	CreatureData stats = mCreature->getData();
+	float time = (stats.strength * 0.25f) + (stats.dexterity * 0.125f);
+	mAttackInterval = sf::seconds(time);
+	float offtime;
+	setAction(Player::ActionCount);
+	if (stats.strength < 5) {
+		// poor strength means longer time
+		offtime = (5 - stats.strength) * 2.f;
+	}
+	else {
+		offtime = 2.f;
+	}
+	if (stats.dexterity >= (stats.strength / 2.f)) {
+		// if you are good with your hands, then you can attack a bit sooner
+		offtime -= stats.dexterity * 0.125f;
+	}
+	mAttackCooldown = mAttackInterval + sf::seconds(offtime);
 }

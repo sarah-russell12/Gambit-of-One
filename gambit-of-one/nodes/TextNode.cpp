@@ -17,7 +17,7 @@ Hansson, and Jan Haller.
 
 TextNode::TextNode(const FontHolder& fonts, const std::string& text)
 {
-	mText.setFont(fonts.get(Fonts::Main));
+	mText.setFont(fonts.get(0));
 	mText.setCharacterSize(20);
 	setString(text);
 }

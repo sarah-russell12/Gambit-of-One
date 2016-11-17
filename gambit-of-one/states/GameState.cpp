@@ -12,16 +12,14 @@ Hansson, and Jan Haller.
 #include "GameState.hpp"
 #include "DataTables.hpp"
 
-namespace
-{
-	const std::vector<std::vector<AreaData>> Map = initializeAreaData();
-}
+#include <random>
 
+using namespace Tables;
 
 GameState::GameState(StateStack& stack, Context context)
 	: State(stack, context)
 	, mPlayer(*context.player)
-	, mPlayerCreature(Creature::Hero, *context.textures, *context.fonts)
+	, mPlayerCreature(0, *context.textures, *context.fonts)
 	, mCurrentArea(0, 0)
 	, mAreaBounds()
 	, mQueue()
@@ -30,6 +28,7 @@ GameState::GameState(StateStack& stack, Context context)
 	// Will find some different win condition when non-combatant creatures are added 
 {
 	mPlayer.setMissionStatus(Player::MissionRunning);
+	mPlayer.setPlayerStats(mPlayerCreature.getData());
 	initializeWorld(context);
 }
 
@@ -70,6 +69,8 @@ bool GameState::handleEvent(const sf::Event& event)
 	// Escape pressed, trigger the pause screen
 	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 		requestStackPush(States::Pause);
+	else if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::C)
+		requestStackPush(States::Character);
 
 	return true;
 }
@@ -77,18 +78,25 @@ bool GameState::handleEvent(const sf::Event& event)
 void GameState::initializeWorld(Context context)
 {
 	
-	for (int x = 0; x < Map.size(); x++)
+	for (int x = 0; x < Areas.size(); x++)
 	{
 		mWorld.push_back(std::vector<Area*>());
-		for (int y = 0; y < Map[x].size(); y++)
+		for (int y = 0; y < Areas[x].size(); y++)
 		{
-			mWorld[x].push_back(new Area(*context.window, *context.textures, &mQueue, Map[x][y], &mPlayerCreature, &mEntityFactory));
-			mRequiredKills += Map[x][y].enemySpawns.size();
+			mWorld[x].push_back(new Area(*context.window, *context.textures, &mQueue, Areas[x][y], &mPlayerCreature, &mEntityFactory));
+			mRequiredKills += Areas[x][y].enemySpawns.size();
 		}
 	}
 
-	sf::View view =  sf::View{context.window->getDefaultView() };
-	mCurrentArea = sf::Vector2i(0, 0);
+	sf::View view =  sf::View{context.window->getDefaultView()};
+
+	// For fun, let's put the player in a random spot!
+	//std::default_random_engine generator;
+	//std::uniform_int_distribution<int> dist6(1, 6);
+	//auto roll_d6 = std::bind(dist6, generator);
+	//mCurrentArea.x = roll_d6() - 1;
+	//mCurrentArea.y = roll_d6() - 1;
+
 	mPlayerCreature.setPosition(view.getSize().x / 2.f, view.getSize().y / 2.f);
 	mAreaBounds = sf::FloatRect{ 0.f, 0.f, view.getSize().x, view.getSize().y };
 }

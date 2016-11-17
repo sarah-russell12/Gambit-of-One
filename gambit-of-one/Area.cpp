@@ -11,6 +11,7 @@ Defines all the methods declared in Area.h
 #include "Projectile.hpp"
 #include "Pickup.hpp"
 #include "Foreach.hpp"
+#include "Scenery.h"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -18,7 +19,7 @@ Defines all the methods declared in Area.h
 #include <cmath>
 #include <limits>
 
-Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, const AreaData& data, PlayerCreature* player, EntityFactory* factory)
+Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue* queue, AreaData data, Creature* player, EntityFactory* factory)
 	: mWindow(window)
 	, mView(window.getDefaultView())
 	, mAreaBounds(0.f, 0.f, mView.getSize().x, mView.getSize().y)
@@ -26,6 +27,8 @@ Area::Area(sf::RenderWindow& window, const TextureHolder& textures, CommandQueue
 	, mSceneLayers()
 	, mCommandQueue(queue)
 	, mPlayer(player)
+	, mX(data.coordinates.x)
+	, mY(data.coordinates.y)
 	, mData(data)
 	, mActiveEnemies()
 	, mBackground(textures.get(data.bgTexture))
@@ -106,7 +109,7 @@ void Area::buildScene(EntityFactory* factory)
 		mSceneLayers[Objects]->attachChild(std::move(nextProp));
 	}
 
-	std::shared_ptr<PlayerCreature> player(mPlayer);
+	std::shared_ptr<Creature> player(mPlayer);
 	mSceneLayers[Ground]->attachChild(std::move(player));
 }
 
@@ -219,10 +222,10 @@ void Area::handleCollisions()
 	{
 		if (matchesCategories(pair, Category::PlayerCreature, Category::EnemyCreature))
 		{
-			auto& player = static_cast<PlayerCreature&>(*pair.first);
+			auto& player = static_cast<Creature&>(*pair.first);
 			auto& enemy = static_cast<Creature&>(*pair.second);
 
-			if (player.isAttacking(Player::Attack) && !enemy.isImmune())
+			if (player.isAttacking() && player.getAction() == Player::Attack && !enemy.isImmune())
 			{
 				enemy.damage(player.getDamage());
 				if (enemy.isDestroyed())
@@ -231,7 +234,7 @@ void Area::handleCollisions()
 				}
 				return;
 			}
-			if (!player.isAttacking(Player::Attack) && !player.isImmune() && enemy.isAttacking())
+			if (player.getAction() != Player::Attack && !player.isImmune() && enemy.isAttacking())
 			{
 				player.damage(enemy.getDamage());
 				return;

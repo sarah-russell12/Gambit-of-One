@@ -46,7 +46,7 @@ private:
 	std::vector<std::vector<Area*>>				mWorld;
 	sf::Vector2i								mCurrentArea;
 	Player&										mPlayer;
-	PlayerCreature								mPlayerCreature;
+	Creature									mPlayerCreature;
 	int											mRequiredKills;
 	sf::FloatRect								mAreaBounds;
 	CommandQueue								mQueue;

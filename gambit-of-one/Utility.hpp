@@ -25,6 +25,7 @@ namespace sf
 {
 	class Sprite;
 	class Text;
+	class RectangleShape;
 }
 
 template <typename T>
@@ -34,6 +35,7 @@ std::string		toString(sf::Keyboard::Key key);
 
 void			centerOrigin(sf::Sprite& sprite);
 void			centerOrigin(sf::Text& text);
+void			centerOrigin(sf::RectangleShape& rect);
 
 float			toDegree(float radian);
 float			toRadian(float degree);

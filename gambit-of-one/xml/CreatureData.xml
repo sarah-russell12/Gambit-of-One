@@ -2,64 +2,80 @@
 <table>
   <creature id="0">
     <name>Hero</name>
-    <hitpoints>100</hitpoints>
+    <con>5</con>
+    <str>5</str>
+    <dex>5</dex>
+    <int>5</int>
+    <cha>5</cha>
+    <cID>0</cID>
+    <mID>0</mID>
     <speed>200</speed>
-    <attackDamage>20</attackDamage>
     <aggroDistance>0</aggroDistance>
-    <attackInterval>0.5</attackInterval>
     <textureRect>
       <width>62</width>
       <height>66</height>
-    </textureRect>
-    <textureID>4</textureID>
-    <fontID>0</fontID>
-    <directions />
-    <teleports />
-  </creature>
-  <creature id="1">
-    <name>Rat</name>
-    <hitpoints>15</hitpoints>
-    <speed>120</speed>
-    <attackDamage>5</attackDamage>
-    <aggroDistance>300</aggroDistance>
-    <attackInterval>0.5</attackInterval>
-    <textureRect>
-      <width>34</width>
-      <height>16</height>
     </textureRect>
     <textureID>5</textureID>
     <fontID>0</fontID>
     <directions />
     <teleports />
   </creature>
-  <creature id="2">
-    <name>Bandit</name>
-    <hitpoints>80</hitpoints>
-    <speed>100</speed>
-    <attackDamage>15</attackDamage>
+  <creature id="1">
+    <name>Rat</name>
+    <con>1</con>
+    <str>1</str>
+    <dex>3</dex>
+    <int>1</int>
+    <cha>1</cha>
+    <cID>2</cID>
+    <mID>2</mID>
+    <speed>120</speed>
     <aggroDistance>300</aggroDistance>
-    <attackInterval>1</attackInterval>
     <textureRect>
-      <width>48</width>
-      <height>67</height>
+      <width>34</width>
+      <height>16</height>
     </textureRect>
     <textureID>6</textureID>
     <fontID>0</fontID>
     <directions />
     <teleports />
   </creature>
+  <creature id="2">
+    <name>Bandit</name>
+    <con>6</con>
+    <str>8</str>
+    <dex>2</dex>
+    <int>1</int>
+    <cha>1</cha>
+    <cID>2</cID>
+    <mID>2</mID>
+    <speed>100</speed>
+    <aggroDistance>300</aggroDistance>
+    <textureRect>
+      <width>48</width>
+      <height>67</height>
+    </textureRect>
+    <textureID>7</textureID>
+    <fontID>0</fontID>
+    <directions />
+    <teleports />
+  </creature>
   <creature id="3">
     <name>Archer</name>
-    <hitpoints>60</hitpoints>
+    <con>4</con>
+    <str>5</str>
+    <dex>8</dex>
+    <int>1</int>
+    <cha>1</cha>
+    <cID>3</cID>
+    <mID>4</mID>
     <speed>0</speed>
-    <attackDamage>0</attackDamage>
     <aggroDistance>500</aggroDistance>
-    <attackInterval>2</attackInterval>
     <textureRect>
       <width>35</width>
       <height>59</height>
     </textureRect>
-    <textureID>7</textureID>
+    <textureID>8</textureID>
     <fontID>0</fontID>
     <directions />
     <teleports />

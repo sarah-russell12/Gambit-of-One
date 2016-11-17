@@ -9,11 +9,10 @@ Defines all the methods declared in MovementBehavior.h
 #include "MovementBehavior.h"
 
 MovementBehavior::MovementBehavior()
-	: mType(), mCreature(), mIsAggroed(false), mIsBlocked(false), mTargetDirection(), mTargetPosition() {}
+	: mCreature(), mIsAggroed(false), mIsBlocked(false), mTargetDirection(), mTargetPosition() {}
 
 MovementBehavior::MovementBehavior(Creature& node)
-	: mType(node.getType())
-	, mCreature(&node)
+	: mCreature(&node)
 	, mIsAggroed(false)
 	, mIsBlocked(false)
 	, mTargetDirection() 
