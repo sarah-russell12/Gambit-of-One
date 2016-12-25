@@ -31,14 +31,22 @@ public:
 private:
 	void				buildScreen();
 	void				buildStats();
+	void				buildLevelStats();
+
+	void				incrementStat(int index);
+	void				decrementStat(int index);
+	void				assignPoints();
 
 private:
 	sf::Text									mInstructionText;
 	sf::Text									mHeader;
-	GUI::Container								mContainer;
-	std::vector<sf::Text>						mStatNames;
-	std::vector<GUI::InlaidTextbox::Ptr>		mStatValues;
-
+	GUI::Container								mStatsContainer;
+	std::vector<GUI::InlaidTextbox::Ptr>		mStatsReadouts;
+	GUI::Container								mLvlContainer;
+	int											mLvlValues[5];
+	int											mLvlBases[5];
+	std::vector<GUI::InlaidTextbox::Ptr>		mLvlReadouts;
+	int											mPointPool;
 };
 
 #endif // CHARACTER_STATE_H

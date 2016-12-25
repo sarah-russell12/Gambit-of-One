@@ -7,6 +7,8 @@
     <dex>5</dex>
     <int>5</int>
     <cha>5</cha>
+    <exp>0</exp>
+    <lvl>1</lvl>
     <cID>0</cID>
     <mID>0</mID>
     <speed>200</speed>
@@ -27,6 +29,8 @@
     <dex>3</dex>
     <int>1</int>
     <cha>1</cha>
+    <exp>5</exp>
+    <lvl>1</lvl>
     <cID>2</cID>
     <mID>2</mID>
     <speed>120</speed>
@@ -47,6 +51,8 @@
     <dex>2</dex>
     <int>1</int>
     <cha>1</cha>
+    <exp>30</exp>
+    <lvl>1</lvl>
     <cID>2</cID>
     <mID>2</mID>
     <speed>100</speed>
@@ -67,6 +73,8 @@
     <dex>8</dex>
     <int>1</int>
     <cha>1</cha>
+    <exp>30</exp>
+    <lvl>1</lvl>
     <cID>3</cID>
     <mID>4</mID>
     <speed>0</speed>

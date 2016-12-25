@@ -42,6 +42,8 @@ public:
 
 	virtual int			getTileMultiplier() const;
 	virtual void		setStats();
+	
+	unsigned int		getDamage(unsigned int main, unsigned int limiter);
 
 private:
 	virtual void		checkInterval(sf::Time dt, CommandQueue& commands);

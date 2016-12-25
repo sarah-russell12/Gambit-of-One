@@ -25,12 +25,14 @@ Hansson, and Jan Haller.
 
 #include <cmath>
 #include <random>
+#include <ctime>
 
 namespace
 {
 	BehaviorFactory Factory = BehaviorFactory();
-	const std::vector<CreatureData> Creatures = Tables::initializeCreatureData();
 }
+
+using namespace Tables;
 
 Creature::Creature(unsigned int id, const TextureHolder& textures, const FontHolder& fonts)
 	: Entity(Creatures[id].constitution * 10)
@@ -42,6 +44,7 @@ Creature::Creature(unsigned int id, const TextureHolder& textures, const FontHol
 	, mTargetDirection()
 	, mKillCount(0)
 	, mData()
+	, mExp(Creatures[id].experience)
 {
 	mData = Creatures[id];
 
@@ -173,34 +176,9 @@ int Creature::getDamage() const
 {
 	if (isMelee())
 	{
-		unsigned int str = mData.strength;
-		unsigned int dex = mData.dexterity;
-		std::default_random_engine generator;
-		std::uniform_int_distribution<int> dist6(1, 6);
-		std::uniform_int_distribution<int> dist4(1, 4);
-		auto roll_d6 = std::bind(dist6, generator);
-		auto roll_d4 = std::bind(dist4, generator);
-
-		int damage = 0;
-		for (int i = 0; i < str; i++)
-		{
-			damage += roll_d6();
-		}
-		// If dexterity is too low, then your damage output is less
-		if (dex < (0.5f * str))
-		{
-			int diff = int((0.5f * str - dex) + 1);
-			for (int j = 0; j < diff; j++)
-			{
-				damage -= roll_d4();
-			}
-		}
-		return damage;
+		return mCombatBehavior->getDamage(mData.strength, mData.dexterity);
 	}
-	else
-	{
-		return 0;
-	}
+	return 0;
 }
 
 float Creature::getAggroDistance() const
@@ -255,7 +233,12 @@ CreatureData Creature::getData() const
 	return mData;
 }
 
-void Creature::updataData(CreatureData stats)
+int Creature::getMaxHitpoints() const
+{
+	return mMaxHitpoints;
+}
+
+void Creature::updateData(CreatureData stats)
 {
 	mData.constitution = stats.constitution;
 	mData.strength = stats.strength;
@@ -263,11 +246,36 @@ void Creature::updataData(CreatureData stats)
 	mData.intelligence = stats.intelligence;
 	mData.charisma = stats.charisma;
 	mCombatBehavior->setStats();
+	
+	if (Entity::getMaxHitpoints() < stats.constitution * 10)
+	{
+		Entity::setHitpoints(stats.constitution * 10);
+	}
 }
 
 void Creature::checkAggro(sf::Vector2f position)
 {
 	mMoveBehavior->checkAggro();
+}
+
+int Creature::getExp() const
+{
+	if (mID == 0)
+	{
+		return mExp;
+	}
+	return Creatures[mID].experience;
+}
+
+
+void Creature::setExp(int amount)
+{
+	mExp = amount;
+}
+
+void Creature::incExp(int amount)
+{
+	mExp += amount;
 }
 
 void Creature::createPickup(SceneNode& node, const TextureHolder& textures) const
@@ -291,6 +299,7 @@ void Creature::createArrow(SceneNode& node, const TextureHolder& textures)
 
 	sf::Vector2f velocity;
 	sf::Vector2f offset(0, 0);
+	float angle = atan2(getVelocity().y, getVelocity().x);
 	switch (getCompass())
 	{
 	case Compass::North:
@@ -309,12 +318,30 @@ void Creature::createArrow(SceneNode& node, const TextureHolder& textures)
 		offset.x = 0.5f * bounds.width;
 		break;
 	case Compass::West:
-		velocity.x = projectile->getMaxSpeed() * -1.f;
+		velocity.x = projectile->getMaxSpeed() * - 1.f;
 		velocity.y = 0;
 		offset.x = -0.5f * bounds.width;
 		break;
 	}
 
+	if (getVelocity().x < 0)
+	{
+		velocity.x = getVelocity().x - (projectile->getMaxSpeed() * cos(angle));
+	}
+	else if (getVelocity().x > 0)
+	{
+		velocity.x = getVelocity().x + (projectile->getMaxSpeed() * cos(angle));
+	}
+	if (getVelocity().y < 0)
+	{
+		velocity.y = getVelocity().y - (projectile->getMaxSpeed() * sin(angle));
+	}
+	else if (getVelocity().y > 0)
+	{
+		velocity.y = getVelocity().y + (projectile->getMaxSpeed() * sin(angle));
+	}
+
+	projectile->setRotation(angle);
 	projectile->setPosition(getWorldPosition() + offset);
 	projectile->setVelocity(velocity);
 	node.attachChild(std::move(projectile));

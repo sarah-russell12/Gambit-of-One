@@ -48,6 +48,12 @@ public:
 		MissionFailure
 	};
 
+	enum LevelStatus
+	{
+		None,
+		UnallocatedPoints,
+	};
+
 
 public:
 	Player();
@@ -63,8 +69,13 @@ public:
 	MissionStatus 			getMissionStatus() const;
 
 	CreatureData			getPlayerStats() const;
-	void					setPlayerStats(std::vector<unsigned int> stats);
+	void					setPlayerStats(int stats[], unsigned int leftover);
 	void					setPlayerStats(CreatureData data);
+
+	LevelStatus				getLevelStatus() const;
+	void					onLevelUp();
+	unsigned int			getPoints() const;
+	unsigned int			getLevelThreshold() const;
 
 private:
 	void					initializeActions();
@@ -77,6 +88,10 @@ private:
 	MissionStatus 							mCurrentMissionStatus;
 
 	CreatureData							mPlayerStats;
+
+	LevelStatus								mCurrentLevelStatus;
+	unsigned int							mPointPool;
+	unsigned int							mNextLevel;
 };
 
 #endif // PLAYER_HPP

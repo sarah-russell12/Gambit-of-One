@@ -8,6 +8,10 @@ Defines the non pure virtual functions declared in CombatBehavior.h
 
 #include "CombatBehavior.h"
 
+#include <cmath>
+#include <random>
+#include <ctime>
+
 CombatBehavior::CombatBehavior()
 	: mCreature(), mIsAttacking(false), mAttackInterval(), mAttackCooldown() {}
 
@@ -47,5 +51,32 @@ void CombatBehavior::setAction(Player::Action action) { mAction = action; }
 Player::Action CombatBehavior::getAction() const { return mAction; }
 
 int CombatBehavior::getTileMultiplier() const { return 1; }
+
+unsigned int CombatBehavior::getDamage(unsigned int main, unsigned int limiter)
+{
+	std::default_random_engine generator(time(0));
+	std::uniform_int_distribution<int> dist6(1, 6);
+	std::uniform_int_distribution<int> dist4(1, 4);
+	auto roll_d6 = std::bind(dist6, generator);
+	auto roll_d4 = std::bind(dist4, generator);
+
+	int diff;
+	if (limiter < (main / 2))
+	{
+		diff = (main / 2) - limiter;
+	}
+	else diff = 0;
+
+	int damage = 0;
+	for (int i = 0; i < main; i++)
+	{
+		damage += roll_d6();
+	}
+	for (int j = 0; j < diff; j++)
+	{
+		damage -= roll_d4();
+	}
+	return damage;
+}
 
 void CombatBehavior::setStats() {}

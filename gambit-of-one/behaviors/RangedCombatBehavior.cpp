@@ -73,20 +73,15 @@ void RangedCombatBehavior::attack()
 void RangedCombatBehavior::setStats()
 {
 	CreatureData stats = mCreature->getData();
-	float time = (stats.dexterity * 0.25f) + (stats.strength * 0.125f);
+	float time = 4.f - (stats.dexterity * 0.125f);
+	float offtime = 4.f;
+	if (stats.strength < (stats.dexterity / 2))
+	{
+		// sitting duck time
+		time += ((stats.dexterity / 2.f) - stats.strength) * 0.125f;
+		offtime += ((stats.dexterity / 2.f) - stats.strength) * 0.125f;
+	}
 	mAttackInterval = sf::seconds(time);
-	float offtime;
-	if (stats.dexterity < 5) {
-		// having a harder time getting the arrow ready
-		offtime = (5 - stats.dexterity) * 3.f;
-	}
-	else {
-		offtime = 4.f;
-	}
-	if (stats.strength >= (stats.dexterity / 2.f)) {
-		// someone who is strong can pull back on the bow faster
-		offtime -= stats.strength * 0.125f;
-	}
 	mAttackCooldown = mAttackInterval + sf::seconds(offtime);
 }
 

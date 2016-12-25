@@ -231,6 +231,7 @@ void Area::handleCollisions()
 				if (enemy.isDestroyed())
 				{
 					mPlayer->incrementKillCount();
+ 					mPlayer->incExp(enemy.getExp());
 				}
 				return;
 			}
@@ -270,6 +271,7 @@ void Area::handleCollisions()
 			if (creature.isDestroyed())
 			{
 				mPlayer->incrementKillCount();
+				mPlayer->incExp(creature.getExp());
 			}
 		}
 		else if (matchesCategories(pair, Category::Creature, Category::Scenery))

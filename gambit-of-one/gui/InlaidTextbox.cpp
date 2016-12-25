@@ -41,9 +41,8 @@ namespace GUI
 		mText.setString(string);
 		
 		// In case the text exceeds the size of the box
-		float width = std::max(mBox.getGlobalBounds().width, mText.getGlobalBounds().width);
-		float height = std::max(mBox.getGlobalBounds().height, mText.getGlobalBounds().height);
-		mBox.setSize(sf::Vector2f(width, height));
+		//float width = std::max(mBox.getLocalBounds().width, mText.getLocalBounds().width);
+		//mBox.setSize(sf::Vector2f(width, mBox.getGlobalBounds().height));
 
 		// Resetting the positions of the InlaidBox
 		centerOrigin(mText);

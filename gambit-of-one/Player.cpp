@@ -39,7 +39,7 @@ struct CreatureMover
 };
 
 Player::Player()
-	: mCurrentMissionStatus(MissionRunning)
+	: mCurrentMissionStatus(MissionRunning), mCurrentLevelStatus(None), mPointPool(0), mNextLevel(50)
 {
 	// Set initial key bindings
 	mKeyBinding[sf::Keyboard::A] = MoveLeft;
@@ -120,18 +120,39 @@ CreatureData Player::getPlayerStats() const
 	return mPlayerStats;
 }
 
-void Player::setPlayerStats(std::vector<unsigned int> stats)
+void Player::setPlayerStats(int stats[], unsigned int leftover)
 {
-	mPlayerStats.constitution = stats[0];
-	mPlayerStats.strength = stats[1];
-	mPlayerStats.dexterity = stats[2];
-	mPlayerStats.intelligence = stats[3];
+	mPlayerStats.strength = stats[0];
+	mPlayerStats.dexterity = stats[1];
+	mPlayerStats.intelligence = stats[2];
+	mPlayerStats.constitution = stats[3];
 	mPlayerStats.charisma = stats[4];
+
+	if (leftover == 0)
+	{
+		mCurrentLevelStatus = None;
+	}
+	mPointPool = leftover;
 }
 
 void Player::setPlayerStats(CreatureData data)
 {
 	mPlayerStats = data;
+}
+
+Player::LevelStatus Player::getLevelStatus() const
+{
+	return mCurrentLevelStatus;
+}
+
+unsigned int Player::getPoints() const
+{
+	return mPointPool;
+}
+
+unsigned int Player::getLevelThreshold() const
+{
+	return mNextLevel;
 }
 
 void Player::initializeActions()
@@ -156,5 +177,16 @@ bool Player::isRealtimeAction(Action action)
 
 	default:
 		return false;
+	}
+}
+
+void Player::onLevelUp()
+{
+	if (mCurrentLevelStatus != UnallocatedPoints)
+	{
+		mPlayerStats.level += 1;
+		mCurrentLevelStatus = UnallocatedPoints;
+		mPointPool += 5;
+		mNextLevel += 50;
 	}
 }

@@ -73,7 +73,12 @@ public:
 	int						getKillCount();
 
 	CreatureData			getData() const;
-	void					updataData(CreatureData stats);
+	int						getMaxHitpoints() const;
+	void					updateData(CreatureData stats);
+
+	int						getExp() const;
+	void					setExp(int amount);
+	void					incExp(int amount);
 
 protected:
 	void					updateTexts();
@@ -105,6 +110,8 @@ private:
 	int						mKillCount;
 
 	CreatureData			mData;				// A leveling creature is subject to having their data change
+	int						mMaxHitpoints;
+	int						mExp;
 };
 
 #endif // CREATURE_HPP

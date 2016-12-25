@@ -21,36 +21,27 @@ void PlayerCombatBehavior::updateCombatPattern(sf::Time dt, CommandQueue& comman
 		// combat behaviors
 		mMelee.updateCombatPattern(dt, commands, playerPos);
 		mRanged.checkCooldown(dt, playerPos);
-		return;
 	}
-	if (mRanged.isAttacking())
+	else if (mRanged.isAttacking())
 	{
 		// update the Ranged Combat Pattern, check the cooldowns on all other
 		// combat behaviors
 		mRanged.updateCombatPattern(dt, commands, playerPos);
 		mMelee.checkCooldown(dt, playerPos);
-		return;
 	}
 	else
 	{
 		// just check cooldowns
 		mMelee.checkCooldown(dt, playerPos);
 		mRanged.checkCooldown(dt, playerPos);
+		setAction(Player::ActionCount);
 		return;
 	}
 }
 
 bool PlayerCombatBehavior::isAttacking() const
 {
-	switch (mAction)
-	{
-	case Player::Attack:
-		return mMelee.isAttacking();
-	case Player::Fire:
-		return mRanged.isAttacking();
-	default:
-		return false;
-	}
+	return mMelee.isAttacking() || mRanged.isAttacking();
 }
 
 void PlayerCombatBehavior::attack()
@@ -63,6 +54,8 @@ void PlayerCombatBehavior::attack()
 		break;
 	case Player::Fire:
 		if (!mMelee.isAttacking()) mRanged.attack();
+		break;
+	default:
 		break;
 	}
 }

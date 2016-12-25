@@ -36,7 +36,6 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 	if (mAttackInterval >= sf::Time::Zero)
 	{
 		mIsAttacking = true;
-		setAction(Player::Attack);
 		return;
 	}
 
@@ -45,7 +44,6 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 	if (mIsAttacking && mAttackCooldown >= sf::Time::Zero)
 	{
 		mIsAttacking = false;
-		setAction(Player::ActionCount);
 		return;
 	}
 
@@ -72,7 +70,6 @@ void MeleeCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 void MeleeCombatBehavior::attack()
 {
 	mIsAttacking = true;
-	setAction(Player::Attack);
 }
 
 void MeleeCombatBehavior::checkInterval(sf::Time dt, CommandQueue& commands)
@@ -86,7 +83,6 @@ void MeleeCombatBehavior::checkInterval(sf::Time dt, CommandQueue& commands)
 	if (mAttackInterval <= sf::Time::Zero)
 	{
 		mIsAttacking = false;
-		setAction(Player::ActionCount);
 	}
 }
 

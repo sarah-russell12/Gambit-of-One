@@ -20,7 +20,7 @@ namespace GUI
 {
 
 	Label::Label(const std::string& text, const FontHolder& fonts)
-		: mText(text, fonts.get(0), 16)
+		: mText(text, fonts.get(Fonts::Display), 16)
 	{
 	}
 

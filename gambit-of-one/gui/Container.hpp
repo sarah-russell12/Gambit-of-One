@@ -32,12 +32,14 @@ namespace GUI
 
 
 	public:
-		Container();
+		Container(bool mouseMode = false);
 
 		void				pack(Component::Ptr component);
 
 		virtual bool		isSelectable() const;
 		virtual void		handleEvent(const sf::Event& event);
+
+		void				reset();
 
 
 	private:
@@ -52,6 +54,9 @@ namespace GUI
 	private:
 		std::vector<Component::Ptr>		mChildren;
 		int								mSelectedChild;
+
+		// Diverts events to components the user is supposed to use a mouse there
+		bool							mMouseMode;
 	};
 
 }

@@ -20,6 +20,7 @@ Hansson, and Jan Haller.
 #include <cmath>
 #include <cassert>
 #include <random>
+#include <ctime>
 
 
 using namespace Tables;
@@ -107,7 +108,7 @@ float Projectile::getMaxSpeed() const
 
 int Projectile::getDamage() const
 {
-	std::default_random_engine generator;
+	std::default_random_engine generator(time(0));
 	std::uniform_int_distribution<int> dist6(1, 6);
 	std::uniform_int_distribution<int> dist4(1, 4);
 	auto roll_d6 = std::bind(dist6, generator);

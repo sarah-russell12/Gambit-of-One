@@ -47,6 +47,7 @@ public:
 	void					updateSprite();
 
 	void					setStats(unsigned int main, unsigned int limiter);
+	void					setDamage(unsigned int damage);
 
 	//void					setSprite();
 
@@ -66,6 +67,7 @@ private:
 	// Creature making it
 	unsigned int							mMain;
 	unsigned int							mLimiter;
+	unsigned int							mDamage;
 };
 
 #endif // PROJECTILE_HPP

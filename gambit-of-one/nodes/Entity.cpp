@@ -17,6 +17,7 @@ Hansson, and Jan Haller.
 Entity::Entity(int hitpoints)
 	: mVelocity(0, 0)
 	, mHitpoints(hitpoints)
+	, mMaxHitpoints(hitpoints)
 	, mImmunity(false)
 	, mImmunityCountdown()
 {
@@ -60,6 +61,10 @@ void Entity::repair(int points)
 	assert(points > 0);
 
 	mHitpoints += points;
+	if (mHitpoints > mMaxHitpoints)
+	{
+		mHitpoints = mMaxHitpoints;
+	}
 }
 
 void Entity::damage(int points)
@@ -84,6 +89,17 @@ bool Entity::isImmune() const
 	if (mImmunityCountdown > sf::Time::Zero)
 		return true;
 	return false;
+}
+
+void Entity::setHitpoints(int points)
+{
+	mHitpoints = points;
+	mMaxHitpoints = points;
+}
+
+int Entity::getMaxHitpoints() const
+{
+	return mMaxHitpoints;
 }
 
 void Entity::checkImmunity(sf::Time dt)

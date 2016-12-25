@@ -13,6 +13,8 @@ Hansson, and Jan Haller.
 #include "DataTables.hpp"
 
 #include <random>
+#include <cmath>
+#include <ctime>
 
 using namespace Tables;
 
@@ -25,16 +27,21 @@ GameState::GameState(StateStack& stack, Context context)
 	, mQueue()
 	, mRequiredKills(0) 
 	, mEntityFactory(*context.textures, *context.fonts)
+	, mStatusText("", context.fonts->get(Fonts::Main), 12)
+	, mPreviousLevelStatus(Player::LevelStatus::None)
 	// Will find some different win condition when non-combatant creatures are added 
 {
 	mPlayer.setMissionStatus(Player::MissionRunning);
 	mPlayer.setPlayerStats(mPlayerCreature.getData());
 	initializeWorld(context);
+	mStatusText.setPosition(sf::Vector2f(context.window->getSize().x - 150.f, 5.f));
 }
 
 void GameState::draw()
 {
 	mWorld[mCurrentArea.x][mCurrentArea.y]->draw();
+
+	getContext().window->draw(mStatusText);
 }
 
 bool GameState::update(sf::Time dt)
@@ -55,8 +62,11 @@ bool GameState::update(sf::Time dt)
 	{
 		changeArea();
 	}
+	checkLevelConditions();
 
 	mPlayer.handleRealtimeInput(mQueue);
+
+	updateStatus();
 
 	return true;
 }
@@ -90,8 +100,8 @@ void GameState::initializeWorld(Context context)
 
 	sf::View view =  sf::View{context.window->getDefaultView()};
 
-	// For fun, let's put the player in a random spot!
-	//std::default_random_engine generator;
+	//For fun, let's put the player in a random spot!
+	//std::default_random_engine generator(time(0));
 	//std::uniform_int_distribution<int> dist6(1, 6);
 	//auto roll_d6 = std::bind(dist6, generator);
 	//mCurrentArea.x = roll_d6() - 1;
@@ -132,4 +142,39 @@ void GameState::changeArea()
 		mCurrentArea.y -= 1;
 		mPlayerCreature.setPosition(pos.x, mAreaBounds.height - heightMargin);
 	}
+}
+
+void GameState::updateStatus()
+{
+	std::string statusStr = "Press Space to attack. \n"; 
+	statusStr += "Press F to use your bow. \n";
+	statusStr += "Press C to see stats \n";
+
+	if (getContext().player->getLevelStatus() == Player::UnallocatedPoints)
+	{
+		statusStr += "Level Up! Press C to allocate points";
+	}
+	mStatusText.setString(statusStr);
+}
+
+void GameState::checkLevelConditions()
+{
+	Player::LevelStatus status = getContext().player->getLevelStatus();
+	int threshold = getContext().player->getLevelThreshold();
+
+	if (status != Player::UnallocatedPoints)
+	{
+		if (mPlayerCreature.getExp() >= threshold)
+		{
+			mPlayerCreature.setExp(mPlayerCreature.getExp() - threshold);
+			getContext().player->onLevelUp();
+			mPlayerCreature.repair(1000);
+		}
+	}
+
+	if (mPreviousLevelStatus != status)
+	{
+		mPlayerCreature.updateData(getContext().player->getPlayerStats());
+	}
+	mPreviousLevelStatus = status;
 }

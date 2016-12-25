@@ -64,14 +64,16 @@ struct TeleportPoint
 struct CreatureData
 {
 	unsigned int					type;
-	unsigned int					constitution;
-	unsigned int					strength;
-	unsigned int					dexterity;
-	unsigned int					intelligence;
-	unsigned int					charisma;
 	unsigned int					combatID;
 	unsigned int					movementID;
 	unsigned int					texture;
+	int								constitution;
+	int								strength;
+	int								dexterity;
+	int								intelligence;
+	int								charisma;
+	int								experience;
+	int								level;
 	float							aggroDistance;
 	float							speed;
 	sf::IntRect						textureRect;

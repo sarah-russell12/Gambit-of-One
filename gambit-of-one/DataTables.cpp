@@ -37,17 +37,19 @@ std::vector<CreatureData> Tables::initializeCreatureData()
 	{
 		CreatureData newdata = CreatureData();
 		
-		newdata.type = node.attribute("id").as_uint();
-		newdata.constitution = node.child("con").text().as_uint();
-		newdata.strength = node.child("str").text().as_uint();
-		newdata.dexterity = node.child("dex").text().as_uint();
-		newdata.intelligence = node.child("int").text().as_uint();
-		newdata.charisma = node.child("cha").text().as_uint();
-		newdata.combatID = node.child("cID").text().as_uint();
-		newdata.movementID = node.child("mID").text().as_uint();
-		newdata.speed = node.child("speed").text().as_float();
-		newdata.aggroDistance = node.child("aggroDistance").text().as_float();
-		newdata.texture = node.child("textureID").text().as_uint();
+		newdata.type			= node.attribute("id").as_uint();
+		newdata.combatID		= node.child("cID").text().as_uint();
+		newdata.movementID		= node.child("mID").text().as_uint();
+		newdata.texture			= node.child("textureID").text().as_uint();
+		newdata.constitution	= node.child("con").text().as_int();
+		newdata.strength		= node.child("str").text().as_int();
+		newdata.dexterity		= node.child("dex").text().as_int();
+		newdata.intelligence	= node.child("int").text().as_int();
+		newdata.charisma		= node.child("cha").text().as_int();
+		newdata.experience		= node.child("exp").text().as_int();
+		newdata.level			= node.child("lvl").text().as_int();
+		newdata.speed			= node.child("speed").text().as_float();
+		newdata.aggroDistance	= node.child("aggroDistance").text().as_float();
 
 		int width = node.child("textureRect").child("width").text().as_int();
 		int height = node.child("textureRect").child("height").text().as_int();
@@ -201,9 +203,9 @@ std::vector<std::vector<AreaData>> Tables::initializeAreaData()
 namespace Tables
 {
 	// Putting this here so that the global methods are only called once, hopefully
-	extern const std::vector<CreatureData> Creatures = initializeCreatureData();
-	extern const std::vector<ProjectileData> Projectiles = initializeProjectileData();
-	extern const std::vector<PickupData> Pickups = initializePickupData();
-	extern const std::vector<SceneryData> Props = initializeSceneryData();
-	extern const std::vector<std::vector<AreaData>> Areas = initializeAreaData();
+	const std::vector<CreatureData> Creatures = initializeCreatureData();
+	const std::vector<ProjectileData> Projectiles = initializeProjectileData();
+	const std::vector<PickupData> Pickups = initializePickupData();
+	const std::vector<SceneryData> Props = initializeSceneryData();
+	const std::vector<std::vector<AreaData>> Areas = initializeAreaData();
 }

@@ -41,6 +41,8 @@ public:
 private:
 	void				initializeWorld(Context context);
 	void				changeArea();
+	void				updateStatus();
+	void				checkLevelConditions();
 
 private:
 	std::vector<std::vector<Area*>>				mWorld;
@@ -51,7 +53,9 @@ private:
 	sf::FloatRect								mAreaBounds;
 	CommandQueue								mQueue;
 
+	sf::Text									mStatusText;
 	EntityFactory								mEntityFactory;
+	Player::LevelStatus							mPreviousLevelStatus;
 };
 
 #endif // GAMESTATE_HPP
