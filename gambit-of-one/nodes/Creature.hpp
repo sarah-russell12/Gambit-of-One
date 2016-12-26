@@ -73,7 +73,6 @@ public:
 	int						getKillCount();
 
 	CreatureData			getData() const;
-	int						getMaxHitpoints() const;
 	void					updateData(CreatureData stats);
 
 	int						getExp() const;

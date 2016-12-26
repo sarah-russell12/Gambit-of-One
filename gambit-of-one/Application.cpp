@@ -43,8 +43,10 @@ Application::Application()
 
 	loadResources();
 
+	sf::Vector2u size = mWindow.getSize();
+
 	mStatisticsText.setFont(mFonts.get(Fonts::Display));
-	mStatisticsText.setPosition(5.f, 5.f);
+	mStatisticsText.setPosition(size.x - 50.f, 5.f);
 	mStatisticsText.setCharacterSize(10u);
 
 	registerStates();

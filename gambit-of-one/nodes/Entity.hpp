@@ -39,14 +39,14 @@ public:
 	void				guideTowards(sf::Vector2f position);
 	sf::Vector2f		getVelocity() const;
 	
-	int					getHitpoints() const;
+	virtual int			getHitpoints() const;
 	void				repair(int points);
 	void				damage(int points);
 	void				destroy();
 	virtual bool		isDestroyed() const;
 	bool				isImmune() const;
 	void				setHitpoints(int points);
-	int					getMaxHitpoints() const;
+	virtual int			getMaxHitpoints() const;
 	
 protected:
 	virtual void		updateCurrent(sf::Time dt, CommandQueue& commands);

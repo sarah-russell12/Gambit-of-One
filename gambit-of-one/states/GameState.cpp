@@ -11,6 +11,7 @@ Hansson, and Jan Haller.
 
 #include "GameState.hpp"
 #include "DataTables.hpp"
+#include "Utility.hpp"
 
 #include <random>
 #include <cmath>
@@ -29,12 +30,41 @@ GameState::GameState(StateStack& stack, Context context)
 	, mEntityFactory(*context.textures, *context.fonts)
 	, mStatusText("", context.fonts->get(Fonts::Main), 12)
 	, mPreviousLevelStatus(Player::LevelStatus::None)
+	, mHealthBar()
+	, mExpBar()
+	, mExpBarBase()
+	, mHealthBarBase()
+	, mHealthText("", context.fonts->get(Fonts::Main), 16)
+	, mExpText("", context.fonts->get(Fonts::Main), 16)
 	// Will find some different win condition when non-combatant creatures are added 
 {
 	mPlayer.setMissionStatus(Player::MissionRunning);
 	mPlayer.setPlayerStats(mPlayerCreature.getData());
 	initializeWorld(context);
-	mStatusText.setPosition(sf::Vector2f(context.window->getSize().x - 150.f, 5.f));
+	mStatusText.setPosition(sf::Vector2f(context.window->getSize().x - 200.f, 5.f));
+
+	// Makes seeing experience easier to see
+	sf::Vector2f size{ 200.f , 25.f };
+	mHealthBarBase.setFillColor(sf::Color(128, 0, 0, 255));
+	mHealthBarBase.setSize(size);
+	mHealthBarBase.setPosition(sf::Vector2f(10.f, 10.f));
+	mHealthBarBase.setOutlineThickness(2.f);
+	mHealthBarBase.setOutlineColor(sf::Color(255, 255, 255, 255));
+
+	mHealthBar.setFillColor(sf::Color(255, 0, 0, 255));
+	mHealthBar.setPosition(sf::Vector2f(10.f, 10.f));
+	
+	mExpBarBase.setFillColor(sf::Color(0, 77, 0, 255));
+	mExpBarBase.setSize(size);
+	mExpBarBase.setPosition(sf::Vector2f(10.f, 45.f));
+	mExpBarBase.setOutlineThickness(2.f);
+	mExpBarBase.setOutlineColor(sf::Color(255, 255, 255, 255));
+
+	mExpBar.setFillColor(sf::Color(0, 255, 0, 255));
+	mExpBar.setPosition(sf::Vector2f(10.f, 45.f));
+
+	mHealthText.setPosition(sf::Vector2f((10.f + size.x / 2.f), (10.f + size.y / 2.f)));
+	mExpText.setPosition((10.f + size.x / 2.f), (45.f + size.y / 2.f));
 }
 
 void GameState::draw()
@@ -42,6 +72,39 @@ void GameState::draw()
 	mWorld[mCurrentArea.x][mCurrentArea.y]->draw();
 
 	getContext().window->draw(mStatusText);
+	
+	
+
+	// determining the readout
+	sf::Vector2f size = mHealthBarBase.getSize();
+	
+	int current = mPlayerCreature.getHitpoints();
+	int max = mPlayerCreature.getMaxHitpoints();
+	float fraction = current / (max * 1.f);
+	
+	mHealthBar.setSize(sf::Vector2f((size.x * fraction), size.y));
+
+	mHealthText.setString("HP: " + std::to_string(current) + " / " + std::to_string(max));
+	centerOrigin(mHealthText);
+	mHealthText.setPosition(sf::Vector2f((10.f + size.x / 2.f), (10.f + size.y / 2.f)));
+	
+	getContext().window->draw(mHealthBarBase);
+	getContext().window->draw(mHealthBar);
+	getContext().window->draw(mHealthText);
+
+	current = mPlayerCreature.getExp();
+	max = mPlayer.getLevelThreshold();
+	fraction = current / (max * 1.f);
+
+	mExpBar.setSize(sf::Vector2f((size.x * fraction), size.y));
+	
+	mExpText.setString("EXP: " + std::to_string(current) + " / " + std::to_string(max));
+	centerOrigin(mExpText);
+	mExpText.setPosition((10.f + size.x / 2.f), (45.f + size.y / 2.f));
+
+	getContext().window->draw(mExpBarBase);
+	getContext().window->draw(mExpBar);
+	getContext().window->draw(mExpText);
 }
 
 bool GameState::update(sf::Time dt)
@@ -100,13 +163,6 @@ void GameState::initializeWorld(Context context)
 
 	sf::View view =  sf::View{context.window->getDefaultView()};
 
-	//For fun, let's put the player in a random spot!
-	//std::default_random_engine generator(time(0));
-	//std::uniform_int_distribution<int> dist6(1, 6);
-	//auto roll_d6 = std::bind(dist6, generator);
-	//mCurrentArea.x = roll_d6() - 1;
-	//mCurrentArea.y = roll_d6() - 1;
-
 	mPlayerCreature.setPosition(view.getSize().x / 2.f, view.getSize().y / 2.f);
 	mAreaBounds = sf::FloatRect{ 0.f, 0.f, view.getSize().x, view.getSize().y };
 }
@@ -155,6 +211,8 @@ void GameState::updateStatus()
 		statusStr += "Level Up! Press C to allocate points";
 	}
 	mStatusText.setString(statusStr);
+
+	
 }
 
 void GameState::checkLevelConditions()

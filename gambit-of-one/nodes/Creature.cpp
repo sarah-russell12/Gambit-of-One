@@ -233,11 +233,6 @@ CreatureData Creature::getData() const
 	return mData;
 }
 
-int Creature::getMaxHitpoints() const
-{
-	return mMaxHitpoints;
-}
-
 void Creature::updateData(CreatureData stats)
 {
 	mData.constitution = stats.constitution;

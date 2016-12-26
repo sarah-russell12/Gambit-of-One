@@ -99,7 +99,9 @@ void Entity::setHitpoints(int points)
 
 int Entity::getMaxHitpoints() const
 {
-	return mMaxHitpoints;
+	int hp = mMaxHitpoints;
+	assert(hp > 0);
+	return hp;
 }
 
 void Entity::checkImmunity(sf::Time dt)

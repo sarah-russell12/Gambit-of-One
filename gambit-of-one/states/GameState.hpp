@@ -27,6 +27,7 @@ StateStack structure.
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 
 class GameState : public State
@@ -56,6 +57,17 @@ private:
 	sf::Text									mStatusText;
 	EntityFactory								mEntityFactory;
 	Player::LevelStatus							mPreviousLevelStatus;
+
+	// Bases for the heath and experience bars
+	sf::RectangleShape							mHealthBarBase;
+	sf::RectangleShape							mExpBarBase;
+
+	// What actually changes
+	sf::RectangleShape							mHealthBar;
+	sf::RectangleShape							mExpBar;
+
+	sf::Text									mHealthText;
+	sf::Text									mExpText;
 };
 
 #endif // GAMESTATE_HPP
