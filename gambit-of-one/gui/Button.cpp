@@ -26,7 +26,7 @@ namespace GUI
 		, mSelectedTexture(textures.get(Textures::ButtonSelected))
 		, mPressedTexture(textures.get(Textures::ButtonPressed))
 		, mSprite()
-		, mText("", fonts.get(Fonts::Main), 16)
+		, mText("", fonts.get(Fonts::Main), 24)
 		, mIsToggle(false)
 	{
 		mSprite.setTexture(mNormalTexture);

@@ -13,22 +13,11 @@ Defines all the methods declared in RangedCombatBehavior.h
 #include "ResourceIdentifiers.hpp"
 #include "Utility.hpp"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
-
-RangedCombatBehavior::RangedCombatBehavior(Creature& node, const TextureHolder& textures)
+RangedCombatBehavior::RangedCombatBehavior(Creature& node)
 	: CombatBehavior(node), mIsFiring(false)
 {
+	setStats();
 	mAttackInterval = sf::Time::Zero;
-	mAttackCooldown = 3.f * Table[mType].attackInterval;
-
-	mFireCommand.category = Category::SceneGroundLayer;
-	mFireCommand.action = [this, &textures](SceneNode& node, sf::Time)
-	{
-		createArrow(node, textures);
-	};
 }
 
 RangedCombatBehavior::~RangedCombatBehavior() {}
@@ -70,8 +59,7 @@ void RangedCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 		{
 			mIsFiring = true;
 			mIsAttacking = true;
-			mAttackInterval = Table[mType].attackInterval;
-			mAttackCooldown = 3.f * mAttackInterval;
+			setStats();
 			return;
 		}
 	}
@@ -80,6 +68,21 @@ void RangedCombatBehavior::checkCooldown(sf::Time dt, sf::Vector2f playerPos)
 void RangedCombatBehavior::attack()
 {
 	mIsAttacking = true;
+}
+
+void RangedCombatBehavior::setStats()
+{
+	CreatureData stats = mCreature->getData();
+	float time = 4.f - (stats.dexterity * 0.125f);
+	float offtime = 4.f;
+	if (stats.strength < (stats.dexterity / 2))
+	{
+		// sitting duck time
+		time += ((stats.dexterity / 2.f) - stats.strength) * 0.125f;
+		offtime += ((stats.dexterity / 2.f) - stats.strength) * 0.125f;
+	}
+	mAttackInterval = sf::seconds(time);
+	mAttackCooldown = mAttackInterval + sf::seconds(offtime);
 }
 
 void RangedCombatBehavior::checkInterval(sf::Time dt, CommandQueue& commands)
@@ -108,42 +111,4 @@ void RangedCombatBehavior::attack(CommandQueue& commands)
 {
 	// No range check required
 	
-}
-
-void RangedCombatBehavior::createArrow(SceneNode& node, const TextureHolder& textures) const
-{
-	auto& creature = static_cast<Creature&>(node);
-	sf::FloatRect bounds = creature.getBoundingRect();
-	Projectile::Type type = creature.isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
-	std::unique_ptr<Projectile> projectile(new Projectile(type, textures, creature.getCompass()));
-
-	sf::Vector2f velocity;
-	sf::Vector2f offset(0,0);
-	switch (creature.getCompass())
-	{
-	case Compass::North:
-		velocity.x = 0;
-		velocity.y = projectile->getMaxSpeed() * -1.f;
-		offset.y = 0.5f * bounds.height;
-		break;
-	case Compass::South:
-		velocity.x = 0;
-		velocity.y = projectile->getMaxSpeed();
-		offset.y = -0.5f * bounds.height;
-		break;
-	case Compass::East:
-		velocity.x = projectile->getMaxSpeed();
-		velocity.y = 0;
-		offset.x = 0.5f * bounds.width;
-		break;
-	case Compass::West:
-		velocity.x = projectile->getMaxSpeed() * -1.f;
-		velocity.y = 0;
-		offset.x = -0.5f * bounds.width;
-		break;
-	}
-
-	projectile->setPosition(creature.getWorldPosition() + offset);
-	projectile->setVelocity(velocity);
-	node.attachChild(std::move(projectile));
 }

@@ -14,22 +14,18 @@
   </scenery>
   <scenery id="3">
     <name>Small Wood Fence</name>
-    <textureID>16</textureID>
+    <textureID>17</textureID>
   </scenery>
   <scenery id="4">
-    <name>Tree Wall Horizontal</name>
+    <name>Long Horizontal Tree Wall</name>
     <textureID>13</textureID>
   </scenery>
   <scenery id="5">
-    <name>Tree Wall Left Corner</name>
+    <name>Long Vertical Tree Wall</name>
     <textureID>14</textureID>
   </scenery>
   <scenery id="6">
-    <name>Tree Wall Right Corner</name>
+    <name>Tree Wall Corner</name>
     <textureID>15</textureID>
-  </scenery>
-  <scenery id="7">
-    <name>Tree Wall Vertical</name>
-    <textureID>14</textureID>
   </scenery>
 </table>

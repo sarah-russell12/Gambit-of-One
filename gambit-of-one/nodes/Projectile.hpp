@@ -29,7 +29,7 @@ public:
 	{
 		AlliedBullet,
 		EnemyBullet,
-		Missile,
+		Magic,
 		TypeCount
 	};
 
@@ -46,6 +46,9 @@ public:
 	int						getDamage() const;
 	void					updateSprite();
 
+	void					setStats(unsigned int main, unsigned int limiter);
+	void					setDamage(unsigned int damage);
+
 	//void					setSprite();
 
 private:
@@ -59,6 +62,12 @@ private:
 	sf::Sprite								OriginSprite;
 	sf::Vector2f							mTargetDirection;
 	Compass									mCDirection;
+
+	// Projectile damage is based on the main stat and limiting stat of the
+	// Creature making it
+	unsigned int							mMain;
+	unsigned int							mLimiter;
+	unsigned int							mDamage;
 };
 
 #endif // PROJECTILE_HPP

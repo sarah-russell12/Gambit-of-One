@@ -17,6 +17,7 @@ Updates:
 #ifndef COMBAT_BEHAVIOR_H
 #define COMBAT_BEHAVIOR_H
 
+#include "Player.hpp"
 #include "Creature.hpp"
 #include "Command.hpp"
 #include "CommandQueue.hpp"
@@ -36,6 +37,14 @@ public:
 	
 	virtual void		attack();
 
+	virtual void		setAction(Player::Action action);
+	Player::Action		getAction() const;
+
+	virtual int			getTileMultiplier() const;
+	virtual void		setStats();
+	
+	unsigned int		getDamage(unsigned int main, unsigned int limiter);
+
 private:
 	virtual void		checkInterval(sf::Time dt, CommandQueue& commands);
 	virtual void		attack(sf::Vector2f playerPos);
@@ -43,11 +52,12 @@ private:
 
 protected:
 	Creature*			mCreature;
-	Creature::Type		mType;
 
 	sf::Time			mAttackInterval;
 	sf::Time			mAttackCooldown;
 	bool				mIsAttacking;
+
+	Player::Action		mAction;
 };
 
 #endif //COMBAT_BEHAVIOR_H

@@ -20,9 +20,10 @@ Hansson, and Jan Haller.
 namespace GUI
 {
 
-	Container::Container()
+	Container::Container(bool mouseMode)
 		: mChildren()
 		, mSelectedChild(-1)
+		, mMouseMode(mouseMode)
 	{
 	}
 
@@ -30,7 +31,7 @@ namespace GUI
 	{
 		mChildren.push_back(component);
 
-		if (!hasSelection() && component->isSelectable())
+		if (!hasSelection() && component->isSelectable() && !mMouseMode)
 			select(mChildren.size() - 1);
 	}
 
@@ -45,6 +46,19 @@ namespace GUI
 		if (hasSelection() && mChildren[mSelectedChild]->isActive())
 		{
 			mChildren[mSelectedChild]->handleEvent(event);
+		}
+		else if (mMouseMode)
+		{
+			if (event.type == sf::Event::MouseMoved || event.type == sf::Event::MouseButtonReleased)
+			{
+				FOREACH(const Component::Ptr& child, mChildren)
+				{
+					if (child->isSelectable())
+					{
+						child->handleEvent(event);
+					}
+				}
+			}
 		}
 		else if (event.type == sf::Event::KeyReleased)
 		{
@@ -62,6 +76,12 @@ namespace GUI
 					mChildren[mSelectedChild]->activate();
 			}
 		}
+	}
+
+	void Container::reset()
+	{
+		mChildren = std::vector<Component::Ptr>();
+		mSelectedChild = -1;
 	}
 
 	void Container::draw(sf::RenderTarget& target, sf::RenderStates states) const

@@ -27,6 +27,7 @@ StateStack structure.
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 
 class GameState : public State
@@ -41,17 +42,32 @@ public:
 private:
 	void				initializeWorld(Context context);
 	void				changeArea();
+	void				updateStatus();
+	void				checkLevelConditions();
 
 private:
 	std::vector<std::vector<Area*>>				mWorld;
 	sf::Vector2i								mCurrentArea;
 	Player&										mPlayer;
-	PlayerCreature								mPlayerCreature;
+	Creature									mPlayerCreature;
 	int											mRequiredKills;
 	sf::FloatRect								mAreaBounds;
 	CommandQueue								mQueue;
 
+	sf::Text									mStatusText;
 	EntityFactory								mEntityFactory;
+	Player::LevelStatus							mPreviousLevelStatus;
+
+	// Bases for the heath and experience bars
+	sf::RectangleShape							mHealthBarBase;
+	sf::RectangleShape							mExpBarBase;
+
+	// What actually changes
+	sf::RectangleShape							mHealthBar;
+	sf::RectangleShape							mExpBar;
+
+	sf::Text									mHealthText;
+	sf::Text									mExpText;
 };
 
 #endif // GAMESTATE_HPP

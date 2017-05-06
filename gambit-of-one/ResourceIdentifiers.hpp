@@ -10,6 +10,9 @@ Hansson, and Jan Haller.
 
 This file is a collection of enumerations and type definitions specific to
 texture and font resources.
+
+Updates:
+	September 28, 2016: Phasing out the Resource ID enums so that the
 */
 
 #ifndef RESOURCEIDENTIFIERS_HPP
@@ -23,31 +26,14 @@ namespace sf
 
 namespace Textures
 {
+	// Certain textures need to be referenced in this way
 	enum ID
 	{
-		TitleScreen,
-		ButtonNormal,
-		ButtonSelected,
-		ButtonPressed,
-		Hero,
-		Rat,
-		Bandit,
-		Archer,
-		Arrow,
-		HealthRefill,
-		FireSpread,
-		FireRate,
-		Rock,
-		BigTree1,
-		SmallTree1,
-		TreeWallLong,
-		TreeWallLeftCorner,
-		TreeWallRightCorner,
-		Fence,
-		Wheat,
-		House,
-		LeftEndDirtRoad,
-		RightEndDirtRoad,
+		HealthRefill = 0,
+		TitleScreen = 1,
+		ButtonNormal = 2,
+		ButtonSelected = 3,
+		ButtonPressed = 4,
 	};
 }
 
@@ -55,7 +41,8 @@ namespace Fonts
 {
 	enum ID
 	{
-		Main,
+		Display = 0,		// A Display-type font, use for headers
+		Main = 1,			// A non-Display-type font
 	};
 }
 
@@ -71,7 +58,7 @@ enum Compass
 template <typename Resource, typename Identifier>
 class ResourceHolder;
 
-typedef ResourceHolder<sf::Texture, Textures::ID>	TextureHolder;
-typedef ResourceHolder<sf::Font, Fonts::ID>			FontHolder;
+typedef ResourceHolder<sf::Texture, unsigned int>	TextureHolder;
+typedef ResourceHolder<sf::Font, unsigned int>			FontHolder;
 
 #endif // RESOURCEIDENTIFIERS_HPP

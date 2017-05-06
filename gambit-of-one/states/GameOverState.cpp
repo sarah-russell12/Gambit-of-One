@@ -24,7 +24,7 @@ GameOverState::GameOverState(StateStack& stack, Context context)
 	, mGameOverText()
 	, mElapsedTime(sf::Time::Zero)
 {
-	sf::Font& font = context.fonts->get(Fonts::Main);
+	sf::Font& font = context.fonts->get(0);
 	sf::Vector2f windowSize(context.window->getSize());
 
 	mGameOverText.setFont(font);

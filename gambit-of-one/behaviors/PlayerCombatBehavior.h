@@ -20,13 +20,16 @@ have no clue if there is a more efficient way of going about this.
 class PlayerCombatBehavior : public CombatBehavior
 {
 public:
-	PlayerCombatBehavior(Creature& node, const TextureHolder& textures);
+	PlayerCombatBehavior(Creature& node);
 	~PlayerCombatBehavior();
 
 	virtual void		updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos);
 
-	virtual bool		isAttacking(Player::Action action) const;
-	void				attack(Player::Action action);
+	virtual bool		isAttacking() const;
+	void				attack();
+
+	virtual int			getTileMultiplier() const;
+	virtual void		setStats();
 
 private:
 	MeleeCombatBehavior		mMelee;

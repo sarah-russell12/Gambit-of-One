@@ -19,17 +19,30 @@ Will return different behaviors based upon the creature interacting with it.
 class BehaviorFactory
 {
 public:
+	enum CombatStyle
+	{
+		Player,
+		DontFight,
+		Melee,
+		Ranged,
+	};
+
+	enum Movement
+	{
+		DontMove,
+		Directional,
+		Guided,
+		Teleporting,
+		Turning,
+	};
+
+public:
 	BehaviorFactory();
 	~BehaviorFactory();
 
-	CombatBehavior*		getCombatBehavior(Creature& node, const TextureHolder& textures);
-	MovementBehavior*	getMovementBehavior(Creature& node);
+	CombatBehavior*							getCombatBehavior(Creature& node, CombatStyle combat);
+	MovementBehavior*						getMovementBehavior(Creature& node, Movement move);
 
-private:
-	void				loadProjectileTextures();
-
-private:
-	TextureHolder		mProjectileTextures;
 };
 
 #endif //BEHAVIOR_FACTORY_H

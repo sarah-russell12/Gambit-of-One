@@ -17,10 +17,12 @@ completing the level.
 #define PLAYER_HPP
 
 #include "Command.hpp"
+#include "DataTables.hpp"
 
 #include <SFML/Window/Event.hpp>
 
 #include <map>
+#include <vector>
 
 
 class CommandQueue;
@@ -46,6 +48,12 @@ public:
 		MissionFailure
 	};
 
+	enum LevelStatus
+	{
+		None,
+		UnallocatedPoints,
+	};
+
 
 public:
 	Player();
@@ -60,6 +68,15 @@ public:
 	void					checkMissionStatus();
 	MissionStatus 			getMissionStatus() const;
 
+	CreatureData			getPlayerStats() const;
+	void					setPlayerStats(int stats[], unsigned int leftover);
+	void					setPlayerStats(CreatureData data);
+
+	LevelStatus				getLevelStatus() const;
+	void					onLevelUp();
+	unsigned int			getPoints() const;
+	unsigned int			getLevelThreshold() const;
+
 private:
 	void					initializeActions();
 	static bool				isRealtimeAction(Action action);
@@ -69,6 +86,12 @@ private:
 	std::map<sf::Keyboard::Key, Action>		mKeyBinding;
 	std::map<Action, Command>				mActionBinding;
 	MissionStatus 							mCurrentMissionStatus;
+
+	CreatureData							mPlayerStats;
+
+	LevelStatus								mCurrentLevelStatus;
+	unsigned int							mPointPool;
+	unsigned int							mNextLevel;
 };
 
 #endif // PLAYER_HPP

@@ -11,8 +11,9 @@ Hansson, and Jan Haller.
 
 #include "Player.hpp"
 #include "CommandQueue.hpp"
-#include "PlayerCreature.h"
+#include "Creature.hpp"
 #include "Foreach.hpp"
+#include "DataTables.hpp"
 
 #include <map>
 #include <string>
@@ -29,35 +30,16 @@ struct CreatureMover
 	{
 	}
 
-	void operator() (PlayerCreature& creature, sf::Time) const
+	void operator() (Creature& creature, sf::Time) const
 	{
-		if (creature.isBlocked())
-		{
-			sf::Vector2f newVel;
-			switch (creature.getCompass())
-			{
-			case Creature::North:
-			case Creature::South:
-				newVel = sf::Vector2f{ velocity.x, 0.f };
-				break;
-			case Creature::East:
-			case Creature::West:
-				newVel = sf::Vector2f{ 0.f, velocity.y };
-				break;
-			}
-			creature.accelerate(newVel * creature.getMaxSpeed());
-		}
-		else
-		{
-			creature.accelerate(velocity * creature.getMaxSpeed());
-		}
+		creature.accelerate(velocity * creature.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
 };
 
 Player::Player()
-	: mCurrentMissionStatus(MissionRunning)
+	: mCurrentMissionStatus(MissionRunning), mCurrentLevelStatus(None), mPointPool(0), mNextLevel(50)
 {
 	// Set initial key bindings
 	mKeyBinding[sf::Keyboard::A] = MoveLeft;
@@ -133,14 +115,54 @@ Player::MissionStatus Player::getMissionStatus() const
 	return mCurrentMissionStatus;
 }
 
+CreatureData Player::getPlayerStats() const
+{
+	return mPlayerStats;
+}
+
+void Player::setPlayerStats(int stats[], unsigned int leftover)
+{
+	mPlayerStats.strength = stats[0];
+	mPlayerStats.dexterity = stats[1];
+	mPlayerStats.intelligence = stats[2];
+	mPlayerStats.constitution = stats[3];
+	mPlayerStats.charisma = stats[4];
+
+	if (leftover == 0)
+	{
+		mCurrentLevelStatus = None;
+	}
+	mPointPool = leftover;
+}
+
+void Player::setPlayerStats(CreatureData data)
+{
+	mPlayerStats = data;
+}
+
+Player::LevelStatus Player::getLevelStatus() const
+{
+	return mCurrentLevelStatus;
+}
+
+unsigned int Player::getPoints() const
+{
+	return mPointPool;
+}
+
+unsigned int Player::getLevelThreshold() const
+{
+	return mNextLevel;
+}
+
 void Player::initializeActions()
 {
-	mActionBinding[MoveLeft].action = derivedAction<PlayerCreature>(CreatureMover(-1, 0));
-	mActionBinding[MoveRight].action = derivedAction<PlayerCreature>(CreatureMover(+1, 0));
-	mActionBinding[MoveUp].action = derivedAction<PlayerCreature>(CreatureMover(0, -1));
-	mActionBinding[MoveDown].action = derivedAction<PlayerCreature>(CreatureMover(0, +1));
-	mActionBinding[Attack].action = derivedAction<PlayerCreature>([](PlayerCreature& a, sf::Time){ a.attack(Attack); });
-	mActionBinding[Fire].action = derivedAction<PlayerCreature>([](PlayerCreature& a, sf::Time){ a.attack(Fire); });
+	mActionBinding[MoveLeft].action = derivedAction<Creature>(CreatureMover(-1, 0));
+	mActionBinding[MoveRight].action = derivedAction<Creature>(CreatureMover(+1, 0));
+	mActionBinding[MoveUp].action = derivedAction<Creature>(CreatureMover(0, -1));
+	mActionBinding[MoveDown].action = derivedAction<Creature>(CreatureMover(0, +1));
+	mActionBinding[Attack].action = derivedAction<Creature>([](Creature& a, sf::Time) { a.setAction(Attack); a.attack(); });
+	mActionBinding[Fire].action = derivedAction<Creature>([](Creature& a, sf::Time) { a.setAction(Fire);  a.attack(); });
 }
 
 bool Player::isRealtimeAction(Action action)
@@ -151,10 +173,20 @@ bool Player::isRealtimeAction(Action action)
 	case MoveRight:
 	case MoveDown:
 	case MoveUp:
-	case Attack:
 		return true;
 
 	default:
 		return false;
+	}
+}
+
+void Player::onLevelUp()
+{
+	if (mCurrentLevelStatus != UnallocatedPoints)
+	{
+		mPlayerStats.level += 1;
+		mCurrentLevelStatus = UnallocatedPoints;
+		mPointPool += 5;
+		mNextLevel += 50;
 	}
 }

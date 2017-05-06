@@ -9,13 +9,8 @@ Defines all the methods declared in DirectionalMovementBehavior.h
 #include "DirectionalMovementBehavior.h"
 #include "Utility.hpp"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
-
 DirectionalMovementBehavior::DirectionalMovementBehavior(Creature& node)
-	: MovementBehavior(node), mDirections(Table[mType].directions), mDirectionIndex(0), mTravelledDistance(0.f) {}
+	: MovementBehavior(node), mDirections(mCreature->getData().directions), mDirectionIndex(0), mTravelledDistance(0.f) {}
 
 DirectionalMovementBehavior::~DirectionalMovementBehavior() {}
 
@@ -44,7 +39,7 @@ void DirectionalMovementBehavior::checkAggro()
 {
 	sf::Vector2f myPosition = mCreature->getWorldPosition();
 	float distance = length(mTargetPosition - myPosition);
-	if (distance <= Table[mType].aggroDistance && !mCreature->isAllied())
+	if (distance <= mCreature->getData().aggroDistance && !mCreature->isAllied())
 	{
 		mIsAggroed = true;
 	}

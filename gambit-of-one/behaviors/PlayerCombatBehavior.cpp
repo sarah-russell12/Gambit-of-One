@@ -8,55 +8,46 @@ Defines all the methods declared in PlayerCombatBehavior.h
 
 #include "PlayerCombatBehavior.h"
  
-PlayerCombatBehavior::PlayerCombatBehavior(Creature& node, const TextureHolder& textures)
-	: CombatBehavior(node), mMelee(node), mRanged(node, textures) {}
+PlayerCombatBehavior::PlayerCombatBehavior(Creature& node)
+	: CombatBehavior(node), mMelee(node), mRanged(node) {}
 
 PlayerCombatBehavior::~PlayerCombatBehavior() {}
 
 void PlayerCombatBehavior::updateCombatPattern(sf::Time dt, CommandQueue& commands, sf::Vector2f playerPos)
 {
-	if (isAttacking(Player::Attack))
+	if (mMelee.isAttacking())
 	{
 		// update the Melee Combat Pattern, check the cooldowns on all other 
 		// combat behaviors
 		mMelee.updateCombatPattern(dt, commands, playerPos);
 		mRanged.checkCooldown(dt, playerPos);
-		return;
 	}
-	if (isAttacking(Player::Fire))
+	else if (mRanged.isAttacking())
 	{
 		// update the Ranged Combat Pattern, check the cooldowns on all other
 		// combat behaviors
 		mRanged.updateCombatPattern(dt, commands, playerPos);
 		mMelee.checkCooldown(dt, playerPos);
-		return;
 	}
 	else
 	{
 		// just check cooldowns
 		mMelee.checkCooldown(dt, playerPos);
 		mRanged.checkCooldown(dt, playerPos);
+		setAction(Player::ActionCount);
 		return;
 	}
 }
 
-bool PlayerCombatBehavior::isAttacking(Player::Action action) const
+bool PlayerCombatBehavior::isAttacking() const
 {
-	switch (action)
-	{
-	case Player::Attack:
-		return mMelee.isAttacking();
-	case Player::Fire:
-		return mRanged.isAttacking();
-	default:
-		return false;
-	}
+	return mMelee.isAttacking() || mRanged.isAttacking();
 }
 
-void PlayerCombatBehavior::attack(Player::Action action)
+void PlayerCombatBehavior::attack()
 {
 	// Make sure that no other type of attack is happening
-	switch (action)
+	switch (mAction)
 	{
 	case Player::Attack:
 		if (!mRanged.isAttacking()) mMelee.attack();
@@ -64,5 +55,26 @@ void PlayerCombatBehavior::attack(Player::Action action)
 	case Player::Fire:
 		if (!mMelee.isAttacking()) mRanged.attack();
 		break;
+	default:
+		break;
 	}
+}
+
+int PlayerCombatBehavior::getTileMultiplier() const
+{
+	switch(mAction)
+	{
+	case Player::Fire:
+		return 1;
+	case Player::Attack:
+		return 2;
+	default:
+		return 0;
+	}
+}
+
+void PlayerCombatBehavior::setStats()
+{
+	mMelee.setStats();
+	mRanged.setStats();
 }

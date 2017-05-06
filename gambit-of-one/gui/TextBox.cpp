@@ -16,7 +16,7 @@ Defines all the methods declared in TextBox.h
 namespace GUI
 {
 	TextBox::TextBox(const FontHolder& fonts, sf::RenderWindow& window)
-		: mText("", fonts.get(Fonts::Main), 18)
+		: mText("", fonts.get(0), 18)
 		, mBox()
 		, mLineFinished(true)
 	{

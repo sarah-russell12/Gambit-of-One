@@ -10,11 +10,6 @@ Defines all the methods declared in GuidedMovementBehavior.h
 #include "DataTables.hpp"
 #include "Utility.hpp"
 
-namespace
-{
-	const std::vector<CreatureData> Table = initializeCreatureData();
-}
-
 GuidedMovementBehavior::GuidedMovementBehavior(Creature& node)
 	: MovementBehavior(node) {}
 
@@ -49,7 +44,7 @@ void GuidedMovementBehavior::checkAggro()
 {
 	sf::Vector2f myPosition = mCreature->getWorldPosition();
 	float distance = length(mTargetPosition - myPosition);
-	if (distance <= Table[mType].aggroDistance)
+	if (distance <= mCreature->getData().aggroDistance)
 	{
 		mIsAggroed = true;
 	}	

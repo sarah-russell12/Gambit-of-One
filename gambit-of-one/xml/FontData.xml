@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fonts>
   <font id="0">
-    <file>Media/Sansation.ttf</file>
+    <file>Media/Fonts/Kirsty/Kirsty.ttf</file>
+  </font>
+  <font id="1">
+    <file>Media/Fonts/Almendra/Almendra-Regular.otf</file>
   </font>
 </fonts>
